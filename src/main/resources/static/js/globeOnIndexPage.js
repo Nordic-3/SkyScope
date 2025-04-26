@@ -4,21 +4,8 @@ let searchBarContainer;
 let originCity;
 let destinationCity;
 let labeledCities = [];
-let dummyData = [{
-    lat: 47.4979,
-    lng: 19.0402,
-    text: "Budapest"
-},
-    {
-        lat: 41.38879,
-        lng: 2.15899,
-        text: "Barcelona"
-    },
-{
-    lat: 51.509865,
-    lng: -0.118092,
-    text: "London"
-}];
+let originCityElement;
+let destinationCityElement;
 
 function bodyLoaded() {
     earthContainer = document.getElementById("main");
@@ -32,6 +19,9 @@ function bodyLoaded() {
     earth.controls().autoRotateSpeed = 0.6;
 
     window.addEventListener("resize", resizeEarth);
+
+    originCityElement = document.getElementById("originCity");
+    destinationCityElement = document.getElementById("destinationCity");
 }
 
 function resizeEarth() {
@@ -46,7 +36,7 @@ function getHeightOfElementWithMargin(element) {
 }
 
 function goToOriginCity() {
-    let inputOriginCity = document.getElementById("originCity").value;
+    let inputOriginCity = originCityElement.value;
     if (originCity !== null && inputOriginCity === "") {
         removeCityFromLabeledCities(originCity);
         originCity = null;
@@ -55,16 +45,26 @@ function goToOriginCity() {
     } else if (originCity !== null) {
         removeCityFromLabeledCities(originCity);
     }
-    let cityDetails = getCityFromDataSet(inputOriginCity);
-    if (cityDetails !== null) {
-        labeledCities.push(cityDetails);
-        labelCityAndNavigate(cityDetails);
-        originCity = inputOriginCity;
+    if (inputOriginCity !== "") {
+        fetch("/city?city=" + inputOriginCity)
+            .then(response => response.text())
+            .then(responseInText => {
+                try {
+                    let responseJSON = JSON.parse(responseInText);
+                    let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
+                    labeledCities.push(cityDetails);
+                    labelCityAndNavigate(cityDetails);
+                    originCity = responseJSON.name;
+                } catch (exception) {
+                    originCityElement.classList.add("border-danger");
+                }
+            });
     }
+    originCityElement.classList.remove("border-danger");
 }
 
 function goToDestinationCity() {
-    let inputDestinationCity = document.getElementById("destinationCity").value;
+    let inputDestinationCity = destinationCityElement.value;
     if (destinationCity !== null && inputDestinationCity === "") {
         removeCityFromLabeledCities(destinationCity);
         destinationCity = null;
@@ -73,21 +73,22 @@ function goToDestinationCity() {
     } else if (destinationCity !== null) {
         removeCityFromLabeledCities(destinationCity);
     }
-    let cityDetails = getCityFromDataSet(inputDestinationCity);
-    if (cityDetails !== null) {
-        labeledCities.push(cityDetails);
-        labelCityAndNavigate(cityDetails);
-        destinationCity = inputDestinationCity;
+    if (inputDestinationCity !== "") {
+        fetch("/city?city=" + inputDestinationCity)
+            .then(response => response.text())
+            .then(responseInText => {
+                try {
+                    let responseJSON = JSON.parse(responseInText);
+                    let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
+                    labeledCities.push(cityDetails);
+                    labelCityAndNavigate(cityDetails);
+                    destinationCity = responseJSON.name;
+                } catch (exception) {
+                    destinationCityElement.classList.add("border-danger");
+                }
+            });
     }
-}
-
-function getCityFromDataSet(city) {
-    for (let i = 0; i < dummyData.length; i++) {
-        if (dummyData[i].text === city) {
-            return dummyData[i];
-        }
-    }
-    return null;
+    destinationCityElement.classList.remove("border-danger");
 }
 
 function labelCityAndNavigate(cityDetails) {
@@ -98,7 +99,7 @@ function labelCityAndNavigate(cityDetails) {
         .labelText(data => data.text)
         .labelSize(1)
         .labelDotRadius(1);
-        earth.pointOfView({lat: cityDetails.lat, lng: cityDetails.lng, altitude: 1}, 3000);
+    earth.pointOfView({lat: cityDetails.lat, lng: cityDetails.lng, altitude: 1}, 3000);
 }
 
 function removeCityFromLabeledCities(city) {
