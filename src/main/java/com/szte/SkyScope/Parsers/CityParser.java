@@ -1,4 +1,4 @@
-package com.szte.SkyScope.parser;
+package com.szte.SkyScope.Parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

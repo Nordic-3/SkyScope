@@ -3,7 +3,7 @@ package com.szte.SkyScope.Services.Impl;
 import com.szte.SkyScope.Config.ApplicationConfig;
 import com.szte.SkyScope.Models.City;
 import com.szte.SkyScope.Services.CityService;
-import com.szte.SkyScope.parser.CityParser;
+import com.szte.SkyScope.Parsers.CityParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
