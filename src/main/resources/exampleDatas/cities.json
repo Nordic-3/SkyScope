@@ -1,0 +1,22 @@
+{
+  "London": [{
+    "lng": "-0.12574",
+    "name": "London",
+    "lat": "51.50853"
+  }],
+  "Budapest": [{
+    "lng": "19.0402",
+    "name": "Budapest",
+    "lat": "47.4979"
+  }],
+  "Barcelona": [{
+    "lng": "2.15899",
+    "name": "Barcelona",
+    "lat": "41.38879"
+  }],
+  "New York": [{
+    "lng": "-74.00597",
+    "name": "New York",
+    "lat": "40.71427"
+  }]
+}
