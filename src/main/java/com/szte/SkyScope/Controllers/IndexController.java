@@ -8,6 +8,12 @@ public class IndexController {
 
     @GetMapping("/")
     public String home() {
+        return "index";
+    }
+
+    @GetMapping("/search")
+    public String flightSearch() {
         return "flightSearchPage";
     }
 }
+
