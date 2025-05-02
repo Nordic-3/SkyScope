@@ -7,6 +7,7 @@ let labeledCities = [];
 let originCityElement;
 let destinationCityElement;
 let lineDatas = {startLat: null, startLng: null, endLat: null, endLng: null};
+let timesNewRomanCharacterset;
 
 function bodyLoaded() {
     earthContainer = document.getElementById("main");
@@ -23,6 +24,7 @@ function bodyLoaded() {
 
     originCityElement = document.getElementById("originCity");
     destinationCityElement = document.getElementById("destinationCity");
+    readCharacterset();
 }
 
 function resizeEarth() {
@@ -59,6 +61,7 @@ function goToOriginCity() {
                     lineDatas.startLng = cityDetails.lng;
                     connectCitesIfAllGiven();
                     originCity = cityDetails;
+                    console.log(cityDetails.text);
                 } catch (exception) {
                     originCityElement.classList.add("border-danger");
                 }
@@ -101,6 +104,7 @@ function goToDestinationCity() {
 function labelCityAndNavigate(cityDetails) {
     earth.controls().autoRotate = false;
     earth.labelsData(labeledCities)
+        .labelTypeFace(timesNewRomanCharacterset)
         .labelLat(data => data.lat)
         .labelLng(data => data.lng)
         .labelText(data => data.text)
@@ -138,4 +142,10 @@ function connectCitesIfAllGiven() {
             .arcsTransitionDuration(4000)
             .arcDashAnimateTime(3000);
     }
+}
+
+function readCharacterset() {
+    fetch("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/fonts/gentilis_bold.typeface.json")
+        .then(response => response.json())
+        .then(data => timesNewRomanCharacterset = data);
 }
