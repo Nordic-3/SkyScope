@@ -1,11 +1,12 @@
 let earthContainer;
 let earth;
 let searchBarContainer;
-let originCity;
-let destinationCity;
+let originCity = null;
+let destinationCity = null;
 let labeledCities = [];
 let originCityElement;
 let destinationCityElement;
+let lineDatas = {startLat: null, startLng: null, endLat: null, endLng: null};
 
 function bodyLoaded() {
     earthContainer = document.getElementById("main");
@@ -38,12 +39,12 @@ function getHeightOfElementWithMargin(element) {
 function goToOriginCity() {
     let inputOriginCity = originCityElement.value;
     if (originCity !== null && inputOriginCity === "") {
-        removeCityFromLabeledCities(originCity);
+        removeCityFromEarth(originCity);
         originCity = null;
         setEarthToIdleIfEmptyInput();
         return;
     } else if (originCity !== null) {
-        removeCityFromLabeledCities(originCity);
+        removeCityFromEarth(originCity);
     }
     if (inputOriginCity !== "") {
         fetch("/city?city=" + inputOriginCity)
@@ -54,7 +55,10 @@ function goToOriginCity() {
                     let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
                     labeledCities.push(cityDetails);
                     labelCityAndNavigate(cityDetails);
-                    originCity = responseJSON.name;
+                    lineDatas.startLat = cityDetails.lat;
+                    lineDatas.startLng = cityDetails.lng;
+                    connectCitesIfAllGiven();
+                    originCity = cityDetails;
                 } catch (exception) {
                     originCityElement.classList.add("border-danger");
                 }
@@ -66,12 +70,12 @@ function goToOriginCity() {
 function goToDestinationCity() {
     let inputDestinationCity = destinationCityElement.value;
     if (destinationCity !== null && inputDestinationCity === "") {
-        removeCityFromLabeledCities(destinationCity);
+        removeCityFromEarth(destinationCity);
         destinationCity = null;
         setEarthToIdleIfEmptyInput();
         return;
     } else if (destinationCity !== null) {
-        removeCityFromLabeledCities(destinationCity);
+        removeCityFromEarth(destinationCity);
     }
     if (inputDestinationCity !== "") {
         fetch("/city?city=" + inputDestinationCity)
@@ -82,7 +86,10 @@ function goToDestinationCity() {
                     let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
                     labeledCities.push(cityDetails);
                     labelCityAndNavigate(cityDetails);
-                    destinationCity = responseJSON.name;
+                    lineDatas.endLat = cityDetails.lat;
+                    lineDatas.endLng = cityDetails.lng;
+                    connectCitesIfAllGiven();
+                    destinationCity = cityDetails;
                 } catch (exception) {
                     destinationCityElement.classList.add("border-danger");
                 }
@@ -98,18 +105,37 @@ function labelCityAndNavigate(cityDetails) {
         .labelLng(data => data.lng)
         .labelText(data => data.text)
         .labelSize(1)
-        .labelDotRadius(1);
+        .labelDotRadius(1)
+        .labelColor(() => "black");
     earth.pointOfView({lat: cityDetails.lat, lng: cityDetails.lng, altitude: 1}, 3000);
 }
 
-function removeCityFromLabeledCities(city) {
-    labeledCities = labeledCities.filter(label => label.text !== city);
-    earth.labelsData(labeledCities);
+function removeCityFromEarth(city) {
+    labeledCities = labeledCities.filter(label => label.text !== city.text);
+    if (lineDatas.startLat === city.lat && lineDatas.startLng === city.lng) {
+        lineDatas.startLat = null;
+        lineDatas.startLng = null;
+    } else if (lineDatas.endLat === city.lat && lineDatas.endLng === city.lng) {
+        lineDatas.endLat = null;
+        lineDatas.endLng = null;
+    }
+    earth.labelsData(labeledCities)
+        .arcsData([]);
+
 }
 
 function setEarthToIdleIfEmptyInput() {
     if (originCity === null && destinationCity === null) {
         earth.pointOfView({lat: 0, lng: 0, altitude: 2.5}, 2000);
         earth.controls().autoRotate = true;
+    }
+}
+
+function connectCitesIfAllGiven() {
+    if (!Object.values(lineDatas).includes(null)) {
+        earth.arcsData([lineDatas])
+            .arcColor(() => "#ff0000")
+            .arcsTransitionDuration(4000)
+            .arcDashAnimateTime(3000);
     }
 }
