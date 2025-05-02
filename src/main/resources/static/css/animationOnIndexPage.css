@@ -1,0 +1,28 @@
+@keyframes fromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fromRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slideFromLeft {
+    animation: fromLeft 1.5s ease-out forwards;
+}
+.slideFromRight {
+    animation: fromRight 1.5s ease-out forwards;
+}
