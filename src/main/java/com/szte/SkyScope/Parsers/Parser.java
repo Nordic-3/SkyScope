@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.szte.SkyScope.Models.City;
 
-public class CityParser {
+public class Parser {
 
     public static City parseJsonToCity(String json, String rootElement) {
         ObjectMapper objectMapper = new ObjectMapper();

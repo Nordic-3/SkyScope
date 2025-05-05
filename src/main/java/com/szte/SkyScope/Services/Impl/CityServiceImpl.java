@@ -3,7 +3,7 @@ package com.szte.SkyScope.Services.Impl;
 import com.szte.SkyScope.Config.ApplicationConfig;
 import com.szte.SkyScope.Models.City;
 import com.szte.SkyScope.Services.CityService;
-import com.szte.SkyScope.Parsers.CityParser;
+import com.szte.SkyScope.Parsers.Parser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -32,7 +32,7 @@ public class CityServiceImpl implements CityService {
                 .uri(applicationConfig.getGeoNamesApiKey(), name)
                 .retrieve()
                 .body(String.class);
-        return CityParser.parseJsonToCity(response, "geonames");
+        return Parser.parseJsonToCity(response, "geonames");
     }
 
     @Override
@@ -45,6 +45,6 @@ public class CityServiceImpl implements CityService {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-        return CityParser.parseJsonToCity(json, name);
+        return Parser.parseJsonToCity(json, name);
     }
 }
