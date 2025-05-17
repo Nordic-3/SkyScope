@@ -46,6 +46,7 @@ function searchFlightNumber() {
                 marker = L.marker([plane.lat, plane.lng],
                     {icon: planeIcon, rotationAngle: plane.heading})
                     .addTo(map);
+                map.setView([plane.lat, plane.lng], 10);
                 intervalID = setInterval(animate, 20);
                 lastPlanePositionUpdateTime = Date.now();
             } catch (exception) {
