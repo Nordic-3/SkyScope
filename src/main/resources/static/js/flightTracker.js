@@ -5,7 +5,7 @@ let planeIcon;
 let marker = null;
 let plane;
 let intervalID = null;
-let animationRunningCount = 0;
+let lastApiCallTime;
 let lastPlanePositionUpdateTime;
 
 function documentLoaded() {
@@ -49,6 +49,7 @@ function searchFlightNumber() {
                 map.setView([plane.lat, plane.lng], 10);
                 intervalID = setInterval(animate, 20);
                 lastPlanePositionUpdateTime = Date.now();
+                lastApiCallTime = Date.now();
             } catch (exception) {
                 flightNumberInput.classList.add("border-danger");
             }
@@ -65,12 +66,12 @@ function validate() {
 }
 
 function calculateAndUpdatePlanPosition() {
-    if (animationRunningCount === 3000) {
+    let now = Date.now();
+    if ((now - lastApiCallTime) / 1000 > 90) {
         flightNumber = plane.callsign;
         searchFlightNumber();
         return;
     }
-    let now = Date.now();
     let elapsedTimeSinceLastUpdate = (now - lastPlanePositionUpdateTime) / 1000;
     lastPlanePositionUpdateTime = now;
     let averageRadiusOfEarth = 6371000;
@@ -90,7 +91,6 @@ function calculateAndUpdatePlanPosition() {
     plane.lat = convertRadianToDegree(newLat);
     plane.lng = convertRadianToDegree(newLng);
     marker.setLatLng([plane.lat, plane.lng]);
-    animationRunningCount++;
 }
 
 function animate() {
