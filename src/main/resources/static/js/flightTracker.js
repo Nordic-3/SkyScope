@@ -7,6 +7,7 @@ let plane;
 let intervalID = null;
 let lastApiCallTime;
 let lastPlanePositionUpdateTime;
+let loadingIndicator;
 
 function documentLoaded() {
     map = L.map("map").setView([0, 0], 2);
@@ -15,6 +16,7 @@ function documentLoaded() {
         attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
     }).addTo(map);
     flightNumberInput = document.getElementById("flightNumber");
+    loadingIndicator = document.getElementById("loadingIndicator");
 }
 
 function searchFlightNumber() {
@@ -22,6 +24,7 @@ function searchFlightNumber() {
         clearInterval(intervalID);
         animationRunningCount = 0;
     }
+    loadingIndicator.removeAttribute("hidden");
     fetch("/planePosition?callsign=" + flightNumber)
         .then(response => response.text())
         .then(responseInText => {
@@ -34,6 +37,7 @@ function searchFlightNumber() {
                     heading: responseJSON.heading,
                     groundSpeedInMS: responseJSON.groundSpeedInMS
                 };
+                loadingIndicator.setAttribute("hidden", "");
                 planeIcon = L.icon({
                     iconUrl: "/../photos/planeIconOnMap.png",
                     iconSize: [38, 38],

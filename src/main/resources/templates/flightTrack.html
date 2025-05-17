@@ -25,7 +25,9 @@
                 <label for="flightNumber">hívójel</label>
             </div>
             <div class="col-auto d-flex align-items-center mb-3">
-                <button type="button" class="col-auto btn btn-primary h-100" onclick="searchFlightNumber()">Keresés
+                <button type="button" class="col-auto btn btn-primary h-100" onclick="searchFlightNumber()">
+                    <span hidden id="loadingIndicator" class="spinner-border spinner-border-sm"></span>
+                    Keresés
                 </button>
             </div>
         </form>
