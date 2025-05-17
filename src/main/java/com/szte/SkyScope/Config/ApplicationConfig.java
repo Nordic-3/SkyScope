@@ -10,6 +10,8 @@ public class ApplicationConfig {
     private boolean useApis;
     @Value("${geo_names_key:noApi}")
     private String geoNamesApiKey;
+    @Value("${opensky_baseurl:noApi}")
+    private String openskyApiKey;
 
     public boolean useApis() {
         return useApis;
@@ -17,5 +19,9 @@ public class ApplicationConfig {
 
     public String getGeoNamesApiKey() {
         return geoNamesApiKey;
+    }
+
+    public String getOpenskyApiKey() {
+        return openskyApiKey;
     }
 }

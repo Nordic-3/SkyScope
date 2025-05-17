@@ -15,5 +15,9 @@ public class IndexController {
     public String flightSearch() {
         return "flightSearchPage";
     }
-}
 
+    @GetMapping("/flighttracker")
+    public String flightTracker() {
+        return "flightTrack";
+    }
+}
