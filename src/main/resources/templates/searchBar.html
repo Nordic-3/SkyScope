@@ -1,27 +1,39 @@
 <div id="searchBar" class="container align-content d-flex justify-content-center mt-2 rounded-5 bg-white position-fixed z-2 start-50 translate-middle-x">
-    <form class="row g-3 align-items-center m-auto">
+    <form class="row g-3 align-items-center m-auto" th:action="@{/flightsearch}" th:object="${flightSearch}" method="POST">
         <div class="col-auto form-floating mb-3">
-            <input onfocusout="goToOriginCity()" type="text" class="form-control form-control" id="originCity" placeholder="induló város">
+            <input onfocusout="goToOriginCity()" type="text" class="form-control form-control" id="originCity" th:field="*{originCity}" placeholder="induló város">
             <label for="originCity">induló város</label>
+            <div th:if="${emptyOrigin != null}">
+                <div th:text="${emptyOrigin}" class="text-danger"></div>
+            </div>
         </div>
         <div class="col-auto form-floating mb-3">
-            <input onfocusout="goToDestinationCity()" type="text" class="form-control form-control" id="destinationCity" placeholder="cél város">
+            <input onfocusout="goToDestinationCity()" type="text" class="form-control form-control" id="destinationCity" th:field="*{destinationCity}" placeholder="cél város">
             <label for="destinationCity">cél város</label>
+            <div th:if="${emptyDestination != null}">
+                <div th:text="${emptyDestination}" class="text-danger"></div>
+            </div>
         </div>
         <div class="col-auto form-check form-switch mb-3">
-            <input onfocusout="isOneWay()" class="form-check-input me-2" type="checkbox" role="switch" id="onlyOrigin"
+            <input onfocusout="isOneWay()" class="form-check-input me-2" type="checkbox" role="switch" id="onlyOrigin" th:field="*{oneWay}"
                    style="width: 3rem; height: 1.5rem;">
             <label class="form-check-label" for="onlyOrigin">Csak oda út</label>
         </div>
         <div class="col-auto form-floating mb-3">
-            <input onfocusout="setInGoingMin()" type="date" class="form-control form-control-lg" id="outGoingDate"
+            <input onfocusout="setInGoingMin()" type="date" class="form-control form-control-lg" id="outGoingDate" th:field="*{departureDate}"
                    placeholder="indulás napja">
             <label for="outGoingDate">indulás napja</label>
+            <div th:if="${errorOutDate != null}">
+                <div th:text="${errorOutDate}" class="text-danger"></div>
+            </div>
         </div>
         <div class="col-auto form-floating mb-3">
-            <input onfocusout="setOutGoingMin()" type="date" class="form-control form-control-lg" id="inGoingDate"
+            <input onfocusout="setOutGoingMin()" type="date" class="form-control form-control-lg" id="inGoingDate" th:field="*{returnDate}"
                    placeholder="visszaút apja">
             <label for="inGoingDate">visszaút napja</label>
+            <div th:if="${errorReturnDate != null}">
+                <div th:text="${errorReturnDate}" class="text-danger"></div>
+            </div>
         </div>
         <div class="col-auto d-flex align-items-center mb-3">
             <button type="submit" class="col-auto btn btn-primary h-100">Keresés</button>

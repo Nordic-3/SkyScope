@@ -24,6 +24,7 @@ function bodyLoaded() {
 
     originCityElement = document.getElementById("originCity");
     destinationCityElement = document.getElementById("destinationCity");
+    resetEarthAfterInputError();
     readCharacterset();
 }
 
@@ -61,7 +62,6 @@ function goToOriginCity() {
                     lineDatas.startLng = cityDetails.lng;
                     connectCitesIfAllGiven();
                     originCity = cityDetails;
-                    console.log(cityDetails.text);
                 } catch (exception) {
                     originCityElement.classList.add("border-danger");
                 }
@@ -142,6 +142,11 @@ function connectCitesIfAllGiven() {
             .arcsTransitionDuration(4000)
             .arcDashAnimateTime(3000);
     }
+}
+
+function resetEarthAfterInputError() {
+    goToOriginCity();
+    goToDestinationCity();
 }
 
 function readCharacterset() {
