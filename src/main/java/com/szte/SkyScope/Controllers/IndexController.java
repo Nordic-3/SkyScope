@@ -1,6 +1,8 @@
 package com.szte.SkyScope.Controllers;
 
+import com.szte.SkyScope.Models.FlightSearch;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -12,7 +14,8 @@ public class IndexController {
     }
 
     @GetMapping("/search")
-    public String flightSearch() {
+    public String flightSearch(Model model) {
+        model.addAttribute("flightSearch", new FlightSearch());
         return "flightSearchPage";
     }
 
