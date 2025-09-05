@@ -23,6 +23,7 @@ function bodyLoaded() {
 
     originCityElement = document.getElementById("originCity");
     destinationCityElement = document.getElementById("destinationCity");
+    resetEarthAfterInputError();
 }
 
 function resizeEarth() {
@@ -138,4 +139,9 @@ function connectCitesIfAllGiven() {
             .arcsTransitionDuration(4000)
             .arcDashAnimateTime(3000);
     }
+}
+
+function resetEarthAfterInputError() {
+    goToOriginCity();
+    goToDestinationCity();
 }
