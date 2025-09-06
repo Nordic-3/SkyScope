@@ -12,6 +12,12 @@ public class ApplicationConfig {
     private String geoNamesApiKey;
     @Value("${opensky_baseurl:noApi}")
     private String openskyApiKey;
+    @Value("${amadeus_client_id:noApi}")
+    private String amadeusClientId;
+    @Value("${amadeus_client_secret:noApi}")
+    private String amadeusClientSecret;
+    @Value("${amadeus_auth_url:noApi}")
+    private String amadeusAuthUrl;
 
     public boolean useApis() {
         return useApis;
@@ -23,5 +29,17 @@ public class ApplicationConfig {
 
     public String getOpenskyApiKey() {
         return openskyApiKey;
+    }
+
+    public String getAmadeusClientId() {
+        return amadeusClientId;
+    }
+
+    public String getAmadeusClientSecret() {
+        return amadeusClientSecret;
+    }
+
+    public String getAmadeusAuthUrl() {
+        return amadeusAuthUrl;
     }
 }
