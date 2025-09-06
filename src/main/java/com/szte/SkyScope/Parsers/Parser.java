@@ -42,4 +42,17 @@ public class Parser {
                         onePlaneDetails.get(10).asDouble())));
         return planes;
     }
+
+    public static String getIataFromJson(String json, String rootElement) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root;
+        String iata;
+        try {
+            root = objectMapper.readTree(json);
+            iata = root.get(rootElement).get(0).get("iataCode").asText();
+        } catch (Exception exception) {
+            return null;
+        }
+        return iata;
+    }
 }

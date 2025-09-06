@@ -18,6 +18,8 @@ public class ApplicationConfig {
     private String amadeusClientSecret;
     @Value("${amadeus_auth_url:noApi}")
     private String amadeusAuthUrl;
+    @Value("${amadeus_city_search_api:noApi}")
+    private String amadeusCitySearchApi;
 
     public boolean useApis() {
         return useApis;
@@ -41,5 +43,9 @@ public class ApplicationConfig {
 
     public String getAmadeusAuthUrl() {
         return amadeusAuthUrl;
+    }
+
+    public String getAmadeusCitySearchApi() {
+        return amadeusCitySearchApi;
     }
 }

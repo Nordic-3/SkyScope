@@ -1,0 +1,39 @@
+{
+  
+  "Budapest": [
+    {
+      "type": "location",
+      "subType": "CITY",
+      "name": "BUDAPEST",
+      "detailedName": "BUDAPEST/HU",
+      "iataCode": "BUD"
+    }
+  ],
+  "London": [
+    {
+      "type": "location",
+      "subType": "CITY",
+      "name": "LONDON",
+      "detailedName": "LONDON/GB",
+      "iataCode": "LON"
+    }
+  ],
+  "New York": [
+    {
+      "type": "location",
+      "subType": "CITY",
+      "name": "NEW YORK",
+      "detailedName": "NEW YORK/NY/US",
+      "iataCode": "NYC"
+    }
+  ],
+  "Barcelona": [
+    {
+      "type": "location",
+      "subType": "CITY",
+      "name": "BARCELONA",
+      "detailedName": "BARCELONA/ES",
+      "iataCode": "BCN"
+    }
+  ]
+}
