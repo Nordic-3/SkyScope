@@ -3,37 +3,32 @@ package com.szte.SkyScope.Services.Impl;
 import com.szte.SkyScope.Config.ApplicationConfig;
 import com.szte.SkyScope.Models.Plane;
 import com.szte.SkyScope.Parsers.Parser;
+import com.szte.SkyScope.Services.JsonReaderService;
 import com.szte.SkyScope.Services.PlanePositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 @Service
 public class PlanePositionServiceImpl implements PlanePositionService {
     private final ApplicationConfig applicationConfig;
     private final RestClient restClient = RestClient.create();
+    private final JsonReaderService jsonReaderService;
 
 
     @Autowired
-    public PlanePositionServiceImpl(ApplicationConfig applicationConfig) {
+    public PlanePositionServiceImpl(ApplicationConfig applicationConfig, JsonReaderService jsonReaderService) {
         this.applicationConfig = applicationConfig;
+        this.jsonReaderService = jsonReaderService;
     }
 
     @Override
     public Plane getPlanePositionFromJson(String callsign) {
-        String json = "";
-        try (InputStream jsonFile = getClass()
-                .getClassLoader()
-                .getResourceAsStream("exampleDatas/planePositions.json")) {
-            json = new String(jsonFile.readAllBytes());
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-        return getPlaneFromDataSource(callsign, json);
+        return getPlaneFromDataSource(
+                callsign,
+                jsonReaderService.readJsonFromResources("exampleDatas/planePositions.json"));
     }
 
     @Override
