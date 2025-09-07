@@ -1,13 +1,11 @@
 package com.szte.SkyScope.Controllers;
 
-import com.szte.SkyScope.Config.ApplicationConfig;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.InputValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -15,13 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class FlightSearchController {
     private final InputValidationService inputValidationService;
     private final FlightService flightService;
-    private final ApplicationConfig applicationConfig;
 
     @Autowired
-    public FlightSearchController(InputValidationService inputValidationService, FlightService flightService, ApplicationConfig applicationConfig) {
+    public FlightSearchController(InputValidationService inputValidationService, FlightService flightService) {
         this.inputValidationService = inputValidationService;
         this.flightService = flightService;
-        this.applicationConfig = applicationConfig;
     }
 
     @PostMapping("/flightsearch")
@@ -30,11 +26,11 @@ public class FlightSearchController {
         if (!inputValidationService.isValidInputDatas(flightSearch, model)) {
             return "flightSearchPage";
         }
-        if (applicationConfig.useApis()) {
-            flightService.getIataCodeFromApi(flightSearch.getOriginCity(), flightService.getToken().getAccess_token());
-        } else {
-            flightService.getIataCodeFromJson(flightSearch.getOriginCity());
+        flightService.setIataCodes(flightSearch, flightService.getToken().getAccess_token());
+        if (!inputValidationService.isValidIataCodes(flightSearch, model)) {
+            return "flightSearchPage";
         }
+        // redirect to loading page, search flights
         return "index";
     }
 }

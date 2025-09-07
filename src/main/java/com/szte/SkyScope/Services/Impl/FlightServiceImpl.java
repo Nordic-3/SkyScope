@@ -2,6 +2,7 @@ package com.szte.SkyScope.Services.Impl;
 
 import com.szte.SkyScope.Config.ApplicationConfig;
 import com.szte.SkyScope.Models.AmadeusApiCred;
+import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.JsonReaderService;
@@ -28,6 +29,9 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Cacheable("amadeusApiToken")
     public AmadeusApiCred getToken() {
+        if (!applicationConfig.useApis() || applicationConfig.getAmadeusClientId().equals("noApi")) {
+            return new AmadeusApiCred();
+        }
         String body = "grant_type=client_credentials" +
                 "&client_id=" + applicationConfig.getAmadeusClientId() +
                 "&client_secret=" + applicationConfig.getAmadeusClientSecret();
@@ -41,12 +45,18 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public String getIataCodeFromApi(String city, String token) {
-        System.out.println(token);
-        return Parser.getIataFromJson(restClient.get()
-                .uri(applicationConfig.getAmadeusCitySearchApi(), city)
-                .header("Authorization", "Bearer " + token)
-                .retrieve()
-                .body(String.class), "data");
+        if (applicationConfig.getAmadeusCitySearchApi().equals("noApi") || !applicationConfig.useApis()) {
+            return getIataCodeFromJson(city);
+        }
+        try {
+            return Parser.getIataFromJson(restClient.get()
+                    .uri(applicationConfig.getAmadeusCitySearchApi(), city)
+                    .header("Authorization", "Bearer " + token)
+                    .retrieve()
+                    .body(String.class), "data");
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -54,6 +64,12 @@ public class FlightServiceImpl implements FlightService {
         return Parser.getIataFromJson(
                 jsonReaderService.readJsonFromResources("exampleDatas/iataCodes.json"),
                 city);
+    }
+
+    @Override
+    public void setIataCodes(FlightSearch flightSearch, String token) {
+        flightSearch.setOriginCityIata(getIataCodeFromApi(flightSearch.getOriginCity(), token));
+        flightSearch.setDestinationCityIata(getIataCodeFromApi(flightSearch.getDestinationCity(), token));
     }
 
     @CacheEvict(value = "amadeusApiToken", allEntries = true)
