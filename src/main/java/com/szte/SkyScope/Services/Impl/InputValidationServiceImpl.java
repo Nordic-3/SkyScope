@@ -14,20 +14,35 @@ public class InputValidationServiceImpl implements InputValidationService {
     private static final String INVALID_DATE_FORMAT = "A dátum formátuma nem megfelelő!";
     private static final String DEPARTURE_BEFORE_TODAY = "Az indulás napja nem lehet korábbi a mai napnál!";
     private static final String RETURN_BEFORE_DEPARTURE = "A visszaút napja nem lehet korábbi az indulás napjánál!";
+    private static final String INVALID_CITY_NAME = "Helyeten város név!";
 
     @Override
     public boolean isValidInputDatas(FlightSearch flightSearch, Model model) {
         return !isEmptyInputFields(flightSearch, model) && isValidDate(flightSearch, model);
     }
 
+    @Override
+    public boolean isValidIataCodes(FlightSearch flightSearch, Model model) {
+        boolean isValid = true;
+        if (flightSearch.getOriginCityIata() == null) {
+            model.addAttribute("originError", INVALID_CITY_NAME);
+            isValid = false;
+        }
+        if (flightSearch.getDestinationCityIata() == null) {
+            model.addAttribute("destinationError", INVALID_CITY_NAME);
+            isValid = false;
+        }
+        return isValid;
+    }
+
     private boolean isEmptyInputFields(FlightSearch flightSearch, Model model) {
         boolean isEmpty = false;
         if (flightSearch.getOriginCity() == null || flightSearch.getOriginCity().isEmpty()) {
-            model.addAttribute("emptyOrigin", EMPTY_INPUT_ERROR);
+            model.addAttribute("originError", EMPTY_INPUT_ERROR);
             isEmpty = true;
         }
         if (flightSearch.getDestinationCity() == null || flightSearch.getDestinationCity().isEmpty()) {
-            model.addAttribute("emptyDestination", EMPTY_INPUT_ERROR);
+            model.addAttribute("destinationError", EMPTY_INPUT_ERROR);
             isEmpty = true;
         }
         if (flightSearch.getDepartureDate() == null || flightSearch.getDepartureDate().isEmpty()) {

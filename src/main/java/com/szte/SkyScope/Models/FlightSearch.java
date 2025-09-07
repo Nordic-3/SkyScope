@@ -6,8 +6,26 @@ public class FlightSearch {
     private boolean oneWay;
     private String departureDate;
     private String returnDate;
+    private String originCityIata;
+    private String destinationCityIata;
 
     public FlightSearch() {
+    }
+
+    public String getOriginCityIata() {
+        return originCityIata;
+    }
+
+    public void setOriginCityIata(String originCityIata) {
+        this.originCityIata = originCityIata;
+    }
+
+    public String getDestinationCityIata() {
+        return destinationCityIata;
+    }
+
+    public void setDestinationCityIata(String destinationCityIata) {
+        this.destinationCityIata = destinationCityIata;
     }
 
     public String getOriginCity() {

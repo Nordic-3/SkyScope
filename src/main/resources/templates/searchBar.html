@@ -3,15 +3,15 @@
         <div class="col-auto form-floating mb-3">
             <input onfocusout="goToOriginCity()" type="text" class="form-control form-control" id="originCity" th:field="*{originCity}" placeholder="induló város">
             <label for="originCity">induló város</label>
-            <div th:if="${emptyOrigin != null}">
-                <div th:text="${emptyOrigin}" class="text-danger"></div>
+            <div th:if="${originError != null}">
+                <div th:text="${originError}" class="text-danger"></div>
             </div>
         </div>
         <div class="col-auto form-floating mb-3">
             <input onfocusout="goToDestinationCity()" type="text" class="form-control form-control" id="destinationCity" th:field="*{destinationCity}" placeholder="cél város">
             <label for="destinationCity">cél város</label>
-            <div th:if="${emptyDestination != null}">
-                <div th:text="${emptyDestination}" class="text-danger"></div>
+            <div th:if="${destinationError != null}">
+                <div th:text="${destinationError}" class="text-danger"></div>
             </div>
         </div>
         <div class="col-auto form-check form-switch mb-3">
