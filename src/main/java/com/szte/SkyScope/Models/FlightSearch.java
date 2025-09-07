@@ -8,8 +8,53 @@ public class FlightSearch {
     private String returnDate;
     private String originCityIata;
     private String destinationCityIata;
+    private String numberOfAdults = "1";
+    private String numberOfChildren;
+    private String numberOfInfants;
+    private String travelClass;
+    private String maxPrice;
 
     public FlightSearch() {
+    }
+
+    public String getNumberOfChildren() {
+        return numberOfChildren;
+    }
+
+    public void setNumberOfChildren(String numberOfChildren) {
+        this.numberOfChildren = numberOfChildren;
+    }
+
+    public String getNumberOfInfants() {
+        return numberOfInfants;
+    }
+
+    public void setNumberOfInfants(String numberOfInfants) {
+        this.numberOfInfants = numberOfInfants;
+    }
+
+    public String getTravelClass() {
+        return travelClass;
+    }
+
+    public void setTravelClass(String travelClass) {
+        this.travelClass = travelClass;
+    }
+
+    public String getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(String maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    public String getNumberOfAdults() {
+        return numberOfAdults;
+    }
+
+    public void setNumberOfAdults(String numberOfAdults) {
+        this.numberOfAdults = numberOfAdults;
     }
 
     public String getOriginCityIata() {
