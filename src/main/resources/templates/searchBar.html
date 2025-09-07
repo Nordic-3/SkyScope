@@ -1,5 +1,5 @@
 <div id="searchBar" class="container align-content d-flex justify-content-center mt-2 rounded-5 bg-white position-fixed z-2 start-50 translate-middle-x">
-    <form class="row g-3 align-items-center m-auto" th:action="@{/flightsearch}" th:object="${flightSearch}" method="POST">
+    <form class="row g-3 align-items-center m-auto justify-content-center" th:action="@{/flightsearch}" th:object="${flightSearch}" method="POST">
         <div class="col-auto form-floating mb-3">
             <input onfocusout="goToOriginCity()" type="text" class="form-control form-control" id="originCity" th:field="*{originCity}" placeholder="induló város">
             <label for="originCity">induló város</label>
@@ -35,8 +35,52 @@
                 <div th:text="${errorReturnDate}" class="text-danger"></div>
             </div>
         </div>
-        <div class="col-auto d-flex align-items-center mb-3">
+        <div class="col-auto d-flex align-items-center mb-3 form-floating">
             <button type="submit" class="col-auto btn btn-primary h-100">Keresés</button>
+        </div>
+        <div class="col-auto d-flex align-items-center mb-3 form-floating">
+            <button class="btn btn-primary" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#advancedSearch"
+                    aria-expanded="false" aria-controls="advancedSearch">
+                Összetett keresés
+            </button>
+        </div>
+        <div th:if="${errorInAdvancedSearch != null}" class="mb-3">
+            <div th:text="${errorInAdvancedSearch}" class="text-danger"></div>
+        </div>
+        <div class="collapse mt-2 col-auto mb-2" id="advancedSearch">
+            <div class="card card-body d-flex flex-row mb-3">
+                <div class="col-auto form-floating me-3">
+                    <input type="number" class="form-control form-control-sm" id="numberOfAdults" th:field="*{numberOfAdults}"
+                           min="1">
+                    <label for="numberOfAdults">Felnőttek száma</label>
+                </div>
+                <div class="col-auto form-floating me-3">
+                    <input type="number" class="form-control form-control-sm" id="numberOfChildren" th:field="*{numberOfChildren}"
+                           min="1">
+                    <label for="numberOfChildren">Gyerekek száma</label>
+                </div>
+                <div class="col-auto form-floating me-3">
+                    <input type="number" class="form-control form-control-sm" id="numberOfInfants" th:field="*{numberOfInfants}"
+                           min="1">
+                    <label for="numberOfInfants">Csecsemők száma</label>
+                </div>
+                <div class="input-group me-3">
+                    <label class="input-group-text" for="travelClass">Osztály</label>
+                    <select class="form-select" id="travelClass" th:field="*{travelClass}">
+                        <option th:value="'ALL'" selected>Mindegy</option>
+                        <option th:value="'ECONOMY'">Economy</option>
+                        <option th:value="'PREMIUM_ECONOMY'">Prémium economy</option>
+                        <option th:value="'BUSINESS'">Business</option>
+                        <option th:value="'FIRST'">First</option>
+                    </select>
+                </div>
+                <div class="col-auto form-floating">
+                    <input type="number" class="form-control form-control-sm" id="maxPrice" th:field="*{maxPrice}"
+                           min="1">
+                    <label for="maxPrice">Max ár</label>
+                </div>
+            </div>
         </div>
     </form>
 </div>
