@@ -23,7 +23,7 @@ function bodyLoaded() {
 
     originCityElement = document.getElementById("originCity");
     destinationCityElement = document.getElementById("destinationCity");
-    resetEarthAfterInputError();
+    resetInputStatusAndEarthAfterError();
 }
 
 function resizeEarth() {
@@ -141,7 +141,8 @@ function connectCitesIfAllGiven() {
     }
 }
 
-function resetEarthAfterInputError() {
+function resetInputStatusAndEarthAfterError() {
     goToOriginCity();
     goToDestinationCity();
+    isOneWay();
 }
