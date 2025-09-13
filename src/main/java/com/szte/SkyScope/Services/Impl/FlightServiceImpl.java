@@ -2,6 +2,7 @@ package com.szte.SkyScope.Services.Impl;
 
 import com.szte.SkyScope.Config.ApplicationConfig;
 import com.szte.SkyScope.Models.AmadeusApiCred;
+import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.FlightService;
@@ -12,6 +13,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @Service
 public class FlightServiceImpl implements FlightService {
@@ -70,6 +74,53 @@ public class FlightServiceImpl implements FlightService {
     public void setIataCodes(FlightSearch flightSearch, String token) {
         flightSearch.setOriginCityIata(getIataCodeFromApi(flightSearch.getOriginCity(), token));
         flightSearch.setDestinationCityIata(getIataCodeFromApi(flightSearch.getDestinationCity(), token));
+    }
+
+    @Override
+    public List<FlightOffers> getFlightOffers(FlightSearch flightSearch, String token) {
+        if (applicationConfig.getAmadeusCitySearchApi().equals("noApi") || !applicationConfig.useApis()) {
+            return getFlightOffersFromLocalJson(flightSearch);
+        }
+       UriComponentsBuilder uriBulder = UriComponentsBuilder.fromUriString(applicationConfig.getAmadeusFlightOfferSearchApi());
+        uriBulder.queryParam("originLocationCode", flightSearch.getOriginCityIata());
+        uriBulder.queryParam("destinationLocationCode", flightSearch.getDestinationCityIata());
+        uriBulder.queryParam("departureDate", flightSearch.getDepartureDate());
+        uriBulder.queryParam("adults", flightSearch.getNumberOfAdults());
+        uriBulder.queryParam("currencyCode", "HUF");
+        uriBulder.queryParam("max", 250);
+        bindOptionalParameters(uriBulder, flightSearch);
+        String response = restClient.get()
+                .uri(uriBulder.build(true).toUri())
+                .header("Authorization", "Bearer " + token)
+                .header("Accept", "application/json")
+                .retrieve()
+                .body(String.class);
+        return Parser.parseFlightOffersFromJson(response);
+    }
+
+    @Override
+    public List<FlightOffers> getFlightOffersFromLocalJson(FlightSearch flightSearch) {
+        return Parser.parseFlightOffersFromJson(jsonReaderService.readJsonFromResources("exampleDatas/FlightOffers.json"));
+    }
+
+
+    private void bindOptionalParameters(UriComponentsBuilder uriBulder, FlightSearch flightSearch) {
+        if (isNotNullAndNotEmpty(flightSearch.getReturnDate())) {
+            uriBulder.queryParam("returnDate", flightSearch.getReturnDate());
+        }
+        if (isNotNullAndNotEmpty(flightSearch.getNumberOfChildren())) {
+            uriBulder.queryParam("children", flightSearch.getNumberOfChildren());
+        }
+        if (isNotNullAndNotEmpty(flightSearch.getNumberOfInfants())) {
+            uriBulder.queryParam("infants", flightSearch.getNumberOfInfants());
+        }
+        if (flightSearch.getTravelClass() != null && !flightSearch.getTravelClass().equals("ALL")) {
+            uriBulder.queryParam("travelClass", flightSearch.getTravelClass());
+        }
+    }
+
+    private boolean isNotNullAndNotEmpty(String dataToCheck) {
+        return dataToCheck != null && !dataToCheck.isEmpty();
     }
 
     @CacheEvict(value = "amadeusApiToken", allEntries = true)

@@ -1,11 +1,15 @@
 package com.szte.SkyScope.Parsers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.szte.SkyScope.Models.City;
+import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.Plane;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Parser {
@@ -54,5 +58,26 @@ public class Parser {
             return null;
         }
         return iata;
+    }
+
+    public static List<FlightOffers> parseFlightOffersFromJson(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root;
+        List<FlightOffers> flightOffers = new ArrayList<>();
+        try {
+            root = objectMapper.readTree(json);
+            JsonNode datas = root.get("data");
+            datas.forEach(jsonNode -> {
+                try {
+                    flightOffers.add(objectMapper.treeToValue(jsonNode, FlightOffers.class));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return null;
+        }
+        return flightOffers;
     }
 }

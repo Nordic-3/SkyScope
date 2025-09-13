@@ -1,5 +1,5 @@
 package com.szte.SkyScope.Services;
 
 public interface JsonReaderService {
-    public String readJsonFromResources(String file);
+    String readJsonFromResources(String file);
 }

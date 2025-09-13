@@ -1,5 +1,6 @@
 package com.szte.SkyScope.Controllers;
 
+import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.InputValidationService;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class FlightSearchController {
@@ -31,6 +34,7 @@ public class FlightSearchController {
             return "flightSearchPage";
         }
         // redirect to loading page, search flights
+        List<FlightOffers> offers = flightService.getFlightOffers(flightSearch, flightService.getToken().getAccess_token());
         return "index";
     }
 }

@@ -20,6 +20,12 @@ public class ApplicationConfig {
     private String amadeusAuthUrl;
     @Value("${amadeus_city_search_api:noApi}")
     private String amadeusCitySearchApi;
+    @Value("${amadeus_flight_offer_search_api:noApi}")
+    private String amadeusFlightOfferSearchApi;
+
+    public String getAmadeusFlightOfferSearchApi() {
+        return amadeusFlightOfferSearchApi;
+    }
 
     public boolean useApis() {
         return useApis;
