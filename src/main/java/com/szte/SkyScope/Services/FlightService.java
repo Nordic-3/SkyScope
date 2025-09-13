@@ -5,12 +5,13 @@ import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface FlightService {
     AmadeusApiCred getToken();
     String getIataCode(String city, String token);
     String getIataCodeFromLocalJson(String city);
     void setIataCodes(FlightSearch flightSearch, String token);
-    List<FlightOffers> getFlightOffers(FlightSearch flightSearch, String token);
+    CompletableFuture<List<FlightOffers>> getFlightOffers(FlightSearch flightSearch, String token);
     List<FlightOffers> getFlightOffersFromLocalJson(FlightSearch flightSearch);
 }

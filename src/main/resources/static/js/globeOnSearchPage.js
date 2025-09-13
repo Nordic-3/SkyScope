@@ -11,19 +11,22 @@ let lineDatas = {startLat: null, startLng: null, endLat: null, endLng: null};
 function bodyLoaded() {
     earthContainer = document.getElementById("main");
     searchBarContainer = document.getElementById("searchBar");
-    earth = new Globe(earthContainer)
-        .globeImageUrl("//cdn.jsdelivr.net/npm/three-globe/example/img/earth-day.jpg")
-        .backgroundImageUrl("//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png")
-        .globeOffset([0, getHeightOfElementWithMargin(searchBarContainer) / 2]);
-
-    earth.controls().autoRotate = true;
-    earth.controls().autoRotateSpeed = 0.6;
-
-    window.addEventListener("resize", resizeEarth);
+    initEarth();
+    earth.globeOffset([0, getHeightOfElementWithMargin(searchBarContainer) / 2]);
 
     originCityElement = document.getElementById("originCity");
     destinationCityElement = document.getElementById("destinationCity");
     resetInputStatusAndEarthAfterError();
+}
+
+function initEarth() {
+    earth = new Globe(earthContainer)
+        .globeImageUrl("//cdn.jsdelivr.net/npm/three-globe/example/img/earth-day.jpg")
+        .backgroundImageUrl("//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png");
+
+    earth.controls().autoRotate = true;
+    earth.controls().autoRotateSpeed = 0.6;
+    window.addEventListener("resize", resizeEarth);
 }
 
 function resizeEarth() {
@@ -60,6 +63,7 @@ function goToOriginCity() {
                     lineDatas.startLng = cityDetails.lng;
                     connectCitesIfAllGiven();
                     originCity = cityDetails;
+                    window.localStorage.setItem("originCity", JSON.stringify(cityDetails));
                 } catch (exception) {
                     originCityElement.classList.add("border-danger");
                 }
@@ -91,6 +95,7 @@ function goToDestinationCity() {
                     lineDatas.endLng = cityDetails.lng;
                     connectCitesIfAllGiven();
                     destinationCity = cityDetails;
+                    window.localStorage.setItem("destinationCity", JSON.stringify(cityDetails));
                 } catch (exception) {
                     destinationCityElement.classList.add("border-danger");
                 }
@@ -101,6 +106,11 @@ function goToDestinationCity() {
 
 function labelCityAndNavigate(cityDetails) {
     earth.controls().autoRotate = false;
+    labelCity(cityDetails);
+    earth.pointOfView({lat: cityDetails.lat, lng: cityDetails.lng, altitude: 1}, 3000);
+}
+
+function labelCity() {
     earth.labelsData(labeledCities)
         .labelLat(data => data.lat)
         .labelLng(data => data.lng)
@@ -108,7 +118,6 @@ function labelCityAndNavigate(cityDetails) {
         .labelSize(1)
         .labelDotRadius(1)
         .labelColor(() => "black");
-    earth.pointOfView({lat: cityDetails.lat, lng: cityDetails.lng, altitude: 1}, 3000);
 }
 
 function removeCityFromEarth(city) {

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajánlatok keresése</title>
+    <link rel="stylesheet" href="/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    <script src="/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/globe.gl"></script>
+    <script src="/js/globeOnSearchPage.js"></script>
+    <script src="/js/loadingAnimation.js"></script>
+</head>
+<body onload="contentLoaded()">
+<div id="main"></div>
+<input type="hidden" id="searchId" th:value="${searchId}"/>
+</body>
+</html>

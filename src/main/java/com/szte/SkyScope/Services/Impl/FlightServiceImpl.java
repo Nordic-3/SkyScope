@@ -10,12 +10,14 @@ import com.szte.SkyScope.Services.JsonReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class FlightServiceImpl implements FlightService {
@@ -76,10 +78,11 @@ public class FlightServiceImpl implements FlightService {
         flightSearch.setDestinationCityIata(getIataCode(flightSearch.getDestinationCity(), token));
     }
 
+    @Async
     @Override
-    public List<FlightOffers> getFlightOffers(FlightSearch flightSearch, String token) {
+    public CompletableFuture<List<FlightOffers>> getFlightOffers(FlightSearch flightSearch, String token) {
         if (applicationConfig.getAmadeusCitySearchApi().equals("noApi") || !applicationConfig.useApis()) {
-            return getFlightOffersFromLocalJson(flightSearch);
+            return CompletableFuture.completedFuture(getFlightOffersFromLocalJson(flightSearch));
         }
        UriComponentsBuilder uriBulder = UriComponentsBuilder.fromUriString(applicationConfig.getAmadeusFlightOfferSearchApi());
         uriBulder.queryParam("originLocationCode", flightSearch.getOriginCityIata());
@@ -95,7 +98,7 @@ public class FlightServiceImpl implements FlightService {
                 .header("Accept", "application/json")
                 .retrieve()
                 .body(String.class);
-        return Parser.parseFlightOffersFromJson(response);
+        return CompletableFuture.completedFuture(Parser.parseFlightOffersFromJson(response));
     }
 
     @Override
