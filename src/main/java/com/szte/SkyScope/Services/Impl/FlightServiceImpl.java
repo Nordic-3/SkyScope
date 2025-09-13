@@ -54,7 +54,7 @@ public class FlightServiceImpl implements FlightService {
         }
         try {
             return Parser.getIataFromJson(restClient.get()
-                    .uri(applicationConfig.getAmadeusCitySearchApi(), city)
+                    .uri(applicationConfig.getAmadeusCitySearchApi(), city.strip())
                     .header("Authorization", "Bearer " + token)
                     .retrieve()
                     .body(String.class), "data");
