@@ -48,9 +48,9 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public String getIataCodeFromApi(String city, String token) {
+    public String getIataCode(String city, String token) {
         if (applicationConfig.getAmadeusCitySearchApi().equals("noApi") || !applicationConfig.useApis()) {
-            return getIataCodeFromJson(city);
+            return getIataCodeFromLocalJson(city);
         }
         try {
             return Parser.getIataFromJson(restClient.get()
@@ -64,7 +64,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public String getIataCodeFromJson(String city) {
+    public String getIataCodeFromLocalJson(String city) {
         return Parser.getIataFromJson(
                 jsonReaderService.readJsonFromResources("exampleDatas/iataCodes.json"),
                 city);
@@ -72,8 +72,8 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public void setIataCodes(FlightSearch flightSearch, String token) {
-        flightSearch.setOriginCityIata(getIataCodeFromApi(flightSearch.getOriginCity(), token));
-        flightSearch.setDestinationCityIata(getIataCodeFromApi(flightSearch.getDestinationCity(), token));
+        flightSearch.setOriginCityIata(getIataCode(flightSearch.getOriginCity(), token));
+        flightSearch.setDestinationCityIata(getIataCode(flightSearch.getDestinationCity(), token));
     }
 
     @Override

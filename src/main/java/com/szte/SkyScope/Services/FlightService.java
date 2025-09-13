@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface FlightService {
     AmadeusApiCred getToken();
-    String getIataCodeFromApi(String city, String token);
-    String getIataCodeFromJson(String city);
+    String getIataCode(String city, String token);
+    String getIataCodeFromLocalJson(String city);
     void setIataCodes(FlightSearch flightSearch, String token);
     List<FlightOffers> getFlightOffers(FlightSearch flightSearch, String token);
     List<FlightOffers> getFlightOffersFromLocalJson(FlightSearch flightSearch);
