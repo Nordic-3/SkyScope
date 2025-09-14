@@ -61,6 +61,7 @@ public class FlightServiceImpl implements FlightService {
                     .retrieve()
                     .body(String.class), "data");
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

@@ -2,6 +2,7 @@ package com.szte.SkyScope.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.time.Duration;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -118,11 +119,13 @@ public class FlightOffers {
         }
 
         public String getDuration() {
-            return duration;
+            return duration + " " + (this.numberOfStops == 0 ? "nonstop" : this.numberOfStops + " átszállás");
         }
 
         public void setDuration(String duration) {
-            this.duration = duration;
+            long hours =  Duration.parse(duration).toHours();
+            long minutes =  Duration.parse(duration).minusHours(hours).toMinutes();
+            this.duration = hours + " óra " + minutes + " perc";
         }
 
         public int getNumberOfStops() {
@@ -162,7 +165,7 @@ public class FlightOffers {
         }
 
         public void setAt(String at) {
-            this.at = at;
+            this.at = at.split("T")[0].replace("-", ". ") + ". " + at.split("T")[1];
         }
     }
 
@@ -289,7 +292,7 @@ public class FlightOffers {
         }
 
         public IncludedCheckedBags getIncludedCheckedBags() {
-            return includedCheckedBags;
+            return includedCheckedBags == null ? new IncludedCheckedBags() : includedCheckedBags;
         }
 
         public void setIncludedCheckedBags(IncludedCheckedBags includedCheckedBags) {
@@ -298,7 +301,7 @@ public class FlightOffers {
     }
 
     public static class IncludedCheckedBags {
-        private String quantity;
+        private String quantity = "0";
 
         public String getQuantity() {
             return quantity;
