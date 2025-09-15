@@ -1,6 +1,7 @@
 package com.szte.SkyScope.Parsers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.szte.SkyScope.Models.City;
@@ -13,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Parser {
+    public static ObjectMapper objectMapper = new ObjectMapper();
 
     public static City parseJsonToCity(String json, String rootElement) {
-        ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root;
         try {
             root = objectMapper.readTree(json);
@@ -27,7 +28,6 @@ public class Parser {
     }
 
     public static Map<String, Plane> parseJsonToMapOfPlanes(String json) {
-        ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Plane> planes = new HashMap<>();
         JsonNode root;
         try {
@@ -48,7 +48,6 @@ public class Parser {
     }
 
     public static String getIataFromJson(String json, String rootElement) {
-        ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root;
         String iata;
         try {
@@ -61,7 +60,6 @@ public class Parser {
     }
 
     public static List<FlightOffers> parseFlightOffersFromJson(String json) {
-        ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root;
         List<FlightOffers> flightOffers = new ArrayList<>();
         try {
@@ -79,5 +77,17 @@ public class Parser {
             return null;
         }
         return flightOffers;
+    }
+
+    public static <T> Map<String, T> parseFlightDictionary(String json, String dictionary, TypeReference<Map<String, T>> typeRef) {
+        Map<String, T> flightDictionary = null;
+        try {
+            JsonNode root = objectMapper.readTree(json);
+            JsonNode dictNode = root.path("dictionaries").path(dictionary);
+            flightDictionary = objectMapper.convertValue(dictNode, typeRef);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return flightDictionary;
     }
 }

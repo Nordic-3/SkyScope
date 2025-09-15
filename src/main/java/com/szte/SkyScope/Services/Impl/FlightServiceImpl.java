@@ -1,5 +1,6 @@
 package com.szte.SkyScope.Services.Impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.szte.SkyScope.Config.ApplicationConfig;
 import com.szte.SkyScope.Models.AmadeusApiCred;
 import com.szte.SkyScope.Models.FlightOffers;
@@ -7,6 +8,7 @@ import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.JsonReaderService;
+import com.szte.SkyScope.Services.SearchStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,11 +27,13 @@ public class FlightServiceImpl implements FlightService {
     private final RestClient restClient = RestClient.create();
     private final ApplicationConfig applicationConfig;
     private final JsonReaderService jsonReaderService;
+    private final SearchStore searchStore;
 
     @Autowired
-    public FlightServiceImpl(ApplicationConfig applicationConfig, JsonReaderService jsonReaderService) {
+    public FlightServiceImpl(ApplicationConfig applicationConfig, JsonReaderService jsonReaderService, SearchStore searchStore) {
         this.applicationConfig = applicationConfig;
         this.jsonReaderService = jsonReaderService;
+        this.searchStore = searchStore;
     }
 
     @Override
@@ -99,14 +103,35 @@ public class FlightServiceImpl implements FlightService {
                 .header("Accept", "application/json")
                 .retrieve()
                 .body(String.class);
+        saveDictionaries(response);
         return CompletableFuture.completedFuture(Parser.parseFlightOffersFromJson(response));
     }
 
     @Override
     public List<FlightOffers> getFlightOffersFromLocalJson(FlightSearch flightSearch) {
-        return Parser.parseFlightOffersFromJson(jsonReaderService.readJsonFromResources("exampleDatas/FlightOffers.json"));
+        String response = jsonReaderService.readJsonFromResources("exampleDatas/FlightOffers.json");
+        saveDictionaries(response);
+        return Parser.parseFlightOffersFromJson(response);
     }
 
+    @Override
+    public void setAircraftType(FlightOffers flightOffers) {
+        String aircraftCode = flightOffers.getItineraries().getFirst().getSegments().getFirst().getAircraft().getCode();
+        flightOffers
+                .getItineraries()
+                .getFirst()
+                .getSegments()
+                .getFirst()
+                .getAircraft()
+                .setName(searchStore.getAircraftDictionary().get(aircraftCode).toLowerCase());
+
+    }
+
+    private void saveDictionaries(String json) {
+        searchStore.saveAircraftDictionary(Parser.parseFlightDictionary(json, "aircraft", new TypeReference<>() {}));
+        searchStore.saveLocationDictionary(Parser.parseFlightDictionary(json, "locations", new TypeReference<>() {}));
+        searchStore.saveCarrierDictionary(Parser.parseFlightDictionary(json, "carriers", new TypeReference<>() {}));
+    }
 
     private void bindOptionalParameters(UriComponentsBuilder uriBulder, FlightSearch flightSearch) {
         if (isNotNullAndNotEmpty(flightSearch.getReturnDate())) {

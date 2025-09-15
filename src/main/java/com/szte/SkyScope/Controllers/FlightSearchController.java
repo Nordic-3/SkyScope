@@ -43,7 +43,11 @@ public class FlightSearchController {
         model.addAttribute("searchId", searchId);
 
         flightService.getFlightOffers(flightSearch, flightService.getToken().getAccess_token())
-                .thenAccept(result -> searchStore.saveSearchResult(searchId,  result));
+                .thenAccept(result -> {
+                    searchStore.saveSearchResult(searchId,  result);
+                    result.forEach(flightService::setAircraftType);
+                });
+
         searchStore.saveSearchParameters(flightSearch);
         return "loading";
     }
