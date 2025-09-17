@@ -7,15 +7,24 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FlightOffers {
-    private List<Itineraries> itineraries;
+    private List<Itinerariy> itineraries;
     private Price price;
     private List<TravelerPricing> travelerPricings;
+    private String id;
 
-    public List<Itineraries> getItineraries() {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<Itinerariy> getItineraries() {
         return itineraries;
     }
 
-    public void setItineraries(List<Itineraries> itineraries) {
+    public void setItineraries(List<Itinerariy> itineraries) {
         this.itineraries = itineraries;
     }
 
@@ -36,9 +45,18 @@ public class FlightOffers {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Itineraries {
+    public static class Itinerariy {
 
         private List<Segment> segments;
+        private String duration;
+
+        public String getDuration() {
+            return duration;
+        }
+
+        public void setDuration(String duration) {
+            this.duration = formatDuration(duration);
+        }
 
         public List<Segment> getSegments() {
             return segments;
@@ -46,6 +64,16 @@ public class FlightOffers {
 
         public void setSegments(List<Segment> segments) {
             this.segments = segments;
+        }
+
+        public static String formatDuration(String duration) {
+            long hours =  Duration.parse(duration).toHours();
+            long minutes =  Duration.parse(duration).minusHours(hours).toMinutes();
+            return hours + " óra " + minutes + " perc";
+        }
+
+        public String getTransferNumber() {
+            return " " + (segments.size() - 1)  + " átszállás";
         }
     }
 
@@ -119,13 +147,11 @@ public class FlightOffers {
         }
 
         public String getDuration() {
-            return duration + " " + (this.numberOfStops == 0 ? "nonstop" : this.numberOfStops + " átszállás");
+            return duration;
         }
 
         public void setDuration(String duration) {
-            long hours =  Duration.parse(duration).toHours();
-            long minutes =  Duration.parse(duration).minusHours(hours).toMinutes();
-            this.duration = hours + " óra " + minutes + " perc";
+            this.duration = Itinerariy.formatDuration(duration);
         }
 
         public int getNumberOfStops() {

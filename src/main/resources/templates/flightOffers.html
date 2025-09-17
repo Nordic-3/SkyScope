@@ -18,7 +18,7 @@
 <main class="mt-5 container">
     <div class="row">
         <aside class="col-12 col-md-3 mb-4">
-            <div class="card">
+            <div class="card rounded-5">
                 <div class="card-header">
                     Találatok szűrése
                 </div>
@@ -30,40 +30,42 @@
 
         <section class="col-12 col-md-9">
             <div class="row row-cols-1 row-cols-md-1 g-4">
-                <div class="col" th:each="offer, i : ${results}">
-                    <div class="card h-100">
+                <div class="col" th:each="offer : ${results}">
+                    <div class="card h-100 rounded-5">
                         <div class="card-body">
                             <div class="card-title container text-center">
                                 <div class="row">
                                     <h5 class="card-title col"
                                         th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getDeparture().getIataCode()}"></h5>
                                     <h5 class="card-title col"
-                                        th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getDuration()}"></h5>
+                                        th:text="${offer.getItineraries().getFirst().getDuration() + offer.getItineraries().getFirst().getTransferNumber()}"></h5>
                                     <h5 class="card-title col"
-                                        th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getArrival().getIataCode()}"></h5>
+                                        th:text="${offer.getItineraries().getFirst().getSegments().getLast().getArrival().getIataCode()}"></h5>
                                 </div>
                             </div>
                             <p class="card-text">Ár: <span th:text="${offer.price.total}"></span> HUF</p>
                         </div>
                         <div class="card-footer">
                             <button class="btn btn-primary mb-2" type="button" data-bs-toggle="collapse"
-                                    th:attr="data-bs-target=${'#'+i.index}"
+                                    th:attr="data-bs-target=${'#'+offer.getId()}"
                                     aria-expanded="false" aria-controls="details">Részletek
                             </button>
-                            <div class="collapse" th:attr="id=${i.index}">
+                            <div class="collapse" th:attr="id=${offer.getId()}">
                                 <div class="card h-100 mb-3">
                                     <div class="card-body">
                                         <h5 class="card-title">Induló járat</h5>
                                         <div class="card-text container text-center">
-                                            <div class="row">
+                                            <div class="row" th:each="segment : ${offer.getItineraries().getFirst().getSegments()}">
                                                 <p class="col fs-6"
-                                                   th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getDeparture().getIataCode()}">
+                                                   th:text="${segment.getDeparture().getIataCode()}">
                                                 <p class="col fs-6"
-                                                   th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getDeparture().getAt()}">
+                                                   th:text="${segment.getDeparture().getAt()}">
                                                 <p class="col fs-6"
-                                                   th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getArrival().getIataCode()}">
+                                                   th:text="${segment.getArrival().getIataCode()}">
                                                 <p class="col fs-6"
-                                                   th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getArrival().getAt()}">
+                                                   th:text="${segment.getArrival().getAt()}">
+                                                <p class="col fs-6"
+                                                   th:text="${segment.getAircraft().getName()}">
                                             </div>
                                             <div class="row text-start">
                                                 <h5>Utasok</h5>
@@ -81,15 +83,17 @@
                                             <div class="row text-start" th:if="${offer.getItineraries().size() != 1}">
                                                 <h5>Visszaút</h5>
                                             </div>
-                                            <div class="row" th:if="${offer.getItineraries().size() != 1}">
+                                            <div class="row" th:if="${offer.getItineraries().size() != 1}" th:each="segment : ${offer.getItineraries().getLast().getSegments()}">
                                                 <p class="col fs-6"
-                                                   th:text="${offer.getItineraries().get(1).getSegments().getFirst().getDeparture().getIataCode()}">
+                                                   th:text="${segment.getDeparture().getIataCode()}">
                                                 <p class="col fs-6"
-                                                   th:text="${offer.getItineraries().get(1).getSegments().getFirst().getDeparture().getAt()}">
+                                                   th:text="${segment.getDeparture().getAt()}">
                                                 <p class="col fs-6"
-                                                   th:text="${offer.getItineraries().get(1).getSegments().getFirst().getArrival().getIataCode()}">
+                                                   th:text="${segment.getArrival().getIataCode()}">
                                                 <p class="col fs-6"
-                                                   th:text="${offer.getItineraries().get(1).getSegments().getFirst().getArrival().getAt()}">
+                                                   th:text="${segment.getArrival().getAt()}">
+                                                <p class="col fs-6"
+                                                   th:text="${segment.getAircraft().getName()}">
                                             </div>
                                         </div>
                                     </div>

@@ -116,15 +116,18 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public void setAircraftType(FlightOffers flightOffers) {
-        String aircraftCode = flightOffers.getItineraries().getFirst().getSegments().getFirst().getAircraft().getCode();
-        flightOffers
-                .getItineraries()
-                .getFirst()
-                .getSegments()
-                .getFirst()
-                .getAircraft()
-                .setName(searchStore.getAircraftDictionary().get(aircraftCode).toLowerCase());
-
+        for (int i = 0; i < flightOffers.getItineraries().size(); i++) {
+            for (int j = 0; j < flightOffers.getItineraries().get(i).getSegments().size(); j++) {
+                String aircraftCode = flightOffers.getItineraries().get(i).getSegments().get(j).getAircraft().getCode();
+                flightOffers
+                        .getItineraries()
+                        .get(i)
+                        .getSegments()
+                        .get(j)
+                        .getAircraft()
+                        .setName(searchStore.getAircraftDictionary().get(aircraftCode).toLowerCase());
+            }
+        }
     }
 
     private void saveDictionaries(String json) {
