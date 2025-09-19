@@ -19,6 +19,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -115,7 +116,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public void setAircraftType(FlightOffers flightOffers) {
+    public void setAircraftType(FlightOffers flightOffers, Map<String, String> aircrafts) {
         for (int i = 0; i < flightOffers.getItineraries().size(); i++) {
             for (int j = 0; j < flightOffers.getItineraries().get(i).getSegments().size(); j++) {
                 String aircraftCode = flightOffers.getItineraries().get(i).getSegments().get(j).getAircraft().getCode();
@@ -125,7 +126,30 @@ public class FlightServiceImpl implements FlightService {
                         .getSegments()
                         .get(j)
                         .getAircraft()
-                        .setName(searchStore.getAircraftDictionary().get(aircraftCode).toLowerCase());
+                        .setName(aircrafts.get(aircraftCode).toLowerCase());
+            }
+        }
+    }
+
+    @Override
+    public void setCarrierNames(FlightOffers flightOffers, Map<String, String> carriers) {
+        for (int i = 0; i < flightOffers.getItineraries().size(); i++) {
+            for (int j = 0; j < flightOffers.getItineraries().get(i).getSegments().size(); j++) {
+                String ticketingCarrier = flightOffers.getItineraries().get(i).getSegments().get(j).getCarrierCode();
+                String operatingCarrier = flightOffers.getItineraries().get(i).getSegments().get(j).getOperating().getCarrierCode();
+                flightOffers
+                        .getItineraries()
+                        .get(i)
+                        .getSegments()
+                        .get(j)
+                        .setCarrierName(carriers.get(ticketingCarrier).toLowerCase());
+                flightOffers
+                        .getItineraries()
+                        .get(i)
+                        .getSegments()
+                        .get(j)
+                        .getOperating()
+                        .setCarrierName(carriers.get(operatingCarrier).toLowerCase());
             }
         }
     }

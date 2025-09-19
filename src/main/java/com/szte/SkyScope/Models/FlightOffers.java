@@ -84,11 +84,20 @@ public class FlightOffers {
         private FlightSchedule departure;
         private FlightSchedule arrival;
         private String carrierCode;
+        private String carrierName;
         private String number;
         private Aircraft aircraft;
         private Operating operating;
         private String duration;
         private int numberOfStops;
+
+        public String getCarrierName() {
+            return carrierName;
+        }
+
+        public void setCarrierName(String carrierName) {
+            this.carrierName = carrierName;
+        }
 
         public String getId() {
             return id;
@@ -199,6 +208,15 @@ public class FlightOffers {
     public static class Operating {
 
         private String carrierCode;
+        private String carrierName;
+
+        public String getCarrierName() {
+            return carrierName;
+        }
+
+        public void setCarrierName(String carrierName) {
+            this.carrierName = carrierName;
+        }
 
         public String getCarrierCode() {
             return carrierCode;

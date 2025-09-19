@@ -44,8 +44,11 @@ public class FlightSearchController {
 
         flightService.getFlightOffers(flightSearch, flightService.getToken().getAccess_token())
                 .thenAccept(result -> {
+                    result.forEach(flightOffers -> {
+                        flightService.setAircraftType(flightOffers, searchStore.getAircraftDictionary());
+                        flightService.setCarrierNames(flightOffers, searchStore.getCarrierDictionary());
+                    });
                     searchStore.saveSearchResult(searchId,  result);
-                    result.forEach(flightService::setAircraftType);
                 });
 
         searchStore.saveSearchParameters(flightSearch);

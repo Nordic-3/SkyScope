@@ -5,6 +5,7 @@ import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public interface FlightService {
@@ -14,5 +15,6 @@ public interface FlightService {
     void setIataCodes(FlightSearch flightSearch, String token);
     CompletableFuture<List<FlightOffers>> getFlightOffers(FlightSearch flightSearch, String token);
     List<FlightOffers> getFlightOffersFromLocalJson(FlightSearch flightSearch);
-    void setAircraftType(FlightOffers flightOffers);
+    void setAircraftType(FlightOffers flightOffers, Map<String, String> aircrafts);
+    void setCarrierNames(FlightOffers flightOffers, Map<String, String> carriers);
 }
