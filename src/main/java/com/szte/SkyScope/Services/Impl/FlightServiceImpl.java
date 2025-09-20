@@ -71,13 +71,6 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public String getIataCodeFromLocalJson(String city) {
-        return Parser.getIataFromJson(
-                jsonReaderService.readJsonFromResources("exampleDatas/iataCodes.json"),
-                city);
-    }
-
-    @Override
     public void setIataCodes(FlightSearch flightSearch, String token) {
         flightSearch.setOriginCityIata(getIataCode(flightSearch.getOriginCity(), token));
         flightSearch.setDestinationCityIata(getIataCode(flightSearch.getDestinationCity(), token));
@@ -152,6 +145,12 @@ public class FlightServiceImpl implements FlightService {
                     segment.getArrival().getIataCode(),
                     segment.getArrival().getIataCode()).toLowerCase());
         });
+    }
+
+    private String getIataCodeFromLocalJson(String city) {
+        return Parser.getIataFromJson(
+                jsonReaderService.readJsonFromResources("exampleDatas/iataCodes.json"),
+                city);
     }
 
     private String getAirportNameFromLocalJson(String iata) {
