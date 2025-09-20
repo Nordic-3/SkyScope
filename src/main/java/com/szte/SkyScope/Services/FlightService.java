@@ -15,6 +15,6 @@ public interface FlightService {
     void setIataCodes(FlightSearch flightSearch, String token);
     CompletableFuture<List<FlightOffers>> getFlightOffers(FlightSearch flightSearch, String token);
     List<FlightOffers> getFlightOffersFromLocalJson(FlightSearch flightSearch);
-    void setAircraftType(FlightOffers flightOffers, Map<String, String> aircrafts);
-    void setCarrierNames(FlightOffers flightOffers, Map<String, String> carriers);
+    void setAircraftType(List<FlightOffers> flightOffers, Map<String, String> aircrafts);
+    void setCarrierNames(List<FlightOffers> flightOffers, Map<String, String> carriers);
 }

@@ -21,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 @Service
 public class FlightServiceImpl implements FlightService {
@@ -90,7 +91,7 @@ public class FlightServiceImpl implements FlightService {
         if (applicationConfig.getAmadeusCitySearchApi().equals("noApi") || !applicationConfig.useApis()) {
             return CompletableFuture.completedFuture(getFlightOffersFromLocalJson(flightSearch));
         }
-       UriComponentsBuilder uriBulder = UriComponentsBuilder.fromUriString(applicationConfig.getAmadeusFlightOfferSearchApi());
+        UriComponentsBuilder uriBulder = UriComponentsBuilder.fromUriString(applicationConfig.getAmadeusFlightOfferSearchApi());
         uriBulder.queryParam("originLocationCode", flightSearch.getOriginCityIata());
         uriBulder.queryParam("destinationLocationCode", flightSearch.getDestinationCityIata());
         uriBulder.queryParam("departureDate", flightSearch.getDepartureDate());
@@ -116,42 +117,31 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public void setAircraftType(FlightOffers flightOffers, Map<String, String> aircrafts) {
-        for (int i = 0; i < flightOffers.getItineraries().size(); i++) {
-            for (int j = 0; j < flightOffers.getItineraries().get(i).getSegments().size(); j++) {
-                String aircraftCode = flightOffers.getItineraries().get(i).getSegments().get(j).getAircraft().getCode();
-                flightOffers
-                        .getItineraries()
-                        .get(i)
-                        .getSegments()
-                        .get(j)
-                        .getAircraft()
-                        .setName(aircrafts.get(aircraftCode).toLowerCase());
-            }
-        }
+    public void setAircraftType(List<FlightOffers> flightOffers, Map<String, String> aircrafts) {
+        getSegmentStream(flightOffers)
+                .forEach(segment -> segment.getAircraft().setName(aircrafts.getOrDefault(
+                        segment.getAircraft().getCode(),
+                        segment.getAircraft().getCode()).toLowerCase()));
     }
 
     @Override
-    public void setCarrierNames(FlightOffers flightOffers, Map<String, String> carriers) {
-        for (int i = 0; i < flightOffers.getItineraries().size(); i++) {
-            for (int j = 0; j < flightOffers.getItineraries().get(i).getSegments().size(); j++) {
-                String ticketingCarrier = flightOffers.getItineraries().get(i).getSegments().get(j).getCarrierCode();
-                String operatingCarrier = flightOffers.getItineraries().get(i).getSegments().get(j).getOperating().getCarrierCode();
-                flightOffers
-                        .getItineraries()
-                        .get(i)
-                        .getSegments()
-                        .get(j)
-                        .setCarrierName(carriers.get(ticketingCarrier).toLowerCase());
-                flightOffers
-                        .getItineraries()
-                        .get(i)
-                        .getSegments()
-                        .get(j)
-                        .getOperating()
-                        .setCarrierName(carriers.get(operatingCarrier).toLowerCase());
-            }
-        }
+    public void setCarrierNames(List<FlightOffers> flightOffers, Map<String, String> carriers) {
+        getSegmentStream(flightOffers)
+                .forEach(segment -> {
+                    segment.setCarrierName(carriers.getOrDefault(
+                            segment.getCarrierCode(),
+                            segment.getCarrierCode()).toLowerCase());
+                    segment.getOperating().setCarrierName(carriers.getOrDefault(
+                            segment.getOperating().getCarrierCode(),
+                            segment.getOperating().getCarrierCode()).toLowerCase());
+                });
+    }
+
+    private Stream<FlightOffers.Segment> getSegmentStream(List<FlightOffers> flightOffers) {
+        return flightOffers
+                .stream()
+                .flatMap(offer -> offer.getItineraries().stream())
+                .flatMap(itinerary -> itinerary.getSegments().stream());
     }
 
     private void saveDictionaries(String json) {
