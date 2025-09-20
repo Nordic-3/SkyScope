@@ -87,8 +87,6 @@
                                                 <div class="col" th:each="traveller : ${offer.getTravelerPricings()}">
                                                     <p class="col fs-6"
                                                        th:text="${traveller.getTravelerType()}"></p>
-                                                    <p class="col fs-6" th:if="${iStat.odd}"
-                                                       th:text="${traveller.getPrice().getTotal() + (offer.getItineraries().size() != 1 ? ' Tartalmazza a visszaútat' : '')}"></p>
                                                     <div class="col"
                                                          th:each="fareDetails : ${traveller.getFareDetailBySegmentId(segment.getId())}">
                                                         <p class="col fs-6"
