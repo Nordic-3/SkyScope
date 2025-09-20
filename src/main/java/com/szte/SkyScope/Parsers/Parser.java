@@ -90,4 +90,14 @@ public class Parser {
         }
         return flightDictionary;
     }
+
+    public static String getAirportNameFromJson(String json, String root) {
+        try {
+            return objectMapper.readTree(json).get(root).get(0).get("name").asText();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }

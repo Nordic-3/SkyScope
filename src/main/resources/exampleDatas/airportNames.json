@@ -1,0 +1,169 @@
+{
+  "EWR": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "NEWARK LIBERTY INTL",
+      "detailedName": "NEW YORK/NJ/US:NEWARK LIBERTY",
+      "id": "AEWR",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AEWR",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "-04:00",
+      "iataCode": "EWR",
+      "geoCode": {
+        "latitude": 40.69112,
+        "longitude": -74.17888
+      },
+      "address": {
+        "cityName": "NEW YORK",
+        "cityCode": "NYC",
+        "countryName": "UNITED STATES OF AMERICA",
+        "countryCode": "US",
+        "stateCode": "NJ",
+        "regionCode": "NAMER"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 24
+        }
+      }
+    }
+  ],
+  "LHR": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "HEATHROW",
+      "detailedName": "LONDON/GB:HEATHROW",
+      "id": "ALHR",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ALHR",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+01:00",
+      "iataCode": "LHR",
+      "geoCode": {
+        "latitude": 51.4775,
+        "longitude": -0.46138
+      },
+      "address": {
+        "cityName": "LONDON",
+        "cityCode": "LON",
+        "countryName": "UNITED KINGDOM",
+        "countryCode": "GB",
+        "regionCode": "EUROP"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 45
+        }
+      }
+    }
+  ],
+  "LGW": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "GATWICK",
+      "detailedName": "LONDON/GB:GATWICK",
+      "id": "ALGW",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ALGW",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+01:00",
+      "iataCode": "LGW",
+      "geoCode": {
+        "latitude": 51.15612,
+        "longitude": -0.17805
+      },
+      "address": {
+        "cityName": "LONDON",
+        "cityCode": "LON",
+        "countryName": "UNITED KINGDOM",
+        "countryCode": "GB",
+        "regionCode": "EUROP"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 27
+        }
+      }
+    }
+  ],
+  "JFK": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "JOHN F KENNEDY INTL",
+      "detailedName": "NEW YORK/NY/US:JOHN F KENNEDY",
+      "id": "AJFK",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AJFK",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "-04:00",
+      "iataCode": "JFK",
+      "geoCode": {
+        "latitude": 40.63973,
+        "longitude": -73.77861
+      },
+      "address": {
+        "cityName": "NEW YORK",
+        "cityCode": "NYC",
+        "countryName": "UNITED STATES OF AMERICA",
+        "countryCode": "US",
+        "stateCode": "NY",
+        "regionCode": "NAMER"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 35
+        }
+      }
+    }
+  ],
+  "KEF": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "KEFLAVIK INTERNATIONAL",
+      "detailedName": "REYKJAVIK/IS:KEFLAVIK INTERNATIONAL",
+      "id": "AKEF",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AKEF",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+00:00",
+      "iataCode": "KEF",
+      "geoCode": {
+        "latitude": 63.985,
+        "longitude": -22.60556
+      },
+      "address": {
+        "cityName": "REYKJAVIK",
+        "cityCode": "REK",
+        "countryName": "ICELAND",
+        "countryCode": "IS",
+        "regionCode": "EMEAR"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 5
+        }
+      }
+    }
+  ]
+}

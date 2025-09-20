@@ -178,6 +178,15 @@ public class FlightOffers {
         private String iataCode;
         private String terminal;
         private String at;
+        private String airportName;
+
+        public String getAirportName() {
+            return airportName;
+        }
+
+        public void setAirportName(String airportName) {
+            this.airportName = airportName + (terminal != null ? " " + terminal + " terminál" : "");
+        }
 
         public String getIataCode() {
             return iataCode;

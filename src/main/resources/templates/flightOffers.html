@@ -36,11 +36,11 @@
                             <div class="card-title container text-center">
                                 <div class="row">
                                     <h5 class="card-title col"
-                                        th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getDeparture().getIataCode()}"></h5>
+                                        th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getDeparture().getAirportName()}"></h5>
                                     <h5 class="card-title col"
                                         th:text="${offer.getItineraries().getFirst().getDuration() + offer.getItineraries().getFirst().getTransferNumber()}"></h5>
                                     <h5 class="card-title col"
-                                        th:text="${offer.getItineraries().getFirst().getSegments().getLast().getArrival().getIataCode()}"></h5>
+                                        th:text="${offer.getItineraries().getFirst().getSegments().getLast().getArrival().getAirportName()}"></h5>
                                 </div>
                             </div>
                             <p class="card-text">Ár: <span th:text="${offer.price.total}"></span> HUF</p>
@@ -61,11 +61,11 @@
                                             <div class="row"
                                                  th:each="segment : ${itinerary.getSegments()}">
                                                 <p class="col fs-6"
-                                                   th:text="${segment.getDeparture().getIataCode()}"></p>
+                                                   th:text="${segment.getDeparture().getAirportName()}"></p>
                                                 <p class="col fs-6"
                                                    th:text="${segment.getDeparture().getAt()}"></p>
                                                 <p class="col fs-6"
-                                                   th:text="${segment.getArrival().getIataCode()}"></p>
+                                                   th:text="${segment.getArrival().getAirportName()}"></p>
                                                 <p class="col fs-6"
                                                    th:text="${segment.getArrival().getAt()}"></p>
                                             </div>

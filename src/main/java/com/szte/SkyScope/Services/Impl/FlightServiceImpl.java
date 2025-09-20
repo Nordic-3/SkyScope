@@ -5,6 +5,7 @@ import com.szte.SkyScope.Config.ApplicationConfig;
 import com.szte.SkyScope.Models.AmadeusApiCred;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
+import com.szte.SkyScope.Models.Location;
 import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.JsonReaderService;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -61,11 +63,7 @@ public class FlightServiceImpl implements FlightService {
             return getIataCodeFromLocalJson(city);
         }
         try {
-            return Parser.getIataFromJson(restClient.get()
-                    .uri(applicationConfig.getAmadeusCitySearchApi(), city.strip())
-                    .header("Authorization", "Bearer " + token)
-                    .retrieve()
-                    .body(String.class), "data");
+            return Parser.getIataFromJson(getCityAirportSearchApiResponse(city, "CITY", token), "data");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -135,6 +133,46 @@ public class FlightServiceImpl implements FlightService {
                             segment.getOperating().getCarrierCode(),
                             segment.getOperating().getCarrierCode()).toLowerCase());
                 });
+    }
+
+    @Override
+    public Map<String, String> getAirportNamesByItsIata(Map<String, Location> locations, String token) {
+        Map<String, String> airportNamesByIataCode = new HashMap<>();
+        locations.forEach((key, value) -> airportNamesByIataCode.put(key, getAirportNameFromApi(key, token)));
+        return airportNamesByIataCode;
+    }
+
+    @Override
+    public void setAirportNames(List<FlightOffers> flightOffers, Map<String, String> airprots) {
+        getSegmentStream(flightOffers).forEach(segment -> {
+            segment.getDeparture().setAirportName(airprots.getOrDefault(
+                    segment.getDeparture().getIataCode(),
+                    segment.getDeparture().getIataCode()).toLowerCase());
+            segment.getArrival().setAirportName(airprots.getOrDefault(
+                    segment.getArrival().getIataCode(),
+                    segment.getArrival().getIataCode()).toLowerCase());
+        });
+    }
+
+    private String getAirportNameFromLocalJson(String iata) {
+        return Parser.getAirportNameFromJson(
+                jsonReaderService.readJsonFromResources("exampleDatas/airportNames.json"), iata);
+    }
+
+    private String getAirportNameFromApi(String iata, String token) {
+        if (applicationConfig.getAmadeusCitySearchApi().equals("noApi") || !applicationConfig.useApis()) {
+            return getAirportNameFromLocalJson(iata);
+        }
+        return Parser.getAirportNameFromJson(getCityAirportSearchApiResponse(iata, "AIRPORT", token), "data");
+    }
+
+    private String getCityAirportSearchApiResponse(String keyword, String subType, String token) {
+        return restClient
+                .get()
+                .uri(applicationConfig.getAmadeusCitySearchApi(), keyword.strip(), subType)
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(String.class);
     }
 
     private Stream<FlightOffers.Segment> getSegmentStream(List<FlightOffers> flightOffers) {
