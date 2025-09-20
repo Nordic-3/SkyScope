@@ -53,10 +53,13 @@
                             <div class="collapse" th:attr="id=${offer.getId()}">
                                 <div class="card h-100 mb-3">
                                     <div class="card-body">
-                                        <h5 class="card-title">Induló járat</h5>
-                                        <div class="card-text container text-center">
+                                        <div class="card-text container text-center"
+                                             th:each="itinerary, iStat : ${offer.getItineraries()}">
+                                            <div class="row text-start">
+                                                <h5 th:text="${iStat.odd ? 'Induló járat' : 'Visszaút'}"></h5>
+                                            </div>
                                             <div class="row"
-                                                 th:each="segment : ${offer.getItineraries().getFirst().getSegments()}">
+                                                 th:each="segment : ${itinerary.getSegments()}">
                                                 <p class="col fs-6"
                                                    th:text="${segment.getDeparture().getIataCode()}"></p>
                                                 <p class="col fs-6"
@@ -67,31 +70,7 @@
                                                    th:text="${segment.getArrival().getAt()}"></p>
                                             </div>
                                             <div class="row"
-                                                 th:each="segment : ${offer.getItineraries().getFirst().getSegments()}">
-                                                <p class="col fs-6"
-                                                   th:text="${segment.getOperating().getCarrierName()}"></p>
-                                                <p class="col fs-6"
-                                                   th:if="${segment.getCarrierName() != segment.getOperating().getCarrierName()}"
-                                                   th:text="${'Jegyértékesítő: '+segment.getCarrierName()}"></p>
-                                                <p class="col fs-6"
-                                                   th:text="${segment.getAircraft().getName()}"></p>
-                                            </div>
-                                            <div class="row text-start" th:if="${offer.getItineraries().size() != 1}">
-                                                <h5>Visszaút</h5>
-                                            </div>
-                                            <div class="row" th:if="${offer.getItineraries().size() != 1}"
-                                                 th:each="segment : ${offer.getItineraries().getLast().getSegments()}">
-                                                <p class="col fs-6"
-                                                   th:text="${segment.getDeparture().getIataCode()}"></p>
-                                                <p class="col fs-6"
-                                                   th:text="${segment.getDeparture().getAt()}"></p>
-                                                <p class="col fs-6"
-                                                   th:text="${segment.getArrival().getIataCode()}"></p>
-                                                <p class="col fs-6"
-                                                   th:text="${segment.getArrival().getAt()}"></p>
-                                            </div>
-                                            <div class="row" th:if="${offer.getItineraries().size() != 1}"
-                                                 th:each="segment : ${offer.getItineraries().getFirst().getSegments()}">
+                                                 th:each="segment : ${itinerary.getSegments()}">
                                                 <p class="col fs-6"
                                                    th:text="${segment.getOperating().getCarrierName()}"></p>
                                                 <p class="col fs-6"
@@ -103,15 +82,23 @@
                                             <div class="row text-start">
                                                 <h5>Utasok</h5>
                                             </div>
-                                            <div class="row" th:each="traveller : ${offer.getTravelerPricings()}">
-                                                <p class="col fs-6"
-                                                   th:text="${traveller.getTravelerType()}"></p>
-                                                <p class="col fs-6"
-                                                   th:text="${traveller.getFareDetailsBySegment().getFirst().getCabin()}"></p>
-                                                <p class="col fs-6"
-                                                   th:text="${traveller.getPrice().getTotal()}"></p>
-                                                <p class="col fs-6"
-                                                   th:text="${traveller.getFareDetailsBySegment().getFirst().getIncludedCheckedBags().getQuantity() + ' poggyász'}"></p>
+                                            <div Class="row"
+                                                 th:each="segment : ${itinerary.getSegments()}">
+                                                <div class="col" th:each="traveller : ${offer.getTravelerPricings()}">
+                                                    <p class="col fs-6"
+                                                       th:text="${traveller.getTravelerType()}"></p>
+                                                    <p class="col fs-6" th:if="${iStat.odd}"
+                                                       th:text="${traveller.getPrice().getTotal() + (offer.getItineraries().size() != 1 ? ' Tartalmazza a visszaútat' : '')}"></p>
+                                                    <div class="col"
+                                                         th:each="fareDetails : ${traveller.getFareDetailBySegmentId(segment.getId())}">
+                                                        <p class="col fs-6"
+                                                           th:text="${fareDetails.getCabin()}"></p>
+                                                        <p class="col fs-6"
+                                                           th:text="${fareDetails.getIncludedCheckedBags().getQuantity() + ' feladott poggyász'}"></p>
+                                                        <p class="col fs-6"
+                                                           th:text="${fareDetails.getIncludedCabinBags().getQuantity() + ' kézipoggyász'}"></p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

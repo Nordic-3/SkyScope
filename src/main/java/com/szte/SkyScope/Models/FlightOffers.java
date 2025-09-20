@@ -7,7 +7,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FlightOffers {
-    private List<Itinerariy> itineraries;
+    private List<Itinerary> itineraries;
     private Price price;
     private List<TravelerPricing> travelerPricings;
     private String id;
@@ -20,11 +20,11 @@ public class FlightOffers {
         this.id = id;
     }
 
-    public List<Itinerariy> getItineraries() {
+    public List<Itinerary> getItineraries() {
         return itineraries;
     }
 
-    public void setItineraries(List<Itinerariy> itineraries) {
+    public void setItineraries(List<Itinerary> itineraries) {
         this.itineraries = itineraries;
     }
 
@@ -45,7 +45,7 @@ public class FlightOffers {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Itinerariy {
+    public static class Itinerary {
 
         private List<Segment> segments;
         private String duration;
@@ -160,7 +160,7 @@ public class FlightOffers {
         }
 
         public void setDuration(String duration) {
-            this.duration = Itinerariy.formatDuration(duration);
+            this.duration = Itinerary.formatDuration(duration);
         }
 
         public int getNumberOfStops() {
@@ -320,13 +320,29 @@ public class FlightOffers {
         public void setFareOption(String fareOption) {
             this.fareOption = fareOption;
         }
+
+        public List<FareDetailsBySegment> getFareDetailBySegmentId(String segmentId) {
+            return fareDetailsBySegment
+                    .stream()
+                    .filter(details -> segmentId.equals(details.segmentId))
+                    .toList();
+        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class FareDetailsBySegment {
         private String segmentId;
         private String cabin;
-        private IncludedCheckedBags includedCheckedBags;
+        private IncludedBags includedCheckedBags;
+        private IncludedBags includedCabinBags;
+
+        public IncludedBags getIncludedCabinBags() {
+            return includedCabinBags == null ? new IncludedBags() : includedCabinBags;
+        }
+
+        public void setIncludedCabinBags(IncludedBags includedCabinBags) {
+            this.includedCabinBags = includedCabinBags;
+        }
 
         public String getSegmentId() {
             return segmentId;
@@ -344,16 +360,16 @@ public class FlightOffers {
             this.cabin = cabin;
         }
 
-        public IncludedCheckedBags getIncludedCheckedBags() {
-            return includedCheckedBags == null ? new IncludedCheckedBags() : includedCheckedBags;
+        public IncludedBags getIncludedCheckedBags() {
+            return includedCheckedBags == null ? new IncludedBags() : includedCheckedBags;
         }
 
-        public void setIncludedCheckedBags(IncludedCheckedBags includedCheckedBags) {
+        public void setIncludedCheckedBags(IncludedBags includedCheckedBags) {
             this.includedCheckedBags = includedCheckedBags;
         }
     }
 
-    public static class IncludedCheckedBags {
+    public static class IncludedBags {
         private String quantity = "0";
 
         public String getQuantity() {
