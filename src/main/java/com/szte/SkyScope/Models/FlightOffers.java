@@ -2,6 +2,8 @@ package com.szte.SkyScope.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.Duration;
 import java.util.List;
 
@@ -277,7 +279,10 @@ public class FlightOffers {
         }
 
         public void setTotal(String total) {
-            this.total = total;
+            DecimalFormatSymbols decimalFormatSymbol = new DecimalFormatSymbols();
+            decimalFormatSymbol.setGroupingSeparator(' ');
+            this.total = new DecimalFormat("###,###,###", decimalFormatSymbol)
+                    .format(Integer.parseInt(total.split("\\.")[0]));
         }
     }
 
