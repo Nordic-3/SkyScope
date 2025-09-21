@@ -46,10 +46,7 @@ public class FlightSearchController {
         try {
             flightService.getFlightOffers(flightSearch, flightService.getToken().getAccess_token())
                     .thenAccept(result -> {
-                        flightService.setAircraftType(result, searchStore.getAircraftDictionary());
-                        flightService.setCarrierNames(result, searchStore.getCarrierDictionary());
-                        flightService.setAirportNames(result, flightService.getAirportNamesByItsIata(
-                                searchStore.getLocationDictionary(), flightService.getToken().getAccess_token()));
+                        setFlightOffersAttributes(result);
                         FlightOfferFormatter.formatFlightOfferFields(result);
                         searchStore.saveSearchResult(searchId, result);
                     });
@@ -76,5 +73,12 @@ public class FlightSearchController {
         model.addAttribute("flightSearch", searchStore.getSearchParameters());
         model.addAttribute("results", searchStore.getSearchResult(searchId));
         return "flightOffers";
+    }
+
+    public void setFlightOffersAttributes(List<FlightOffers> result) {
+        flightService.setAircraftType(result, searchStore.getAircraftDictionary());
+        flightService.setCarrierNames(result, searchStore.getCarrierDictionary());
+        flightService.setAirportNames(result, flightService.getAirportNamesByItsIata(
+                searchStore.getLocationDictionary(), flightService.getToken().getAccess_token()));
     }
 }
