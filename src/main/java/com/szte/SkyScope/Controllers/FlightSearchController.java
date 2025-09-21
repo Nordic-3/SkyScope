@@ -4,6 +4,7 @@ import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.InputValidationService;
+import com.szte.SkyScope.Services.OrderResultService;
 import com.szte.SkyScope.Services.SearchStore;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,14 @@ public class FlightSearchController {
     private final InputValidationService inputValidationService;
     private final FlightService flightService;
     private final SearchStore searchStore;
+    private final OrderResultService orderResultService;
 
     @Autowired
-    public FlightSearchController(InputValidationService inputValidationService, FlightService flightService, SearchStore searchStore) {
+    public FlightSearchController(InputValidationService inputValidationService, FlightService flightService, SearchStore searchStore, OrderResultService orderResultService) {
         this.inputValidationService = inputValidationService;
         this.flightService = flightService;
         this.searchStore = searchStore;
+        this.orderResultService = orderResultService;
     }
 
     @PostMapping("/flightsearch")
@@ -48,7 +51,7 @@ public class FlightSearchController {
                     .thenAccept(result -> {
                         setFlightOffersAttributes(result);
                         FlightOfferFormatter.formatFlightOfferFields(result);
-                        searchStore.saveSearchResult(searchId, result);
+                        searchStore.saveSearchResult(searchId, orderResultService.orderOffersByDeffault(result));
                     });
         } catch (Exception e) {
             e.printStackTrace();
