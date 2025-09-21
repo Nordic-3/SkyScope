@@ -41,6 +41,7 @@ function getHeightOfElementWithMargin(element) {
 }
 
 function goToOriginCity() {
+    originCityElement = document.getElementById("originCity");
     let inputOriginCity = originCityElement.value;
     if (originCity !== null && inputOriginCity === "") {
         removeCityFromEarth(originCity);
@@ -57,11 +58,9 @@ function goToOriginCity() {
                 try {
                     let responseJSON = JSON.parse(responseInText);
                     let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
-                    labeledCities.push(cityDetails);
-                    labelCityAndNavigate(cityDetails);
-                    lineDatas.startLat = cityDetails.lat;
-                    lineDatas.startLng = cityDetails.lng;
-                    connectCitesIfAllGiven();
+                    if (earth !== undefined) {
+                        setEarthOnSearchPage(cityDetails);
+                    }
                     originCity = cityDetails;
                     window.localStorage.setItem("originCity", JSON.stringify(cityDetails));
                 } catch (exception) {
@@ -73,6 +72,7 @@ function goToOriginCity() {
 }
 
 function goToDestinationCity() {
+    destinationCityElement = document.getElementById("destinationCity");
     let inputDestinationCity = destinationCityElement.value;
     if (destinationCity !== null && inputDestinationCity === "") {
         removeCityFromEarth(destinationCity);
@@ -89,11 +89,9 @@ function goToDestinationCity() {
                 try {
                     let responseJSON = JSON.parse(responseInText);
                     let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
-                    labeledCities.push(cityDetails);
-                    labelCityAndNavigate(cityDetails);
-                    lineDatas.endLat = cityDetails.lat;
-                    lineDatas.endLng = cityDetails.lng;
-                    connectCitesIfAllGiven();
+                    if (earth !== undefined) {
+                        setEarthOnSearchPage(cityDetails);
+                    }
                     destinationCity = cityDetails;
                     window.localStorage.setItem("destinationCity", JSON.stringify(cityDetails));
                 } catch (exception) {
@@ -102,6 +100,14 @@ function goToDestinationCity() {
             });
     }
     destinationCityElement.classList.remove("border-danger");
+}
+
+function setEarthOnSearchPage(cityDetails) {
+    labeledCities.push(cityDetails);
+    labelCityAndNavigate(cityDetails);
+    lineDatas.endLat = cityDetails.lat;
+    lineDatas.endLng = cityDetails.lng;
+    connectCitesIfAllGiven();
 }
 
 function labelCityAndNavigate(cityDetails) {

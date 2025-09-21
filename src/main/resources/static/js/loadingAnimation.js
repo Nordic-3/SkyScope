@@ -4,7 +4,7 @@ function checkResults(searchId) {
             if (response.status === 200) {
                 window.location.href = '/resultsPage/' + searchId;
             } else {
-                setTimeout(() => checkResults(searchId), 3000);
+                setTimeout(() => checkResults(searchId), 2000);
             }
         })
         .catch(err => console.error(err));
@@ -22,7 +22,6 @@ function contentLoaded() {
 }
 
 function labelCitiesAndConnect() {
-    console.log("labelCitiesAndConnect");
     labelCityOnLoading(JSON.parse(window.localStorage.getItem('originCity')));
     labelCityOnLoading(JSON.parse(window.localStorage.getItem('destinationCity')));
     lineDatas.startLat = labeledCities.at(0).lat;
