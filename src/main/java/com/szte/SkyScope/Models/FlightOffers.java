@@ -2,9 +2,7 @@ package com.szte.SkyScope.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -51,13 +49,22 @@ public class FlightOffers {
 
         private List<Segment> segments;
         private String duration;
+        private List<String> layoverTime = new ArrayList<>();
+
+        public List<String> getLayoverTime() {
+            return layoverTime;
+        }
+
+        public void setLayoverTime(List<String> layoverTime) {
+            this.layoverTime = layoverTime;
+        }
 
         public String getDuration() {
             return duration;
         }
 
         public void setDuration(String duration) {
-            this.duration = formatDuration(duration);
+            this.duration = duration;
         }
 
         public List<Segment> getSegments() {
@@ -66,12 +73,6 @@ public class FlightOffers {
 
         public void setSegments(List<Segment> segments) {
             this.segments = segments;
-        }
-
-        public static String formatDuration(String duration) {
-            long hours =  Duration.parse(duration).toHours();
-            long minutes =  Duration.parse(duration).minusHours(hours).toMinutes();
-            return hours + " óra " + minutes + " perc";
         }
 
         public String getTransferNumber() {
@@ -162,7 +163,7 @@ public class FlightOffers {
         }
 
         public void setDuration(String duration) {
-            this.duration = Itinerary.formatDuration(duration);
+            this.duration = duration;
         }
 
         public int getNumberOfStops() {
@@ -187,7 +188,7 @@ public class FlightOffers {
         }
 
         public void setAirportName(String airportName) {
-            this.airportName = airportName + (terminal != null ? " " + terminal + " terminál" : "");
+            this.airportName = airportName;
         }
 
         public String getIataCode() {
@@ -211,7 +212,7 @@ public class FlightOffers {
         }
 
         public void setAt(String at) {
-            this.at = at.split("T")[0].replace("-", ". ") + ". " + at.split("T")[1];
+            this.at = at;
         }
     }
 
@@ -280,10 +281,7 @@ public class FlightOffers {
         }
 
         public void setTotal(String total) {
-            DecimalFormatSymbols decimalFormatSymbol = new DecimalFormatSymbols();
-            decimalFormatSymbol.setGroupingSeparator(' ');
-            this.total = new DecimalFormat("###,###,###", decimalFormatSymbol)
-                    .format(Integer.parseInt(total.split("\\.")[0]));
+            this.total = total;
         }
     }
 

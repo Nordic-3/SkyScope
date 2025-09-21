@@ -5,6 +5,7 @@ import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.InputValidationService;
 import com.szte.SkyScope.Services.SearchStore;
+import com.szte.SkyScope.Utils.FlightOfferFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,7 @@ public class FlightSearchController {
                     flightService.setCarrierNames(result, searchStore.getCarrierDictionary());
                     flightService.setAirportNames(result, flightService.getAirportNamesByItsIata(
                             searchStore.getLocationDictionary(), flightService.getToken().getAccess_token()));
+                    FlightOfferFormatter.formatFlightOfferFields(result);
                     searchStore.saveSearchResult(searchId, result);
                 });
 
