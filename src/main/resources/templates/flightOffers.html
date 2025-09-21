@@ -79,6 +79,11 @@
                                                 <p class="col fs-6"
                                                    th:text="${segment.getAircraft().getName()}"></p>
                                             </div>
+                                            <div class="row text-start" th:if="${itinerary.getLayoverTime().size() > 0}">
+                                                <p class="card-title col" th:each="layover : ${itinerary.getLayoverTime()}"
+                                                   th:text="${'Átszállási idő: ' + layover}">
+                                                </p>
+                                            </div>
                                             <div class="row text-start">
                                                 <h5>Utasok</h5>
                                             </div>
