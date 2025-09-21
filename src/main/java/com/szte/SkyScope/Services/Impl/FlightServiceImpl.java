@@ -88,7 +88,7 @@ public class FlightServiceImpl implements FlightService {
         uriBulder.queryParam("departureDate", flightSearch.getDepartureDate());
         uriBulder.queryParam("adults", flightSearch.getNumberOfAdults());
         uriBulder.queryParam("currencyCode", "HUF");
-        uriBulder.queryParam("max", 250);
+        uriBulder.queryParam("max", 20);
         bindOptionalParameters(uriBulder, flightSearch);
         String response = restClient.get()
                 .uri(uriBulder.build(true).toUri())

@@ -238,6 +238,7 @@ public class FlightOffers {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Aircraft {
 
         private String code;
@@ -383,6 +384,7 @@ public class FlightOffers {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class IncludedBags {
         private String quantity = "0";
 
