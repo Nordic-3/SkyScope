@@ -43,15 +43,19 @@ public class FlightSearchController {
         String searchId = UUID.randomUUID().toString();
         model.addAttribute("searchId", searchId);
 
-        flightService.getFlightOffers(flightSearch, flightService.getToken().getAccess_token())
-                .thenAccept(result -> {
-                    flightService.setAircraftType(result, searchStore.getAircraftDictionary());
-                    flightService.setCarrierNames(result, searchStore.getCarrierDictionary());
-                    flightService.setAirportNames(result, flightService.getAirportNamesByItsIata(
-                            searchStore.getLocationDictionary(), flightService.getToken().getAccess_token()));
-                    FlightOfferFormatter.formatFlightOfferFields(result);
-                    searchStore.saveSearchResult(searchId, result);
-                });
+        try {
+            flightService.getFlightOffers(flightSearch, flightService.getToken().getAccess_token())
+                    .thenAccept(result -> {
+                        flightService.setAircraftType(result, searchStore.getAircraftDictionary());
+                        flightService.setCarrierNames(result, searchStore.getCarrierDictionary());
+                        flightService.setAirportNames(result, flightService.getAirportNamesByItsIata(
+                                searchStore.getLocationDictionary(), flightService.getToken().getAccess_token()));
+                        FlightOfferFormatter.formatFlightOfferFields(result);
+                        searchStore.saveSearchResult(searchId, result);
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         searchStore.saveSearchParameters(flightSearch);
         return "loading";

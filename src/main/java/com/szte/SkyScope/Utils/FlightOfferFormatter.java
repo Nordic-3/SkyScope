@@ -36,17 +36,26 @@ public class FlightOfferFormatter {
     }
 
     private static String formatDuration(String duration) {
-        long hours =  Duration.parse(duration).toHours();
-        long minutes =  Duration.parse(duration).minusHours(hours).toMinutes();
-        return hours + " óra " + minutes + " perc";
+        try {
+            long hours =  Duration.parse(duration).toHours();
+            long minutes =  Duration.parse(duration).minusHours(hours).toMinutes();
+            return hours + " óra " + minutes + " perc";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return duration;
+        }
     }
 
     private static void formatPrice(FlightOffers flightOffers) {
-        DecimalFormatSymbols decimalFormatSymbol = new DecimalFormatSymbols();
-        decimalFormatSymbol.setGroupingSeparator(' ');
-        flightOffers.getPrice().setTotal(
-                new DecimalFormat("###,###,###", decimalFormatSymbol)
-                        .format(Integer.parseInt(flightOffers.getPrice().getTotal().split("\\.")[0])));
+       try {
+           DecimalFormatSymbols decimalFormatSymbol = new DecimalFormatSymbols();
+           decimalFormatSymbol.setGroupingSeparator(' ');
+           flightOffers.getPrice().setTotal(
+                   new DecimalFormat("###,###,###", decimalFormatSymbol)
+                           .format(Integer.parseInt(flightOffers.getPrice().getTotal().split("\\.")[0])));
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
     }
 
     private static void formatAndSetSegmentData(FlightOffers.Segment segment) {
@@ -73,6 +82,11 @@ public class FlightOfferFormatter {
     }
 
     private static String formatTime(String time) {
-        return time.split("T")[0].replace("-", ". ") + ". " + time.split("T")[1];
+        try {
+            return time.split("T")[0].replace("-", ". ") + ". " + time.split("T")[1];
+        } catch (Exception e) {
+            e.printStackTrace();
+            return time;
+        }
     }
 }

@@ -7,10 +7,10 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FlightOffers {
-    private List<Itinerary> itineraries;
-    private Price price;
-    private List<TravelerPricing> travelerPricings;
-    private String id;
+    private List<Itinerary> itineraries = new ArrayList<>();
+    private Price price = new Price();
+    private List<TravelerPricing> travelerPricings = new ArrayList<>();
+    private String id = "";
 
     public String getId() {
         return id;
@@ -47,8 +47,8 @@ public class FlightOffers {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Itinerary {
 
-        private List<Segment> segments;
-        private String duration;
+        private List<Segment> segments = new ArrayList<>();
+        private String duration = "";
         private List<String> layoverTime = new ArrayList<>();
 
         public List<String> getLayoverTime() {
@@ -83,16 +83,16 @@ public class FlightOffers {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Segment {
 
-        private String id;
-        private FlightSchedule departure;
-        private FlightSchedule arrival;
-        private String carrierCode;
-        private String carrierName;
-        private String number;
-        private Aircraft aircraft;
-        private Operating operating;
-        private String duration;
-        private int numberOfStops;
+        private String id = "";
+        private FlightSchedule departure = new FlightSchedule();
+        private FlightSchedule arrival = new FlightSchedule();
+        private String carrierCode = "";
+        private String carrierName = "";
+        private String number = "";
+        private Aircraft aircraft = new Aircraft();
+        private Operating operating = new Operating();
+        private String duration = "";
+        private int numberOfStops = 0;
 
         public String getCarrierName() {
             return carrierName;
@@ -178,10 +178,10 @@ public class FlightOffers {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class FlightSchedule {
 
-        private String iataCode;
-        private String terminal;
-        private String at;
-        private String airportName;
+        private String iataCode = "";
+        private String terminal = "";
+        private String at = "";
+        private String airportName = "";
 
         public String getAirportName() {
             return airportName;
@@ -219,8 +219,8 @@ public class FlightOffers {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Operating {
 
-        private String carrierCode;
-        private String carrierName;
+        private String carrierCode = "";
+        private String carrierName = "";
 
         public String getCarrierName() {
             return carrierName;
@@ -242,8 +242,8 @@ public class FlightOffers {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Aircraft {
 
-        private String code;
-        private String name;
+        private String code = "";
+        private String name = "";
 
         public String getName() {
             return name;
@@ -265,8 +265,8 @@ public class FlightOffers {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Price {
 
-        private String currency;
-        private String total;
+        private String currency = "";
+        private String total = "";
 
         public String getCurrency() {
             return currency;
@@ -288,11 +288,11 @@ public class FlightOffers {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class TravelerPricing {
 
-        private String travelerId;
-        private String fareOption;
-        private String travelerType;
-        private Price price;
-        private List<FareDetailsBySegment> fareDetailsBySegment;
+        private String travelerId = "";
+        private String fareOption = "";
+        private String travelerType = "";
+        private Price price = new Price();
+        private List<FareDetailsBySegment> fareDetailsBySegment = new ArrayList<>();
 
         public List<FareDetailsBySegment> getFareDetailsBySegment() {
             return fareDetailsBySegment;
@@ -344,13 +344,13 @@ public class FlightOffers {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class FareDetailsBySegment {
-        private String segmentId;
-        private String cabin;
-        private IncludedBags includedCheckedBags;
-        private IncludedBags includedCabinBags;
+        private String segmentId = "";
+        private String cabin = "";
+        private IncludedBags includedCheckedBags = new IncludedBags();
+        private IncludedBags includedCabinBags = new IncludedBags();
 
         public IncludedBags getIncludedCabinBags() {
-            return includedCabinBags == null ? new IncludedBags() : includedCabinBags;
+            return includedCabinBags;
         }
 
         public void setIncludedCabinBags(IncludedBags includedCabinBags) {
@@ -374,7 +374,7 @@ public class FlightOffers {
         }
 
         public IncludedBags getIncludedCheckedBags() {
-            return includedCheckedBags == null ? new IncludedBags() : includedCheckedBags;
+            return includedCheckedBags;
         }
 
         public void setIncludedCheckedBags(IncludedBags includedCheckedBags) {
