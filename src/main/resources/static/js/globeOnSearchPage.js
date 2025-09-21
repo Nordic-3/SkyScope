@@ -59,7 +59,11 @@ function goToOriginCity() {
                     let responseJSON = JSON.parse(responseInText);
                     let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
                     if (earth !== undefined) {
-                        setEarthOnSearchPage(cityDetails);
+                        labeledCities.push(cityDetails);
+                        labelCityAndNavigate(cityDetails);
+                        lineDatas.startLat = cityDetails.lat;
+                        lineDatas.startLng = cityDetails.lng;
+                        connectCitesIfAllGiven();
                     }
                     originCity = cityDetails;
                     window.localStorage.setItem("originCity", JSON.stringify(cityDetails));
@@ -90,7 +94,11 @@ function goToDestinationCity() {
                     let responseJSON = JSON.parse(responseInText);
                     let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
                     if (earth !== undefined) {
-                        setEarthOnSearchPage(cityDetails);
+                        labeledCities.push(cityDetails);
+                        labelCityAndNavigate(cityDetails);
+                        lineDatas.endLat = cityDetails.lat;
+                        lineDatas.endLng = cityDetails.lng;
+                        connectCitesIfAllGiven();
                     }
                     destinationCity = cityDetails;
                     window.localStorage.setItem("destinationCity", JSON.stringify(cityDetails));
@@ -100,14 +108,6 @@ function goToDestinationCity() {
             });
     }
     destinationCityElement.classList.remove("border-danger");
-}
-
-function setEarthOnSearchPage(cityDetails) {
-    labeledCities.push(cityDetails);
-    labelCityAndNavigate(cityDetails);
-    lineDatas.endLat = cityDetails.lat;
-    lineDatas.endLng = cityDetails.lng;
-    connectCitesIfAllGiven();
 }
 
 function labelCityAndNavigate(cityDetails) {
