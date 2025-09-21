@@ -54,9 +54,10 @@
                                 <div class="card h-100 mb-3">
                                     <div class="card-body">
                                         <div class="card-text container text-center"
-                                             th:each="itinerary, iStat : ${offer.getItineraries()}">
+                                             th:each="itinerary, itineraryStatus : ${offer.getItineraries()}">
                                             <div class="row text-start">
-                                                <h5 th:text="${iStat.odd ? 'Induló járat' : 'Visszaút'}"></h5>
+                                                <h5 th:text="${itineraryStatus.odd ? 'Induló járat' : 'Visszaút'}"></h5>
+                                                <hr>
                                             </div>
                                             <div class="row"
                                                  th:each="segment : ${itinerary.getSegments()}">
@@ -69,8 +70,16 @@
                                                 <p class="col fs-6"
                                                    th:text="${segment.getArrival().getAt()}"></p>
                                             </div>
+                                            <div class="row text-start"
+                                                 th:if="${itinerary.getLayoverTime().size() > 0}">
+                                                <p class="col fs-6"
+                                                   th:each="layover : ${itinerary.getLayoverTime()}"
+                                                   th:text="${'Átszállási idő: ' + layover}">
+                                                </p>
+                                            </div>
                                             <div class="row"
-                                                 th:each="segment : ${itinerary.getSegments()}">
+                                                 th:each="segment, segmentStatus : ${itinerary.getSegments()}">
+                                                <hr th:if="${segmentStatus.first}">
                                                 <p class="col fs-6"
                                                    th:text="${segment.getOperating().getCarrierName()}"></p>
                                                 <p class="col fs-6"
@@ -79,16 +88,12 @@
                                                 <p class="col fs-6"
                                                    th:text="${segment.getAircraft().getName()}"></p>
                                             </div>
-                                            <div class="row text-start" th:if="${itinerary.getLayoverTime().size() > 0}">
-                                                <p class="card-title col" th:each="layover : ${itinerary.getLayoverTime()}"
-                                                   th:text="${'Átszállási idő: ' + layover}">
-                                                </p>
-                                            </div>
                                             <div class="row text-start">
                                                 <h5>Utasok</h5>
+                                                <hr>
                                             </div>
                                             <div Class="row"
-                                                 th:each="segment : ${itinerary.getSegments()}">
+                                                 th:each="segment, segmentStatus : ${itinerary.getSegments()}">
                                                 <div class="col" th:each="traveller : ${offer.getTravelerPricings()}">
                                                     <p class="col fs-6"
                                                        th:text="${traveller.getTravelerType()}"></p>
@@ -101,6 +106,7 @@
                                                         <p class="col fs-6"
                                                            th:text="${fareDetails.getIncludedCabinBags().getQuantity() + ' kézipoggyász'}"></p>
                                                     </div>
+                                                    <hr th:if="${!segmentStatus.last}">
                                                 </div>
                                             </div>
                                         </div>
