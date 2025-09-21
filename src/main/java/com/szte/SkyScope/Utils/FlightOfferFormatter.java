@@ -78,7 +78,7 @@ public class FlightOfferFormatter {
     }
 
     private static String formatAirportName(String airportName, String terminal) {
-        return airportName + (terminal != null ? " " + terminal + " terminál" : "");
+        return airportName + (!terminal.isEmpty() ? " " + terminal + " terminál" : "");
     }
 
     private static String formatTime(String time) {
