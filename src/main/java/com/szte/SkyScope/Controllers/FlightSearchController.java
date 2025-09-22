@@ -50,7 +50,6 @@ public class FlightSearchController {
             flightService.getFlightOffers(flightSearch, flightService.getToken().getAccess_token())
                     .thenAccept(result -> {
                         setFlightOffersAttributes(result);
-                        FlightOfferFormatter.formatFlightOfferFields(result);
                         searchStore.saveSearchResult(searchId, orderResultService.orderOffersByDeffault(result));
                     });
         } catch (Exception e) {
@@ -74,7 +73,9 @@ public class FlightSearchController {
     @GetMapping("/resultsPage/{searchId}")
     public String resultsPage(@PathVariable String searchId, Model model, @ModelAttribute FlightSearch flightSearch) {
         model.addAttribute("flightSearch", searchStore.getSearchParameters());
-        model.addAttribute("results", searchStore.getSearchResult(searchId));
+        model.addAttribute("results",
+                FlightOfferFormatter.formatFlightOfferFields(searchStore.getSearchResult(searchId)));
+        model.addAttribute("searchId", searchId);
         return "flightOffers";
     }
 

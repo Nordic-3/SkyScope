@@ -11,8 +11,9 @@ import java.util.List;
 
 public class FlightOfferFormatter {
 
-    public static void formatFlightOfferFields(List<FlightOffers> flightOffers) {
-        flightOffers.forEach(flightOffer -> {
+    public static List<FlightOffers> formatFlightOfferFields(List<FlightOffers> flightOffers) {
+        List<FlightOffers> formattedFlightOffers = flightOffers.stream().map(FlightOffers::new).toList();
+        formattedFlightOffers.forEach(flightOffer -> {
             flightOffer.getItineraries().forEach(itinerary -> {
                 if (itinerary.getSegments().size() > 1) {
                     itinerary.setLayoverTime(calculateLayoverTime(itinerary.getSegments()));
@@ -23,6 +24,7 @@ public class FlightOfferFormatter {
             });
             formatPrice(flightOffer);
         });
+        return formattedFlightOffers;
     }
 
     private static List<String> calculateLayoverTime(List<FlightOffers.Segment> segments) {

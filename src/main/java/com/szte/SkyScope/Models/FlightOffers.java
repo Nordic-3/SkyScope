@@ -12,6 +12,21 @@ public class FlightOffers {
     private List<TravelerPricing> travelerPricings = new ArrayList<>();
     private String id = "";
 
+    public FlightOffers() {}
+    public FlightOffers(FlightOffers flightOffers) {
+        this.itineraries = flightOffers.getItineraries()
+                .stream()
+                .map(Itinerary::new)
+                .toList();
+        this.price = new Price(flightOffers.getPrice());
+        this.travelerPricings = flightOffers.getTravelerPricings()
+                .stream()
+                .map(TravelerPricing::new)
+                .toList();
+        this.id = flightOffers.getId();
+    }
+
+
     public String getId() {
         return id;
     }
@@ -50,6 +65,16 @@ public class FlightOffers {
         private List<Segment> segments = new ArrayList<>();
         private String duration = "";
         private List<String> layoverTime = new ArrayList<>();
+
+        public Itinerary() {}
+        public Itinerary(Itinerary itinerary) {
+            this.segments = itinerary.getSegments()
+                    .stream()
+                    .map(Segment::new)
+                    .toList();
+            this.duration = itinerary.getDuration();
+            this.layoverTime = new ArrayList<>(itinerary.getLayoverTime());
+        }
 
         public List<String> getLayoverTime() {
             return layoverTime;
@@ -92,7 +117,20 @@ public class FlightOffers {
         private Aircraft aircraft = new Aircraft();
         private Operating operating = new Operating();
         private String duration = "";
-        private int numberOfStops = 0;
+
+        public Segment() {}
+        public Segment(Segment segment) {
+            this.id = segment.getId();
+            this.departure = new FlightSchedule(segment.getDeparture());
+            this.arrival = new FlightSchedule(segment.getArrival());
+            this.carrierCode = segment.getCarrierCode();
+            this.carrierName = segment.getCarrierName();
+            this.number = segment.getNumber();
+            this.aircraft = new Aircraft(segment.getAircraft());
+            this.operating = new Operating(segment.getOperating());
+            this.duration = segment.getDuration();
+        }
+
 
         public String getCarrierName() {
             return carrierName;
@@ -165,14 +203,6 @@ public class FlightOffers {
         public void setDuration(String duration) {
             this.duration = duration;
         }
-
-        public int getNumberOfStops() {
-            return numberOfStops;
-        }
-
-        public void setNumberOfStops(int numberOfStops) {
-            this.numberOfStops = numberOfStops;
-        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -182,6 +212,15 @@ public class FlightOffers {
         private String terminal = "";
         private String at = "";
         private String airportName = "";
+
+        public FlightSchedule() {}
+        public FlightSchedule(FlightSchedule flightSchedule) {
+            this.iataCode = flightSchedule.getIataCode();
+            this.terminal = flightSchedule.getTerminal();
+            this.at = flightSchedule.getAt();
+            this.airportName = flightSchedule.getAirportName();
+        }
+
 
         public String getAirportName() {
             return airportName;
@@ -222,6 +261,13 @@ public class FlightOffers {
         private String carrierCode = "";
         private String carrierName = "";
 
+        public Operating() {}
+        public Operating(Operating operating) {
+            this.carrierCode = operating.getCarrierCode();
+            this.carrierName = operating.getCarrierName();
+        }
+
+
         public String getCarrierName() {
             return carrierName;
         }
@@ -245,6 +291,13 @@ public class FlightOffers {
         private String code = "";
         private String name = "";
 
+        public Aircraft() {}
+        public Aircraft(Aircraft aircraft) {
+            this.code = aircraft.getCode();
+            this.name = aircraft.getName();
+        }
+
+
         public String getName() {
             return name;
         }
@@ -267,6 +320,13 @@ public class FlightOffers {
 
         private String currency = "";
         private String total = "";
+
+        public Price() {}
+        public Price(Price price) {
+            this.currency = price.getCurrency();
+            this.total = price.getTotal();
+        }
+
 
         public String getCurrency() {
             return currency;
@@ -293,6 +353,18 @@ public class FlightOffers {
         private String travelerType = "";
         private Price price = new Price();
         private List<FareDetailsBySegment> fareDetailsBySegment = new ArrayList<>();
+
+        public TravelerPricing() {}
+        public TravelerPricing(TravelerPricing travelerPricing) {
+            this.travelerId = travelerPricing.getTravelerId();
+            this.fareOption = travelerPricing.getFareOption();
+            this.travelerType = travelerPricing.getTravelerType();
+            this.price = new Price(travelerPricing.getPrice());
+            this.fareDetailsBySegment = travelerPricing.getFareDetailsBySegment()
+                    .stream()
+                    .map(FareDetailsBySegment::new)
+                    .toList();
+        }
 
         public List<FareDetailsBySegment> getFareDetailsBySegment() {
             return fareDetailsBySegment;
@@ -349,6 +421,14 @@ public class FlightOffers {
         private IncludedBags includedCheckedBags = new IncludedBags();
         private IncludedBags includedCabinBags = new IncludedBags();
 
+        public FareDetailsBySegment() {}
+        public FareDetailsBySegment(FareDetailsBySegment fareDetailsBySegment) {
+            this.segmentId = fareDetailsBySegment.getSegmentId();
+            this.cabin = fareDetailsBySegment.getCabin();
+            this.includedCheckedBags = new IncludedBags(fareDetailsBySegment.getIncludedCheckedBags());
+            this.includedCabinBags = new IncludedBags(fareDetailsBySegment.getIncludedCabinBags());
+        }
+
         public IncludedBags getIncludedCabinBags() {
             return includedCabinBags;
         }
@@ -385,6 +465,10 @@ public class FlightOffers {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class IncludedBags {
         private String quantity = "0";
+        public IncludedBags() {}
+        public IncludedBags(IncludedBags includedBags) {
+            this.quantity = includedBags.getQuantity();
+        }
 
         public String getQuantity() {
             return quantity;
