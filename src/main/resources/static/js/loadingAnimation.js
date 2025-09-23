@@ -1,8 +1,8 @@
 function checkResults(searchId) {
-    fetch('/results/' + searchId)
+    fetch("/results/" + searchId)
         .then(response => {
             if (response.status === 200) {
-                window.location.href = '/resultsPage/' + searchId;
+                window.location.href = "/resultsPage/" + searchId;
             } else {
                 setTimeout(() => checkResults(searchId), 2000);
             }
@@ -22,8 +22,8 @@ function contentLoaded() {
 }
 
 function labelCitiesAndConnect() {
-    labelCityOnLoading(JSON.parse(window.localStorage.getItem('originCity')));
-    labelCityOnLoading(JSON.parse(window.localStorage.getItem('destinationCity')));
+    labelCityOnLoading(JSON.parse(window.localStorage.getItem("originCity")));
+    labelCityOnLoading(JSON.parse(window.localStorage.getItem("destinationCity")));
     lineDatas.startLat = labeledCities.at(0).lat;
     lineDatas.startLng = labeledCities.at(0).lng;
     lineDatas.endLat = labeledCities.at(1).lat;
