@@ -19,12 +19,25 @@
 <main class="mt-5 container">
     <div class="row">
         <aside class="col-12 col-md-3 mb-4">
-            <div class="card rounded-5">
-                <div class="card-header">
+            <div class="card rounded-5 mb-4">
+                <h5 class="card-header">
                     Találatok szűrése
-                </div>
+                </h5>
                 <div class="card-body">
                     <h1> TODO SZŰRÉSEK </h1>
+                </div>
+            </div>
+            <div class="card rounded-5">
+                <h5 class="card-header">
+                    Találatok rendezése
+                </h5>
+                <div class="card-body d-flex flex-column align-items-center">
+                    <a th:href="@{'/order/' + ${searchId} + '?by=priceAsc'}" class="btn btn-outline-success mb-2">Ár szerint növekvő</a>
+                    <a th:href="@{'/order/' + ${searchId} + '?by=priceDsc'}" class="btn btn-outline-danger mb-3">Ár szerint csökkenő</a>
+                    <a th:href="@{'/order/' + ${searchId} + '?by=flyTimeAsc'}" class="btn btn-outline-success mb-2">Repülési idő szerint növekvő</a>
+                    <a th:href="@{'/order/' + ${searchId} + '?by=flyTimeDsc'}" class="btn btn-outline-danger mb-3">Repülési idő szerint csökkenő</a>
+                    <a th:href="@{'/order/' + ${searchId} + '?by=transferTimeAsc'}" class="btn btn-outline-success mb-2">Átszállás száma szerint növekvő</a>
+                    <a th:href="@{'/order/' + ${searchId} + '?by=transferTimeDsc'}" class="btn btn-outline-danger mb-2">Átszállás száma szerint csökkenő</a>
                 </div>
             </div>
         </aside>

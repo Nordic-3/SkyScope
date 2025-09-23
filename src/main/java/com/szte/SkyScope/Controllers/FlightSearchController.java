@@ -4,7 +4,7 @@ import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.InputValidationService;
-import com.szte.SkyScope.Services.OrderResultService;
+import com.szte.SkyScope.Services.SortResultService;
 import com.szte.SkyScope.Services.SearchStore;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,14 @@ public class FlightSearchController {
     private final InputValidationService inputValidationService;
     private final FlightService flightService;
     private final SearchStore searchStore;
-    private final OrderResultService orderResultService;
+    private final SortResultService sortResultService;
 
     @Autowired
-    public FlightSearchController(InputValidationService inputValidationService, FlightService flightService, SearchStore searchStore, OrderResultService orderResultService) {
+    public FlightSearchController(InputValidationService inputValidationService, FlightService flightService, SearchStore searchStore, SortResultService sortResultService) {
         this.inputValidationService = inputValidationService;
         this.flightService = flightService;
         this.searchStore = searchStore;
-        this.orderResultService = orderResultService;
+        this.sortResultService = sortResultService;
     }
 
     @PostMapping("/flightsearch")
@@ -50,7 +50,7 @@ public class FlightSearchController {
             flightService.getFlightOffers(flightSearch, flightService.getToken().getAccess_token())
                     .thenAccept(result -> {
                         setFlightOffersAttributes(result);
-                        searchStore.saveSearchResult(searchId, orderResultService.orderOffersByDeffault(result));
+                        searchStore.saveSearchResult(searchId, sortResultService.sortOffersByDeffault(result));
                     });
         } catch (Exception e) {
             e.printStackTrace();

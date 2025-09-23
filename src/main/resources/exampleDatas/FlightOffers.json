@@ -5,155 +5,6 @@
   "data": [
     {
       "type": "flight-offer",
-      "id": "1",
-      "source": "GDS",
-      "instantTicketingRequired": false,
-      "nonHomogeneous": false,
-      "oneWay": false,
-      "isUpsellOffer": false,
-      "lastTicketingDate": "2025-09-08",
-      "lastTicketingDateTime": "2025-09-08",
-      "numberOfBookableSeats": 9,
-      "itineraries": [
-        {
-          "duration": "PT7H50M",
-          "segments": [
-            {
-              "departure": {
-                "iataCode": "LGW",
-                "at": "2025-09-12T13:05:00"
-              },
-              "arrival": {
-                "iataCode": "JFK",
-                "at": "2025-09-12T15:55:00"
-              },
-              "carrierCode": "A1",
-              "number": "5951",
-              "aircraft": {
-                "code": "787"
-              },
-              "operating": {
-                "carrierCode": "Z0"
-              },
-              "duration": "PT7H50M",
-              "id": "9",
-              "numberOfStops": 0,
-              "blacklistedInEU": false
-            }
-          ]
-        },
-        {
-          "duration": "PT7H",
-          "segments": [
-            {
-              "departure": {
-                "iataCode": "JFK",
-                "at": "2025-09-19T18:20:00"
-              },
-              "arrival": {
-                "iataCode": "LGW",
-                "at": "2025-09-20T06:20:00"
-              },
-              "carrierCode": "A1",
-              "number": "5952",
-              "aircraft": {
-                "code": "787"
-              },
-              "operating": {
-                "carrierCode": "Z0"
-              },
-              "duration": "PT7H",
-              "id": "10",
-              "numberOfStops": 0,
-              "blacklistedInEU": false
-            }
-          ]
-        }
-      ],
-      "price": {
-        "currency": "HUF",
-        "total": "331800.00",
-        "base": "165600.00",
-        "fees": [
-          {
-            "amount": "0.00",
-            "type": "SUPPLIER"
-          },
-          {
-            "amount": "0.00",
-            "type": "TICKETING"
-          }
-        ],
-        "grandTotal": "331800.00"
-      },
-      "pricingOptions": {
-        "fareType": [
-          "PUBLISHED"
-        ],
-        "includedCheckedBagsOnly": false
-      },
-      "validatingAirlineCodes": [
-        "GP"
-      ],
-      "travelerPricings": [
-        {
-          "travelerId": "1",
-          "fareOption": "STANDARD",
-          "travelerType": "ADULT",
-          "price": {
-            "currency": "HUF",
-            "total": "186600.00",
-            "base": "82800.00"
-          },
-          "fareDetailsBySegment": [
-            {
-              "segmentId": "9",
-              "cabin": "ECONOMY",
-              "fareBasis": "OEC",
-              "class": "O",
-              "includedCheckedBags": {
-                "quantity": 1
-              }
-            },
-            {
-              "segmentId": "10",
-              "cabin": "ECONOMY",
-              "fareBasis": "OEC",
-              "class": "O",
-              "includedCheckedBags": {
-                "quantity": 1
-              }
-            }
-          ]
-        },
-        {
-          "travelerId": "2",
-          "fareOption": "STANDARD",
-          "travelerType": "CHILD",
-          "price": {
-            "currency": "HUF",
-            "total": "145200.00",
-            "base": "82800.00"
-          },
-          "fareDetailsBySegment": [
-            {
-              "segmentId": "9",
-              "cabin": "ECONOMY",
-              "fareBasis": "OEC",
-              "class": "O"
-            },
-            {
-              "segmentId": "10",
-              "cabin": "ECONOMY",
-              "fareBasis": "OEC",
-              "class": "O"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "flight-offer",
       "id": "2",
       "source": "GDS",
       "instantTicketingRequired": false,
@@ -808,6 +659,155 @@
                   }
                 }
               ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "source": "GDS",
+      "instantTicketingRequired": false,
+      "nonHomogeneous": false,
+      "oneWay": false,
+      "isUpsellOffer": false,
+      "lastTicketingDate": "2025-09-08",
+      "lastTicketingDateTime": "2025-09-08",
+      "numberOfBookableSeats": 9,
+      "itineraries": [
+        {
+          "duration": "PT7H50M",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "LGW",
+                "at": "2025-09-12T13:05:00"
+              },
+              "arrival": {
+                "iataCode": "JFK",
+                "at": "2025-09-12T15:55:00"
+              },
+              "carrierCode": "A1",
+              "number": "5951",
+              "aircraft": {
+                "code": "787"
+              },
+              "operating": {
+                "carrierCode": "Z0"
+              },
+              "duration": "PT7H50M",
+              "id": "9",
+              "numberOfStops": 0,
+              "blacklistedInEU": false
+            }
+          ]
+        },
+        {
+          "duration": "PT7H",
+          "segments": [
+            {
+              "departure": {
+                "iataCode": "JFK",
+                "at": "2025-09-19T18:20:00"
+              },
+              "arrival": {
+                "iataCode": "LGW",
+                "at": "2025-09-20T06:20:00"
+              },
+              "carrierCode": "A1",
+              "number": "5952",
+              "aircraft": {
+                "code": "787"
+              },
+              "operating": {
+                "carrierCode": "Z0"
+              },
+              "duration": "PT7H",
+              "id": "10",
+              "numberOfStops": 0,
+              "blacklistedInEU": false
+            }
+          ]
+        }
+      ],
+      "price": {
+        "currency": "HUF",
+        "total": "331800.00",
+        "base": "165600.00",
+        "fees": [
+          {
+            "amount": "0.00",
+            "type": "SUPPLIER"
+          },
+          {
+            "amount": "0.00",
+            "type": "TICKETING"
+          }
+        ],
+        "grandTotal": "331800.00"
+      },
+      "pricingOptions": {
+        "fareType": [
+          "PUBLISHED"
+        ],
+        "includedCheckedBagsOnly": false
+      },
+      "validatingAirlineCodes": [
+        "GP"
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "price": {
+            "currency": "HUF",
+            "total": "186600.00",
+            "base": "82800.00"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "9",
+              "cabin": "ECONOMY",
+              "fareBasis": "OEC",
+              "class": "O",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            },
+            {
+              "segmentId": "10",
+              "cabin": "ECONOMY",
+              "fareBasis": "OEC",
+              "class": "O",
+              "includedCheckedBags": {
+                "quantity": 1
+              }
+            }
+          ]
+        },
+        {
+          "travelerId": "2",
+          "fareOption": "STANDARD",
+          "travelerType": "CHILD",
+          "price": {
+            "currency": "HUF",
+            "total": "145200.00",
+            "base": "82800.00"
+          },
+          "fareDetailsBySegment": [
+            {
+              "segmentId": "9",
+              "cabin": "ECONOMY",
+              "fareBasis": "OEC",
+              "class": "O"
+            },
+            {
+              "segmentId": "10",
+              "cabin": "ECONOMY",
+              "fareBasis": "OEC",
+              "class": "O"
             }
           ]
         }
