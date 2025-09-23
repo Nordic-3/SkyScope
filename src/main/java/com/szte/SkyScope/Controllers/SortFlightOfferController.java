@@ -68,6 +68,6 @@ public class SortFlightOfferController {
                         ));
                 break;
         }
-        return "redirect:/resultsPage/" + searchId;
+        return "redirect:/resultsPage/" + searchId + "?by=" + by;
     }
 }
