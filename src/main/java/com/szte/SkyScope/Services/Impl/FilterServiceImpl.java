@@ -81,9 +81,12 @@ public class FilterServiceImpl implements FilterService {
 
   @Override
   public String getMaxPrice(List<FlightOffers> flightOffers) {
-    return FlightOfferFormatter.formatPrice(
-            sortResultService.sortOffersByPriceDSC(flightOffers).getFirst().getPrice().getTotal())
-        + "Ft";
+    List<FlightOffers> orderedOffers = sortResultService.sortOffersByPriceDSC(flightOffers);
+    if (!orderedOffers.isEmpty()) {
+      return FlightOfferFormatter.formatPrice(orderedOffers.getFirst().getPrice().getTotal())
+          + "Ft";
+    }
+    return "";
   }
 
   private boolean filterPrice(FlightOffers offer, FilterAttribute filter) {
