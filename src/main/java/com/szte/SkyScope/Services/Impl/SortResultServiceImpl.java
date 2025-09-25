@@ -30,6 +30,10 @@ public class SortResultServiceImpl implements SortResultService {
                                 < Integer.parseInt(o2.getPrice().getTotal().split("\\.")[0])) {
                             return -1;
                         }
+                        if (Integer.parseInt(o1.getPrice().getTotal().split("\\.")[0])
+                                == Integer.parseInt(o2.getPrice().getTotal().split("\\.")[0])) {
+                            return 0;
+                        }
                     }
                     return 1;})
                 .toList();
@@ -44,6 +48,10 @@ public class SortResultServiceImpl implements SortResultService {
                         if (Integer.parseInt(o1.getPrice().getTotal().split("\\.")[0])
                                 > Integer.parseInt(o2.getPrice().getTotal().split("\\.")[0])) {
                             return -1;
+                        }
+                        if (Integer.parseInt(o1.getPrice().getTotal().split("\\.")[0])
+                                == Integer.parseInt(o2.getPrice().getTotal().split("\\.")[0])) {
+                            return 0;
                         }
                     }
                     return 1;})
@@ -62,6 +70,11 @@ public class SortResultServiceImpl implements SortResultService {
                                         .compareTo(Duration.parse(o2.getItineraries().getFirst().getDuration())) < 0 ) {
                             return -1;
                         }
+                        if (Duration.parse(
+                                        o1.getItineraries().getFirst().getDuration())
+                                .compareTo(Duration.parse(o2.getItineraries().getFirst().getDuration())) == 0 ) {
+                            return 0;
+                        }
                     }
                     return 1;
                 })
@@ -79,6 +92,11 @@ public class SortResultServiceImpl implements SortResultService {
                                         o1.getItineraries().getFirst().getDuration())
                                 .compareTo(Duration.parse(o2.getItineraries().getFirst().getDuration())) > 0 ) {
                             return -1;
+                        }
+                        if (Duration.parse(
+                                        o1.getItineraries().getFirst().getDuration())
+                                .compareTo(Duration.parse(o2.getItineraries().getFirst().getDuration())) == 0 ) {
+                            return 0;
                         }
                     }
                     return 1;
