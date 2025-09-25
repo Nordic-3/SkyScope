@@ -8,8 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 public class SkyScopeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SkyScopeApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(SkyScopeApplication.class, args);
+  }
 }

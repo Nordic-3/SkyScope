@@ -6,52 +6,59 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationConfig {
 
-    @Value("${use_apis}")
-    private boolean useApis;
-    @Value("${geo_names_key:noApi}")
-    private String geoNamesApiKey;
-    @Value("${opensky_baseurl:noApi}")
-    private String openskyApiKey;
-    @Value("${amadeus_client_id:noApi}")
-    private String amadeusClientId;
-    @Value("${amadeus_client_secret:noApi}")
-    private String amadeusClientSecret;
-    @Value("${amadeus_auth_url:noApi}")
-    private String amadeusAuthUrl;
-    @Value("${amadeus_city_search_api:noApi}")
-    private String amadeusCitySearchApi;
-    @Value("${amadeus_flight_offer_search_api:noApi}")
-    private String amadeusFlightOfferSearchApi;
+  @Value("${use_apis}")
+  private boolean useApis;
 
-    public String getAmadeusFlightOfferSearchApi() {
-        return amadeusFlightOfferSearchApi;
-    }
+  @Value("${geo_names_key:noApi}")
+  private String geoNamesApiKey;
 
-    public boolean useApis() {
-        return useApis;
-    }
+  @Value("${opensky_baseurl:noApi}")
+  private String openskyApiKey;
 
-    public String getGeoNamesApiKey() {
-        return geoNamesApiKey;
-    }
+  @Value("${amadeus_client_id:noApi}")
+  private String amadeusClientId;
 
-    public String getOpenskyApiKey() {
-        return openskyApiKey;
-    }
+  @Value("${amadeus_client_secret:noApi}")
+  private String amadeusClientSecret;
 
-    public String getAmadeusClientId() {
-        return amadeusClientId;
-    }
+  @Value("${amadeus_auth_url:noApi}")
+  private String amadeusAuthUrl;
 
-    public String getAmadeusClientSecret() {
-        return amadeusClientSecret;
-    }
+  @Value("${amadeus_city_search_api:noApi}")
+  private String amadeusCitySearchApi;
 
-    public String getAmadeusAuthUrl() {
-        return amadeusAuthUrl;
-    }
+  @Value("${amadeus_flight_offer_search_api:noApi}")
+  private String amadeusFlightOfferSearchApi;
 
-    public String getAmadeusCitySearchApi() {
-        return amadeusCitySearchApi;
-    }
+  public String getAmadeusFlightOfferSearchApi() {
+    return amadeusFlightOfferSearchApi;
+  }
+
+  public boolean useApis() {
+    return useApis;
+  }
+
+  public String getGeoNamesApiKey() {
+    return geoNamesApiKey;
+  }
+
+  public String getOpenskyApiKey() {
+    return openskyApiKey;
+  }
+
+  public String getAmadeusClientId() {
+    return amadeusClientId;
+  }
+
+  public String getAmadeusClientSecret() {
+    return amadeusClientSecret;
+  }
+
+  public String getAmadeusAuthUrl() {
+    return amadeusAuthUrl;
+  }
+
+  public String getAmadeusCitySearchApi() {
+    return amadeusCitySearchApi;
+  }
 }

@@ -12,8 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class SpringCacheConfig {
 
-    @Bean
-    public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("amadeusApiToken");
-    }
+  @Bean
+  public CacheManager cacheManager() {
+    return new ConcurrentMapCacheManager("amadeusApiToken");
+  }
 }
