@@ -1,5 +1,6 @@
 package com.szte.SkyScope.Services.Impl;
 
+import com.szte.SkyScope.Models.FilterAttribute;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.Location;
@@ -17,6 +18,8 @@ public class SearchStoreImpl implements SearchStore {
     private Map<String, String> aircraftDictionary;
     private Map<String, Location> locationDictionary;
     private Map<String, String> carrierDictionary;
+    private FilterAttribute filterAttribute = new FilterAttribute();
+    private final Map<String, List<FlightOffers>> originalSearchResult = new HashMap<>();
 
     @Override
     public void saveSearchResult(String id, List<FlightOffers> offers) {
@@ -66,5 +69,25 @@ public class SearchStoreImpl implements SearchStore {
     @Override
     public Map<String, String> getCarrierDictionary() {
         return this.carrierDictionary;
+    }
+
+    @Override
+    public void saveFilters(FilterAttribute filterAttribute) {
+        this.filterAttribute = filterAttribute;
+    }
+
+    @Override
+    public FilterAttribute getFilterAttribute() {
+        return this.filterAttribute;
+    }
+
+    @Override
+    public void saveOriginalSearchResult(String id, List<FlightOffers> offers) {
+        originalSearchResult.put(id, offers);
+    }
+
+    @Override
+    public List<FlightOffers> getOriginalSearchResult(String id) {
+        return originalSearchResult.get(id);
     }
 }

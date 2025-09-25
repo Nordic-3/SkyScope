@@ -2,10 +2,7 @@ package com.szte.SkyScope.Controllers;
 
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
-import com.szte.SkyScope.Services.FlightService;
-import com.szte.SkyScope.Services.InputValidationService;
-import com.szte.SkyScope.Services.SortResultService;
-import com.szte.SkyScope.Services.SearchStore;
+import com.szte.SkyScope.Services.*;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,13 +21,17 @@ public class FlightSearchController {
     private final FlightService flightService;
     private final SearchStore searchStore;
     private final SortResultService sortResultService;
+    private final FilterService filterService;
 
     @Autowired
-    public FlightSearchController(InputValidationService inputValidationService, FlightService flightService, SearchStore searchStore, SortResultService sortResultService) {
+    public FlightSearchController(InputValidationService inputValidationService,
+                                  FlightService flightService, SearchStore searchStore,
+                                  SortResultService sortResultService, FilterService filterService) {
         this.inputValidationService = inputValidationService;
         this.flightService = flightService;
         this.searchStore = searchStore;
         this.sortResultService = sortResultService;
+        this.filterService = filterService;
     }
 
     @PostMapping("/flightsearch")
@@ -51,6 +52,7 @@ public class FlightSearchController {
                     .thenAccept(result -> {
                         setFlightOffersAttributes(result);
                         searchStore.saveSearchResult(searchId, sortResultService.sortOffersByDeffault(result));
+                        searchStore.saveOriginalSearchResult(searchId, sortResultService.sortOffersByDeffault(result));
                     });
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,11 +73,18 @@ public class FlightSearchController {
     }
 
     @GetMapping("/resultsPage/{searchId}")
-    public String resultsPage(@PathVariable String searchId, Model model, @ModelAttribute FlightSearch flightSearch) {
+    public String resultsPage(@PathVariable String searchId, Model model, @ModelAttribute FlightSearch flightSearch, @RequestParam String by) {
         model.addAttribute("flightSearch", searchStore.getSearchParameters());
         model.addAttribute("results",
                 FlightOfferFormatter.formatFlightOfferFields(searchStore.getSearchResult(searchId)));
         model.addAttribute("searchId", searchId);
+        model.addAttribute("sortBy", by);
+        model.addAttribute("allAirline", filterService.getAirlineNames(searchStore.getSearchResult(searchId)));
+        model.addAttribute("filterOffers", searchStore.getFilterAttribute());
+        model.addAttribute("transferNumbers", filterService.getTransferNumbers(searchStore.getSearchResult(searchId)));
+        model.addAttribute("transferDurations", filterService.getTransferDurations(searchStore.getSearchResult(searchId)));
+        model.addAttribute("airplaneTypes", filterService.getAirplanes(searchStore.getSearchResult(searchId)));
+        model.addAttribute("maximumPrice", filterService.getMaxPrice(searchStore.getSearchResult(searchId)));
         return "flightOffers";
     }
 

@@ -22,12 +22,12 @@ public class FlightOfferFormatter {
 
                 itinerary.getSegments().forEach(FlightOfferFormatter::formatAndSetSegmentData);
             });
-            formatPrice(flightOffer);
+            formatAndSetPrice(flightOffer);
         });
         return formattedFlightOffers;
     }
 
-    private static List<String> calculateLayoverTime(List<FlightOffers.Segment> segments) {
+    public static List<String> calculateLayoverTime(List<FlightOffers.Segment> segments) {
         List<String> layoverTimes = new ArrayList<>();
         for (int i = 0; i < segments.size() - 1; i++) {
             LocalDateTime arrival = LocalDateTime.parse(segments.get(i).getArrival().getAt());
@@ -37,7 +37,7 @@ public class FlightOfferFormatter {
         return layoverTimes;
     }
 
-    private static String formatDuration(String duration) {
+    public static String formatDuration(String duration) {
         try {
             long hours =  Duration.parse(duration).toHours();
             long minutes =  Duration.parse(duration).minusHours(hours).toMinutes();
@@ -48,16 +48,22 @@ public class FlightOfferFormatter {
         }
     }
 
-    private static void formatPrice(FlightOffers flightOffers) {
-       try {
-           DecimalFormatSymbols decimalFormatSymbol = new DecimalFormatSymbols();
-           decimalFormatSymbol.setGroupingSeparator(' ');
-           flightOffers.getPrice().setTotal(
-                   new DecimalFormat("###,###,###", decimalFormatSymbol)
-                           .format(Integer.parseInt(flightOffers.getPrice().getTotal().split("\\.")[0])));
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
+    public static String formatPrice(String price) {
+        try {
+            DecimalFormatSymbols decimalFormatSymbol = new DecimalFormatSymbols();
+            decimalFormatSymbol.setGroupingSeparator(' ');
+                return
+                    new DecimalFormat("###,###,###", decimalFormatSymbol)
+                            .format(Integer.parseInt(price.split("\\.")[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return price;
+    }
+
+    private static void formatAndSetPrice(FlightOffers flightOffers) {
+       flightOffers.getPrice().setTotal(
+               formatPrice(flightOffers.getPrice().getTotal()));
     }
 
     private static void formatAndSetSegmentData(FlightOffers.Segment segment) {
