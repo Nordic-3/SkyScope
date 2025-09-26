@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
+import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -172,19 +173,17 @@ public class FlightServiceImpl implements FlightService {
               segment
                   .getDeparture()
                   .setAirportName(
-                      airprots
-                          .getOrDefault(
+                      WordUtils.capitalizeFully(
+                          airprots.getOrDefault(
                               segment.getDeparture().getIataCode(),
-                              segment.getDeparture().getIataCode())
-                          .toLowerCase());
+                              segment.getDeparture().getIataCode())));
               segment
                   .getArrival()
                   .setAirportName(
-                      airprots
-                          .getOrDefault(
+                      WordUtils.capitalizeFully(
+                          airprots.getOrDefault(
                               segment.getArrival().getIataCode(),
-                              segment.getArrival().getIataCode())
-                          .toLowerCase());
+                              segment.getArrival().getIataCode())));
             });
   }
 
@@ -194,8 +193,10 @@ public class FlightServiceImpl implements FlightService {
   }
 
   private String getAirportNameFromLocalJson(String iata) {
-    return Parser.getAirportNameFromJson(
-        jsonReaderService.readJsonFromResources("exampleDatas/airportNames.json"), iata);
+    String json = jsonReaderService.readJsonFromResources("exampleDatas/airportNames.json");
+    return Parser.getCityNameFromAirportAndCityApi(json, iata)
+        + ", "
+        + Parser.getAirportNameFromJson(json, iata);
   }
 
   private String getAirportNameFromApi(String iata, String token) {
@@ -203,8 +204,10 @@ public class FlightServiceImpl implements FlightService {
         || !applicationConfig.useApis()) {
       return getAirportNameFromLocalJson(iata);
     }
-    return Parser.getAirportNameFromJson(
-        getCityAirportSearchApiResponse(iata, "AIRPORT", token), "data");
+    String response = getCityAirportSearchApiResponse(iata, "AIRPORT", token);
+    return Parser.getCityNameFromAirportAndCityApi(response, "data")
+        + ", "
+        + Parser.getAirportNameFromJson(response, "data");
   }
 
   private String getCityAirportSearchApiResponse(String keyword, String subType, String token) {

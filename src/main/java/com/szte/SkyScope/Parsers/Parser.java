@@ -104,4 +104,13 @@ public class Parser {
     }
     return "";
   }
+
+  public static String getCityNameFromAirportAndCityApi(String json, String root) {
+    try {
+      return objectMapper.readTree(json).get(root).get(0).get("address").get("cityName").asText();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return "";
+  }
 }
