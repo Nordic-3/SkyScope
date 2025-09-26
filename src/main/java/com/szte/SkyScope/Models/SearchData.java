@@ -1,0 +1,70 @@
+package com.szte.SkyScope.Models;
+
+import java.util.List;
+import java.util.Map;
+
+public class SearchData {
+  private List<FlightOffers> searchResult;
+  private FlightSearch flightSearch;
+  private Map<String, String> aircraftDictionary;
+  private Map<String, Location> locationDictionary;
+  private Map<String, String> carrierDictionary;
+  private FilterAttribute filterAttribute = new FilterAttribute();
+  private List<FlightOffers> originalSearchResult;
+
+  public List<FlightOffers> getSearchResult() {
+    return searchResult;
+  }
+
+  public void setSearchResult(List<FlightOffers> searchResult) {
+    this.searchResult = searchResult;
+  }
+
+  public FlightSearch getFlightSearch() {
+    return flightSearch;
+  }
+
+  public void setFlightSearch(FlightSearch flightSearch) {
+    this.flightSearch = flightSearch;
+  }
+
+  public Map<String, String> getAircraftDictionary() {
+    return aircraftDictionary;
+  }
+
+  public void setAircraftDictionary(Map<String, String> aircraftDictionary) {
+    this.aircraftDictionary = aircraftDictionary;
+  }
+
+  public Map<String, Location> getLocationDictionary() {
+    return locationDictionary;
+  }
+
+  public void setLocationDictionary(Map<String, Location> locationDictionary) {
+    this.locationDictionary = locationDictionary;
+  }
+
+  public Map<String, String> getCarrierDictionary() {
+    return carrierDictionary;
+  }
+
+  public void setCarrierDictionary(Map<String, String> carrierDictionary) {
+    this.carrierDictionary = carrierDictionary;
+  }
+
+  public FilterAttribute getFilterAttribute() {
+    return filterAttribute;
+  }
+
+  public void setFilterAttribute(FilterAttribute filterAttribute) {
+    this.filterAttribute = filterAttribute;
+  }
+
+  public List<FlightOffers> getOriginalSearchResult() {
+    return originalSearchResult;
+  }
+
+  public void setOriginalSearchResult(List<FlightOffers> originalSearchResult) {
+    this.originalSearchResult = originalSearchResult;
+  }
+}

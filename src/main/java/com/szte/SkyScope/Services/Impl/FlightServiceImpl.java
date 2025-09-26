@@ -86,10 +86,11 @@ public class FlightServiceImpl implements FlightService {
   @Async
   @Override
   public CompletableFuture<List<FlightOffers>> getFlightOffers(
-      FlightSearch flightSearch, String token) {
+      FlightSearch flightSearch, String token, String searchId) {
     if (applicationConfig.getAmadeusCitySearchApi().equals("noApi")
         || !applicationConfig.useApis()) {
-      return CompletableFuture.completedFuture(getFlightOffersFromLocalJson(flightSearch));
+      return CompletableFuture.completedFuture(
+          getFlightOffersFromLocalJson(flightSearch, searchId));
     }
     UriComponentsBuilder uriBulder =
         UriComponentsBuilder.fromUriString(applicationConfig.getAmadeusFlightOfferSearchApi());
@@ -108,14 +109,15 @@ public class FlightServiceImpl implements FlightService {
             .header("Accept", "application/json")
             .retrieve()
             .body(String.class);
-    saveDictionaries(response);
+    saveDictionaries(response, searchId);
     return CompletableFuture.completedFuture(Parser.parseFlightOffersFromJson(response));
   }
 
   @Override
-  public List<FlightOffers> getFlightOffersFromLocalJson(FlightSearch flightSearch) {
+  public List<FlightOffers> getFlightOffersFromLocalJson(
+      FlightSearch flightSearch, String searchId) {
     String response = jsonReaderService.readJsonFromResources("exampleDatas/FlightOffers.json");
-    saveDictionaries(response);
+    saveDictionaries(response, searchId);
     return Parser.parseFlightOffersFromJson(response);
   }
 
@@ -220,13 +222,19 @@ public class FlightServiceImpl implements FlightService {
         .flatMap(itinerary -> itinerary.getSegments().stream());
   }
 
-  private void saveDictionaries(String json) {
-    searchStore.saveAircraftDictionary(
-        Parser.parseFlightDictionary(json, "aircraft", new TypeReference<>() {}));
-    searchStore.saveLocationDictionary(
-        Parser.parseFlightDictionary(json, "locations", new TypeReference<>() {}));
-    searchStore.saveCarrierDictionary(
-        Parser.parseFlightDictionary(json, "carriers", new TypeReference<>() {}));
+  private void saveDictionaries(String json, String searchId) {
+    searchStore
+        .getSearchDatas(searchId)
+        .setAircraftDictionary(
+            Parser.parseFlightDictionary(json, "aircraft", new TypeReference<>() {}));
+    searchStore
+        .getSearchDatas(searchId)
+        .setLocationDictionary(
+            Parser.parseFlightDictionary(json, "locations", new TypeReference<>() {}));
+    searchStore
+        .getSearchDatas(searchId)
+        .setCarrierDictionary(
+            Parser.parseFlightDictionary(json, "carriers", new TypeReference<>() {}));
   }
 
   private void bindOptionalParameters(UriComponentsBuilder uriBulder, FlightSearch flightSearch) {

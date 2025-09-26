@@ -2,6 +2,7 @@ package com.szte.SkyScope.Controllers;
 
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
+import com.szte.SkyScope.Models.SearchData;
 import com.szte.SkyScope.Services.*;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
 import java.util.List;
@@ -47,30 +48,33 @@ public class FlightSearchController {
     }
     String searchId = UUID.randomUUID().toString();
     model.addAttribute("searchId", searchId);
+    searchStore.saveSearchDatas(searchId, new SearchData());
 
     try {
       flightService
-          .getFlightOffers(flightSearch, flightService.getToken().getAccess_token())
+          .getFlightOffers(flightSearch, flightService.getToken().getAccess_token(), searchId)
           .thenAccept(
               result -> {
-                setFlightOffersAttributes(result);
-                searchStore.saveSearchResult(
-                    searchId, sortResultService.sortOffersByDeffault(result));
-                searchStore.saveOriginalSearchResult(
-                    searchId, sortResultService.sortOffersByDeffault(result));
+                setFlightOffersAttributes(result, searchId);
+                searchStore
+                    .getSearchDatas(searchId)
+                    .setSearchResult(sortResultService.sortOffersByDeffault(result));
+                searchStore
+                    .getSearchDatas(searchId)
+                    .setOriginalSearchResult(sortResultService.sortOffersByDeffault(result));
               });
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-    searchStore.saveSearchParameters(flightSearch);
+    searchStore.getSearchDatas(searchId).setFlightSearch(flightSearch);
     return "loading";
   }
 
   @GetMapping("/results/{searchId}")
   @ResponseBody
   public ResponseEntity<?> checkIfOffersAvaliable(@PathVariable String searchId) {
-    List<FlightOffers> result = searchStore.getSearchResult(searchId);
+    List<FlightOffers> result = searchStore.getSearchDatas(searchId).getSearchResult();
     if (result == null) {
       return ResponseEntity.status(HttpStatus.ACCEPTED).body("IN_PROGRESS");
     }
@@ -83,33 +87,41 @@ public class FlightSearchController {
       Model model,
       @ModelAttribute FlightSearch flightSearch,
       @RequestParam String by) {
-    model.addAttribute("flightSearch", searchStore.getSearchParameters());
+    model.addAttribute("flightSearch", searchStore.getSearchDatas(searchId).getFlightSearch());
     model.addAttribute(
         "results",
-        FlightOfferFormatter.formatFlightOfferFields(searchStore.getSearchResult(searchId)));
+        FlightOfferFormatter.formatFlightOfferFields(
+            searchStore.getSearchDatas(searchId).getSearchResult()));
     model.addAttribute("searchId", searchId);
     model.addAttribute("sortBy", by);
     model.addAttribute(
-        "allAirline", filterService.getAirlineNames(searchStore.getSearchResult(searchId)));
-    model.addAttribute("filterOffers", searchStore.getFilterAttribute());
+        "allAirline",
+        filterService.getAirlineNames(searchStore.getSearchDatas(searchId).getSearchResult()));
+    model.addAttribute("filterOffers", searchStore.getSearchDatas(searchId).getFilterAttribute());
     model.addAttribute(
-        "transferNumbers", filterService.getTransferNumbers(searchStore.getSearchResult(searchId)));
+        "transferNumbers",
+        filterService.getTransferNumbers(searchStore.getSearchDatas(searchId).getSearchResult()));
     model.addAttribute(
         "transferDurations",
-        filterService.getTransferDurations(searchStore.getSearchResult(searchId)));
+        filterService.getTransferDurations(searchStore.getSearchDatas(searchId).getSearchResult()));
     model.addAttribute(
-        "airplaneTypes", filterService.getAirplanes(searchStore.getSearchResult(searchId)));
+        "airplaneTypes",
+        filterService.getAirplanes(searchStore.getSearchDatas(searchId).getSearchResult()));
     model.addAttribute(
-        "maximumPrice", filterService.getMaxPrice(searchStore.getSearchResult(searchId)));
+        "maximumPrice",
+        filterService.getMaxPrice(searchStore.getSearchDatas(searchId).getSearchResult()));
     return "flightOffers";
   }
 
-  public void setFlightOffersAttributes(List<FlightOffers> result) {
-    flightService.setAircraftType(result, searchStore.getAircraftDictionary());
-    flightService.setCarrierNames(result, searchStore.getCarrierDictionary());
+  public void setFlightOffersAttributes(List<FlightOffers> result, String searchId) {
+    flightService.setAircraftType(
+        result, searchStore.getSearchDatas(searchId).getAircraftDictionary());
+    flightService.setCarrierNames(
+        result, searchStore.getSearchDatas(searchId).getCarrierDictionary());
     flightService.setAirportNames(
         result,
         flightService.getAirportNamesByItsIata(
-            searchStore.getLocationDictionary(), flightService.getToken().getAccess_token()));
+            searchStore.getSearchDatas(searchId).getLocationDictionary(),
+            flightService.getToken().getAccess_token()));
   }
 }

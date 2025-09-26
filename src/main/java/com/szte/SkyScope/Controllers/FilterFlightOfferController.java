@@ -23,16 +23,21 @@ public class FilterFlightOfferController {
       @ModelAttribute("filterOffers") FilterAttribute filters,
       @PathVariable String searchId,
       @RequestParam String by) {
-    searchStore.saveFilters(filters);
-    searchStore.saveSearchResult(
-        searchId, filterService.filterOffers(searchStore.getSearchResult(searchId), filters));
+    searchStore.getSearchDatas(searchId).setFilterAttribute(filters);
+    searchStore
+        .getSearchDatas(searchId)
+        .setSearchResult(
+            filterService.filterOffers(
+                searchStore.getSearchDatas(searchId).getSearchResult(), filters));
     return "redirect:/resultsPage/" + searchId + "?by=" + by;
   }
 
   @PostMapping("filter/reset/{searchId}")
   public String resetFilters(@PathVariable String searchId, @RequestParam String by) {
-    searchStore.saveFilters(new FilterAttribute());
-    searchStore.saveSearchResult(searchId, searchStore.getOriginalSearchResult(searchId));
+    searchStore.getSearchDatas(searchId).setFilterAttribute(new FilterAttribute());
+    searchStore
+        .getSearchDatas(searchId)
+        .setSearchResult(searchStore.getSearchDatas(searchId).getOriginalSearchResult());
     return "redirect:/resultsPage/" + searchId + "?by=" + by;
   }
 }
