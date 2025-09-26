@@ -6,7 +6,6 @@ import com.szte.SkyScope.Services.FilterService;
 import com.szte.SkyScope.Services.SortResultService;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
 import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,7 @@ public class FilterServiceImpl implements FilterService {
   @Override
   public List<String> getTransferNumbers(List<FlightOffers> flightOffers) {
     return flightOffers.stream()
-        .map(offer -> offer.getItineraries().getFirst())
+        .flatMap(offer -> offer.getItineraries().stream())
         .map(FlightOffers.Itinerary::getTransferNumber)
         .distinct()
         .toList();
@@ -43,14 +42,10 @@ public class FilterServiceImpl implements FilterService {
   @Override
   public List<String> getTransferDurations(List<FlightOffers> flightOffers) {
     return flightOffers.stream()
-        .map(offer -> offer.getItineraries().getFirst())
-        .map(
-            itinerary -> {
-              List<String> layovers =
-                  FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments());
-              return layovers.isEmpty() ? null : layovers.getFirst();
-            })
-        .filter(Objects::nonNull)
+        .flatMap(offer -> offer.getItineraries().stream())
+        .flatMap(
+            itinerary ->
+                FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
         .distinct()
         .toList();
   }
@@ -105,14 +100,15 @@ public class FilterServiceImpl implements FilterService {
 
   private boolean filterTransferNumber(FlightOffers offer, FilterAttribute filter) {
     return filter.getTransferNumber().isEmpty()
-        || offer.getItineraries().getFirst().getTransferNumber().equals(filter.getTransferNumber());
+        || offer.getItineraries().stream()
+            .anyMatch(
+                itinerary -> itinerary.getTransferNumber().equals(filter.getTransferNumber()));
   }
 
   private boolean filterTransferTime(FlightOffers offer, FilterAttribute filter) {
-    String layoverTime = getOutGoingFlightLayoverTime(offer);
+    List<String> layoverTime = getOutGoingFlightLayoverTime(offer);
     return filter.getTransferDuration().isEmpty()
-        || layoverTime.isEmpty()
-        || layoverTime.equals(filter.getTransferDuration());
+        || layoverTime.contains(filter.getTransferDuration());
   }
 
   private boolean filterAirplane(FlightOffers offer, FilterAttribute filter) {
@@ -122,12 +118,11 @@ public class FilterServiceImpl implements FilterService {
             .anyMatch(segment -> filter.getAirplanes().contains(segment.getAircraft().getName()));
   }
 
-  private String getOutGoingFlightLayoverTime(FlightOffers flightOffer) {
-    if (flightOffer.getItineraries().getFirst().getSegments().size() > 1) {
-      return FlightOfferFormatter.calculateLayoverTime(
-              flightOffer.getItineraries().getFirst().getSegments())
-          .getFirst();
-    }
-    return "";
+  private List<String> getOutGoingFlightLayoverTime(FlightOffers flightOffer) {
+    return flightOffer.getItineraries().stream()
+        .flatMap(
+            itinerary ->
+                FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
+        .toList();
   }
 }

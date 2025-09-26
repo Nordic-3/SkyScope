@@ -133,35 +133,202 @@
       }
     }
   ],
-  "KEF": [
+  "YUL": [
     {
       "type": "location",
       "subType": "AIRPORT",
-      "name": "KEFLAVIK INTERNATIONAL",
-      "detailedName": "REYKJAVIK/IS:KEFLAVIK INTERNATIONAL",
-      "id": "AKEF",
+      "name": "YUYANG",
+      "detailedName": "YULIN - SHANXI/CN:YUYANG",
+      "id": "AUYN",
       "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AKEF",
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AUYN",
         "methods": [
           "GET"
         ]
       },
-      "timeZoneOffset": "+00:00",
-      "iataCode": "KEF",
+      "timeZoneOffset": "+08:00",
+      "iataCode": "UYN",
       "geoCode": {
-        "latitude": 63.985,
-        "longitude": -22.60556
+        "latitude": 38.26917,
+        "longitude": 109.7311
       },
       "address": {
-        "cityName": "REYKJAVIK",
-        "cityCode": "REK",
-        "countryName": "ICELAND",
-        "countryCode": "IS",
-        "regionCode": "EMEAR"
+        "cityName": "YULIN - SHANXI",
+        "cityCode": "UYN",
+        "countryName": "CHINA",
+        "countryCode": "CN",
+        "regionCode": "ASIA"
       },
       "analytics": {
         "travelers": {
-          "score": 5
+          "score": 1
+        }
+      }
+    }
+  ],
+  "ZRH": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "ZURICH AIRPORT",
+      "detailedName": "ZURICH/CH:ZURICH AIRPORT",
+      "id": "AZRH",
+      "self": {
+        "href": "https://api.amadeus.com/v1/reference-data/locations/AZRH",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+02:00",
+      "iataCode": "ZRH",
+      "geoCode": {
+        "latitude": 47.45278,
+        "longitude": 8.56056
+      },
+      "address": {
+        "cityName": "ZURICH",
+        "cityCode": "ZRH",
+        "countryName": "SWITZERLAND",
+        "countryCode": "CH",
+        "regionCode": "EUROP"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 17
+        }
+      }
+    }
+  ],
+  "LCY": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "CITY AIRPORT",
+      "detailedName": "LONDON/GB:CITY AIRPORT",
+      "id": "ALCY",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ALCY",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+01:00",
+      "iataCode": "LCY",
+      "geoCode": {
+        "latitude": 51.50528,
+        "longitude": 0.05528
+      },
+      "address": {
+        "cityName": "LONDON",
+        "cityCode": "LON",
+        "countryName": "UNITED KINGDOM",
+        "countryCode": "GB",
+        "regionCode": "EUROP"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 4
+        }
+      }
+    }
+  ],
+  "CMN": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "MOHAMMED V",
+      "detailedName": "CASABLANCA/MA:MOHAMMED V",
+      "id": "ACMN",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ACMN",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+01:00",
+      "iataCode": "CMN",
+      "geoCode": {
+        "latitude": 33.3675,
+        "longitude": -7.58997
+      },
+      "address": {
+        "cityName": "CASABLANCA",
+        "cityCode": "CAS",
+        "countryName": "MOROCCO",
+        "countryCode": "MA",
+        "regionCode": "AFR"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 3
+        }
+      }
+    }
+  ],
+  "BOS": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "EDWARD L LOGAN INTL",
+      "detailedName": "BOSTON/MA/US:EDWARD L LOGAN IN",
+      "id": "ABOS",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ABOS",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "-04:00",
+      "iataCode": "BOS",
+      "geoCode": {
+        "latitude": 42.36528,
+        "longitude": -71.01777
+      },
+      "address": {
+        "cityName": "BOSTON",
+        "cityCode": "BOS",
+        "countryName": "UNITED STATES OF AMERICA",
+        "countryCode": "US",
+        "stateCode": "MA",
+        "regionCode": "NAMER"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 23
+        }
+      }
+    }
+  ],
+  "LGA": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "LAGUARDIA",
+      "detailedName": "NEW YORK/NY/US:LAGUARDIA",
+      "id": "ALGA",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ALGA",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "-04:00",
+      "iataCode": "LGA",
+      "geoCode": {
+        "latitude": 40.77612,
+        "longitude": -73.87277
+      },
+      "address": {
+        "cityName": "NEW YORK",
+        "cityCode": "NYC",
+        "countryName": "UNITED STATES OF AMERICA",
+        "countryCode": "US",
+        "stateCode": "NY",
+        "regionCode": "NAMER"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 17
         }
       }
     }
