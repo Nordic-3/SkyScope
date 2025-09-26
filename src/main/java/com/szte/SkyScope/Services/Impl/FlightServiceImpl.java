@@ -10,6 +10,7 @@ import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.JsonReaderService;
 import com.szte.SkyScope.Services.SearchStore;
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +81,7 @@ public class FlightServiceImpl implements FlightService {
 
   @Override
   public void setIataCodes(FlightSearch flightSearch, String token) {
+    removeAccents(flightSearch);
     flightSearch.setOriginCityIata(getIataCode(flightSearch.getOriginCity(), token));
     flightSearch.setDestinationCityIata(getIataCode(flightSearch.getDestinationCity(), token));
   }
@@ -185,6 +187,15 @@ public class FlightServiceImpl implements FlightService {
                               segment.getArrival().getIataCode(),
                               segment.getArrival().getIataCode())));
             });
+  }
+
+  private String normalizeCityNames(String name) {
+    return Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("\\p{M}", "");
+  }
+
+  private void removeAccents(FlightSearch flightSearch) {
+    flightSearch.setOriginCity(normalizeCityNames(flightSearch.getOriginCity()));
+    flightSearch.setDestinationCity(normalizeCityNames(flightSearch.getDestinationCity()));
   }
 
   private String getIataCodeFromLocalJson(String city) {
