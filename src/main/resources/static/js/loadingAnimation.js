@@ -19,6 +19,7 @@ function contentLoaded() {
     labelCitiesAndConnect();
     earth.controls().autoRotate = true;
     earth.controls().autoRotateSpeed = 5;
+    window.localStorage.removeItem("dontShowAgain");
 }
 
 function labelCitiesAndConnect() {

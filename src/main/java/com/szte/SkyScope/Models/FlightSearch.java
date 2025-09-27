@@ -16,6 +16,21 @@ public class FlightSearch {
 
   public FlightSearch() {}
 
+  public FlightSearch(FlightSearch flightSearch) {
+    this.originCity = flightSearch.getOriginCity();
+    this.destinationCity = flightSearch.getDestinationCity();
+    this.oneWay = flightSearch.isOneWay();
+    this.departureDate = flightSearch.getDepartureDate();
+    this.returnDate = flightSearch.getReturnDate();
+    this.originCityIata = flightSearch.getOriginCityIata();
+    this.destinationCityIata = flightSearch.getDestinationCityIata();
+    this.numberOfAdults = flightSearch.getNumberOfAdults();
+    this.numberOfChildren = flightSearch.getNumberOfChildren();
+    this.numberOfInfants = flightSearch.getNumberOfInfants();
+    this.travelClass = flightSearch.getTravelClass();
+    this.maxPrice = flightSearch.getMaxPrice();
+  }
+
   public String getNumberOfChildren() {
     return numberOfChildren;
   }

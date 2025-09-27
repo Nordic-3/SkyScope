@@ -21,6 +21,7 @@ public class FlightSearchController {
   private final SearchStore searchStore;
   private final SortResultService sortResultService;
   private final FilterService filterService;
+  private final CheapestFlightDateService cheapestFlightDateService;
 
   @Autowired
   public FlightSearchController(
@@ -28,12 +29,14 @@ public class FlightSearchController {
       FlightService flightService,
       SearchStore searchStore,
       SortResultService sortResultService,
-      FilterService filterService) {
+      FilterService filterService,
+      CheapestFlightDateService cheapestFlightDateService) {
     this.inputValidationService = inputValidationService;
     this.flightService = flightService;
     this.searchStore = searchStore;
     this.sortResultService = sortResultService;
     this.filterService = filterService;
+    this.cheapestFlightDateService = cheapestFlightDateService;
   }
 
   @PostMapping("/flightsearch")
@@ -73,7 +76,7 @@ public class FlightSearchController {
 
   @GetMapping("/results/{searchId}")
   @ResponseBody
-  public ResponseEntity<?> checkIfOffersAvaliable(@PathVariable String searchId) {
+  public ResponseEntity<String> checkIfOffersAvaliable(@PathVariable String searchId) {
     List<FlightOffers> result = searchStore.getSearchDatas(searchId).getSearchResult();
     if (result == null) {
       return ResponseEntity.status(HttpStatus.ACCEPTED).body("IN_PROGRESS");
@@ -86,7 +89,25 @@ public class FlightSearchController {
       @PathVariable String searchId,
       Model model,
       @ModelAttribute FlightSearch flightSearch,
-      @RequestParam String by) {
+      @RequestParam String by,
+      @RequestParam(required = false) String cheaper) {
+    if (cheaper != null) {
+      setFlightOffersAttributes(
+          searchStore.getSearchDatas(searchId).getCheaperSearchResult(), searchId);
+      searchStore
+          .getSearchDatas(searchId)
+          .setSearchResult(
+              sortResultService.sortOffersByDeffault(
+                  searchStore.getSearchDatas(searchId).getCheaperSearchResult()));
+      searchStore
+          .getSearchDatas(searchId)
+          .setOriginalSearchResult(
+              sortResultService.sortOffersByDeffault(
+                  searchStore.getSearchDatas(searchId).getCheaperSearchResult()));
+      searchStore
+          .getSearchDatas(searchId)
+          .setFlightSearch(searchStore.getSearchDatas(searchId).getCheaperSearch());
+    }
     model.addAttribute("flightSearch", searchStore.getSearchDatas(searchId).getFlightSearch());
     model.addAttribute(
         "results",
@@ -110,7 +131,35 @@ public class FlightSearchController {
     model.addAttribute(
         "maximumPrice",
         filterService.getMaxPrice(searchStore.getSearchDatas(searchId).getSearchResult()));
+    if (!searchStore.getSearchDatas(searchId).isCheaperOfferAvailable()
+        && searchStore.getSearchDatas(searchId).haveToCheckForCheaperOffer()) {
+      cheapestFlightDateService
+          .checkForCheaperOfferAndGetIt(
+              searchStore.getSearchDatas(searchId).getFlightSearch(),
+              flightService.getToken().getAccess_token(),
+              searchId,
+              sortResultService.sortOffersByPriceASC(
+                  searchStore.getSearchDatas(searchId).getSearchResult()))
+          .thenAccept(
+              result -> {
+                if (result != null) {
+                  searchStore.getSearchDatas(searchId).setCheaperSearchResult(result);
+                  searchStore.getSearchDatas(searchId).setCheaperOfferAvailable(true);
+                } else {
+                  searchStore.getSearchDatas(searchId).setHaveToCheckForCheaperOffer(false);
+                }
+              });
+    }
     return "flightOffers";
+  }
+
+  @GetMapping("/cheaperOffer/{searchId}")
+  @ResponseBody
+  public ResponseEntity<String> checkIfCheaperOfferAvaliable(@PathVariable String searchId) {
+    if (searchStore.getSearchDatas(searchId).isCheaperOfferAvailable()) {
+      return ResponseEntity.ok("READY");
+    }
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body("IN_PROGRESS");
   }
 
   public void setFlightOffersAttributes(List<FlightOffers> result, String searchId) {

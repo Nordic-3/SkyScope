@@ -7,9 +7,9 @@
     <script src="/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/searchBar.js"></script>
     <script src="/js/globeOnSearchPage.js"></script>
-    <script src="/js/formatFlightOfferButtons.js"></script>
+    <script src="/js/FlightOfferPage.js"></script>
 </head>
-<body onload="formatSortButton(); searchBarLoaded(); bodyLoaded();"
+<body onload="offersLoaded(); searchBarLoaded(); bodyLoaded();"
       style="background-image: url('//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png');">
 <header>
     <div id="searchBar"
@@ -192,6 +192,20 @@
                 </div>
             </div>
         </section>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="cheaperOfferToast" class="toast text-bg-info" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="toast-header">
+                <strong class="me-auto">Olcsóbb ajánlat</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Rugalmas a dátum? Van olcsóbb ajánlat!
+            </div>
+            <div class="mt-2 mb-2 ms-2 pt-2 border-top">
+                <a id="cheaperOfferBtn" class="btn btn-secondary btn-sm" th:href="@{'/resultsPage/' + ${searchId} + '?by=priceAsc&cheaper=true'}">Megnézem</a>
+            </div>
+        </div>
     </div>
 </main>
 </body>

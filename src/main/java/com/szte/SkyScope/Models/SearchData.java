@@ -11,6 +11,42 @@ public class SearchData {
   private Map<String, String> carrierDictionary;
   private FilterAttribute filterAttribute = new FilterAttribute();
   private List<FlightOffers> originalSearchResult;
+  private boolean cheaperOfferAvailable = false;
+  private boolean haveToCheckForCheaperOffer = true;
+  private FlightSearch cheaperSearch;
+  private List<FlightOffers> cheaperSearchResult;
+
+  public boolean haveToCheckForCheaperOffer() {
+    return haveToCheckForCheaperOffer;
+  }
+
+  public void setHaveToCheckForCheaperOffer(boolean haveToCheckForCheaperOffer) {
+    this.haveToCheckForCheaperOffer = haveToCheckForCheaperOffer;
+  }
+
+  public List<FlightOffers> getCheaperSearchResult() {
+    return cheaperSearchResult;
+  }
+
+  public void setCheaperSearchResult(List<FlightOffers> cheaperSearchResult) {
+    this.cheaperSearchResult = cheaperSearchResult;
+  }
+
+  public FlightSearch getCheaperSearch() {
+    return cheaperSearch;
+  }
+
+  public void setCheaperSearch(FlightSearch cheaperSearch) {
+    this.cheaperSearch = cheaperSearch;
+  }
+
+  public boolean isCheaperOfferAvailable() {
+    return cheaperOfferAvailable;
+  }
+
+  public void setCheaperOfferAvailable(boolean cheaperOfferAvailable) {
+    this.cheaperOfferAvailable = cheaperOfferAvailable;
+  }
 
   public List<FlightOffers> getSearchResult() {
     return searchResult;

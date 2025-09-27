@@ -30,6 +30,13 @@ public class ApplicationConfig {
   @Value("${amadeus_flight_offer_search_api:noApi}")
   private String amadeusFlightOfferSearchApi;
 
+  @Value("${amadeus_cheapest_date_search:noApi}")
+  private String amadeusCheapestDateSearch;
+
+  public String getAmadeusCheapestDateSearch() {
+    return amadeusCheapestDateSearch;
+  }
+
   public String getAmadeusFlightOfferSearchApi() {
     return amadeusFlightOfferSearchApi;
   }

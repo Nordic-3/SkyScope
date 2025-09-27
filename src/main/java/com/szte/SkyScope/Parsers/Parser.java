@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.szte.SkyScope.Models.CheapestDateOffer;
 import com.szte.SkyScope.Models.City;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.Plane;
@@ -112,5 +113,26 @@ public class Parser {
       e.printStackTrace();
     }
     return "";
+  }
+
+  public static List<CheapestDateOffer> parseCheapestFlightApi(String json) {
+    List<CheapestDateOffer> cheapestDateOffers = new ArrayList<>();
+    try {
+      objectMapper
+          .readTree(json)
+          .get("data")
+          .forEach(
+              data -> cheapestDateOffers.add(
+                  new CheapestDateOffer(
+                      data.get("origin").asText(),
+                      data.get("destination").asText(),
+                      data.get("departureDate").asText(),
+                      data.get("returnDate").asText(),
+                      data.get("price").get("total").asInt(),
+                      data.get("links").get("flightOffers").asText())));
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+    return cheapestDateOffers;
   }
 }
