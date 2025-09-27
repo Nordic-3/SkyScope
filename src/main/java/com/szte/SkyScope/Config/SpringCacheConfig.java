@@ -14,6 +14,6 @@ public class SpringCacheConfig {
 
   @Bean
   public CacheManager cacheManager() {
-    return new ConcurrentMapCacheManager("amadeusApiToken");
+    return new ConcurrentMapCacheManager("amadeusApiToken", "city");
   }
 }

@@ -6,6 +6,7 @@ import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.CityService;
 import com.szte.SkyScope.Services.JsonReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -23,6 +24,7 @@ public class CityServiceImpl implements CityService {
   }
 
   @Override
+  @Cacheable("city")
   public City getCityFromApi(String name) {
     if (applicationConfig.getGeoNamesApiKey().equals("noApi")) {
       return getCityFromJson(name);

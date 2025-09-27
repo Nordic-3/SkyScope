@@ -7,6 +7,7 @@ import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.Location;
 import com.szte.SkyScope.Parsers.Parser;
+import com.szte.SkyScope.Services.CityService;
 import com.szte.SkyScope.Services.FlightService;
 import com.szte.SkyScope.Services.JsonReaderService;
 import com.szte.SkyScope.Services.SearchStore;
@@ -33,15 +34,18 @@ public class FlightServiceImpl implements FlightService {
   private final ApplicationConfig applicationConfig;
   private final JsonReaderService jsonReaderService;
   private final SearchStore searchStore;
+  private final CityService cityService;
 
   @Autowired
   public FlightServiceImpl(
       ApplicationConfig applicationConfig,
       JsonReaderService jsonReaderService,
-      SearchStore searchStore) {
+      SearchStore searchStore,
+      CityService cityService) {
     this.applicationConfig = applicationConfig;
     this.jsonReaderService = jsonReaderService;
     this.searchStore = searchStore;
+    this.cityService = cityService;
   }
 
   @Override
@@ -81,6 +85,7 @@ public class FlightServiceImpl implements FlightService {
 
   @Override
   public void setIataCodes(FlightSearch flightSearch, String token) {
+    setEnglishNameOfTheCities(flightSearch);
     removeAccents(flightSearch);
     flightSearch.setOriginCityIata(getIataCode(flightSearch.getOriginCity(), token));
     flightSearch.setDestinationCityIata(getIataCode(flightSearch.getDestinationCity(), token));
@@ -187,6 +192,12 @@ public class FlightServiceImpl implements FlightService {
                               segment.getArrival().getIataCode(),
                               segment.getArrival().getIataCode())));
             });
+  }
+
+  private void setEnglishNameOfTheCities(FlightSearch flightSearch) {
+    flightSearch.setOriginCity(cityService.getCityFromApi(flightSearch.getOriginCity()).getName());
+    flightSearch.setDestinationCity(
+        cityService.getCityFromApi(flightSearch.getDestinationCity()).getName());
   }
 
   private String normalizeCityNames(String name) {
