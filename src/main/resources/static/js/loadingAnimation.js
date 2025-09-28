@@ -2,7 +2,7 @@ function checkResults(searchId) {
     fetch("/results/" + searchId)
         .then(response => {
             if (response.status === 200) {
-                window.location.href = "/resultsPage/" + searchId + "?by=priceAsc";
+                window.location.href = "/resultsPage/" + searchId + "?by=transferTimeAsc";
             } else {
                 setTimeout(() => checkResults(searchId), 2000);
             }
