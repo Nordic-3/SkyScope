@@ -50,7 +50,7 @@ public class CheapestFlightDateServiveImpl implements CheapestFlightDateService 
     FlightSearch cheaperFlight =
         getcheaperFlightOfferSearchParameters(flightSearch, cheapestDateOffers);
     searchStore.getSearchDatas(searchId).setCheaperSearch(cheaperFlight);
-    return flightService.getFlightOffers(flightSearch, token, searchId);
+    return flightService.getFlightOffers(cheaperFlight, token, searchId);
   }
 
   private boolean isCheaper(List<FlightOffers> flightOffers, CheapestDateOffer cheapestDateOffer) {
@@ -62,7 +62,8 @@ public class CheapestFlightDateServiveImpl implements CheapestFlightDateService 
               String total = travelerPricing.getPrice().getTotal();
               if (!total.isEmpty()) {
                 int price = Integer.parseInt(total.split("\\.")[0]);
-                return cheapestDateOffer.getPrice() < (price * 400);
+                return cheapestDateOffer.getPrice() < (price * 380)
+                        && cheapestDateOffer.getPrice() != price * 380;
               }
               return false;
             });
