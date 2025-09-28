@@ -122,14 +122,15 @@ public class Parser {
           .readTree(json)
           .get("data")
           .forEach(
-              data -> cheapestDateOffers.add(
-                  new CheapestDateOffer(
-                      data.get("origin").asText(),
-                      data.get("destination").asText(),
-                      data.get("departureDate").asText(),
-                      data.get("returnDate").asText(),
-                      data.get("price").get("total").asInt(),
-                      data.get("links").get("flightOffers").asText())));
+              data ->
+                  cheapestDateOffers.add(
+                      new CheapestDateOffer(
+                          data.get("origin").asText(),
+                          data.get("destination").asText(),
+                          data.get("departureDate").asText(),
+                          data.get("returnDate").asText(),
+                          data.get("price").get("total").asInt(),
+                          data.get("links").get("flightOffers").asText())));
     } catch (Exception exception) {
       exception.printStackTrace();
     }
