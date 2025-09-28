@@ -7,8 +7,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FlightOfferFormatter {
+
+  private static final Logger logger = Logger.getLogger(FlightOfferFormatter.class.getName());
 
   public static List<FlightOffers> formatFlightOfferFields(List<FlightOffers> flightOffers) {
     List<FlightOffers> formattedFlightOffers =
@@ -46,8 +50,8 @@ public class FlightOfferFormatter {
       long hours = Duration.parse(duration).toHours();
       long minutes = Duration.parse(duration).minusHours(hours).toMinutes();
       return hours + " óra " + minutes + " perc";
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
       return duration;
     }
   }
@@ -58,8 +62,8 @@ public class FlightOfferFormatter {
       decimalFormatSymbol.setGroupingSeparator(' ');
       return new DecimalFormat("###,###,###", decimalFormatSymbol)
           .format(Integer.parseInt(price.split("\\.")[0]));
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
     }
     return price;
   }
@@ -93,8 +97,8 @@ public class FlightOfferFormatter {
   private static String formatTime(String time) {
     try {
       return time.split("T")[0].replace("-", ". ") + ". " + time.split("T")[1];
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
       return time;
     }
   }

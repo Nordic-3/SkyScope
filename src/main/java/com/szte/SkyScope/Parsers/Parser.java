@@ -12,9 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Parser {
   public static ObjectMapper objectMapper = new ObjectMapper();
+  private static final Logger logger = Logger.getLogger(Parser.class.getName());
 
   public static City parseJsonToCity(String json, String rootElement) {
     JsonNode root;
@@ -23,6 +26,7 @@ public class Parser {
       JsonNode cityDetails = root.get(rootElement).get(0);
       return objectMapper.treeToValue(cityDetails, City.class);
     } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
       return null;
     }
   }
@@ -34,6 +38,7 @@ public class Parser {
       root = objectMapper.readTree(json);
 
     } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
       return null;
     }
     root.get("states")
@@ -57,6 +62,7 @@ public class Parser {
       root = objectMapper.readTree(json);
       iata = root.get(rootElement).get(0).get("iataCode").asText();
     } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
       return null;
     }
     return iata;
@@ -72,12 +78,12 @@ public class Parser {
           jsonNode -> {
             try {
               flightOffers.add(objectMapper.treeToValue(jsonNode, FlightOffers.class));
-            } catch (JsonProcessingException e) {
-              e.printStackTrace();
+            } catch (JsonProcessingException exception) {
+              logger.log(Level.SEVERE, exception.getMessage(), exception);
             }
           });
     } catch (Exception exception) {
-      exception.printStackTrace();
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
       return null;
     }
     return flightOffers;
@@ -91,7 +97,7 @@ public class Parser {
       JsonNode dictNode = root.path("dictionaries").path(dictionary);
       flightDictionary = objectMapper.convertValue(dictNode, typeRef);
     } catch (Exception exception) {
-      exception.printStackTrace();
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
     }
     return flightDictionary;
   }
@@ -100,8 +106,8 @@ public class Parser {
     try {
       return objectMapper.readTree(json).get(root).get(0).get("name").asText();
 
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
     }
     return "";
   }
@@ -109,8 +115,8 @@ public class Parser {
   public static String getCityNameFromAirportAndCityApi(String json, String root) {
     try {
       return objectMapper.readTree(json).get(root).get(0).get("address").get("cityName").asText();
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
     }
     return "";
   }
@@ -132,7 +138,7 @@ public class Parser {
                           data.get("price").get("total").asInt(),
                           data.get("links").get("flightOffers").asText())));
     } catch (Exception exception) {
-      exception.printStackTrace();
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
     }
     return cheapestDateOffers;
   }

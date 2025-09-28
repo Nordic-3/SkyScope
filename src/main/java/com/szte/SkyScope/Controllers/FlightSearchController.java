@@ -7,6 +7,8 @@ import com.szte.SkyScope.Services.*;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ public class FlightSearchController {
   private final SortResultService sortResultService;
   private final FilterService filterService;
   private final CheapestFlightDateService cheapestFlightDateService;
+  private final Logger logger = Logger.getLogger(FlightSearchController.class.getName());
 
   @Autowired
   public FlightSearchController(
@@ -66,8 +69,8 @@ public class FlightSearchController {
                     .getSearchDatas(searchId)
                     .setOriginalSearchResult(sortResultService.sortOffersByDeffault(result));
               });
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
     }
 
     searchStore.getSearchDatas(searchId).setFlightSearch(flightSearch);

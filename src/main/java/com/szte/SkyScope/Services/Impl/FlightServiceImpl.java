@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,8 +79,9 @@ public class FlightServiceImpl implements FlightService {
     }
     try {
       return Parser.getIataFromJson(getCityAirportSearchApiResponse(city, "CITY", token), "data");
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception exception) {
+      Logger.getLogger(FlightServiceImpl.class.getName())
+          .log(Level.SEVERE, exception.getMessage(), exception);
       return null;
     }
   }
