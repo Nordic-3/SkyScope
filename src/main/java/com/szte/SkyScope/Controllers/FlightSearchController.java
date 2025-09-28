@@ -91,6 +91,34 @@ public class FlightSearchController {
       @ModelAttribute FlightSearch flightSearch,
       @RequestParam String by,
       @RequestParam(required = false) String cheaper) {
+    ifUserChoseCheaperOfferShow(cheaper, searchId);
+    setModelAttributes(model, searchId, by);
+    checkForCheaperOfferAndNotifyUser(searchId);
+    return "flightOffers";
+  }
+
+  @GetMapping("/cheaperOffer/{searchId}")
+  @ResponseBody
+  public ResponseEntity<String> checkIfCheaperOfferAvaliable(@PathVariable String searchId) {
+    if (searchStore.getSearchDatas(searchId).isCheaperOfferAvailable()) {
+      return ResponseEntity.ok("READY");
+    }
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body("IN_PROGRESS");
+  }
+
+  public void setFlightOffersAttributes(List<FlightOffers> result, String searchId) {
+    flightService.setAircraftType(
+        result, searchStore.getSearchDatas(searchId).getAircraftDictionary());
+    flightService.setCarrierNames(
+        result, searchStore.getSearchDatas(searchId).getCarrierDictionary());
+    flightService.setAirportNames(
+        result,
+        flightService.getAirportNamesByItsIata(
+            searchStore.getSearchDatas(searchId).getLocationDictionary(),
+            flightService.getToken().getAccess_token()));
+  }
+
+  public void ifUserChoseCheaperOfferShow(String cheaper, String searchId) {
     if (cheaper != null) {
       setFlightOffersAttributes(
           searchStore.getSearchDatas(searchId).getCheaperSearchResult(), searchId);
@@ -108,6 +136,31 @@ public class FlightSearchController {
           .getSearchDatas(searchId)
           .setFlightSearch(searchStore.getSearchDatas(searchId).getCheaperSearch());
     }
+  }
+
+  public void checkForCheaperOfferAndNotifyUser(String searchId) {
+    if (!searchStore.getSearchDatas(searchId).isCheaperOfferAvailable()
+        && searchStore.getSearchDatas(searchId).haveToCheckForCheaperOffer()) {
+      cheapestFlightDateService
+          .checkForCheaperOfferAndGetIt(
+              searchStore.getSearchDatas(searchId).getFlightSearch(),
+              flightService.getToken().getAccess_token(),
+              searchId,
+              sortResultService.sortOffersByPriceASC(
+                  searchStore.getSearchDatas(searchId).getSearchResult()))
+          .thenAccept(
+              result -> {
+                if (result != null) {
+                  searchStore.getSearchDatas(searchId).setCheaperSearchResult(result);
+                  searchStore.getSearchDatas(searchId).setCheaperOfferAvailable(true);
+                } else {
+                  searchStore.getSearchDatas(searchId).setHaveToCheckForCheaperOffer(false);
+                }
+              });
+    }
+  }
+
+  public void setModelAttributes(Model model, String searchId, String by) {
     model.addAttribute("flightSearch", searchStore.getSearchDatas(searchId).getFlightSearch());
     model.addAttribute(
         "results",
@@ -131,46 +184,5 @@ public class FlightSearchController {
     model.addAttribute(
         "maximumPrice",
         filterService.getMaxPrice(searchStore.getSearchDatas(searchId).getSearchResult()));
-    if (!searchStore.getSearchDatas(searchId).isCheaperOfferAvailable()
-        && searchStore.getSearchDatas(searchId).haveToCheckForCheaperOffer()) {
-      cheapestFlightDateService
-          .checkForCheaperOfferAndGetIt(
-              searchStore.getSearchDatas(searchId).getFlightSearch(),
-              flightService.getToken().getAccess_token(),
-              searchId,
-              sortResultService.sortOffersByPriceASC(
-                  searchStore.getSearchDatas(searchId).getSearchResult()))
-          .thenAccept(
-              result -> {
-                if (result != null) {
-                  searchStore.getSearchDatas(searchId).setCheaperSearchResult(result);
-                  searchStore.getSearchDatas(searchId).setCheaperOfferAvailable(true);
-                } else {
-                  searchStore.getSearchDatas(searchId).setHaveToCheckForCheaperOffer(false);
-                }
-              });
-    }
-    return "flightOffers";
-  }
-
-  @GetMapping("/cheaperOffer/{searchId}")
-  @ResponseBody
-  public ResponseEntity<String> checkIfCheaperOfferAvaliable(@PathVariable String searchId) {
-    if (searchStore.getSearchDatas(searchId).isCheaperOfferAvailable()) {
-      return ResponseEntity.ok("READY");
-    }
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body("IN_PROGRESS");
-  }
-
-  public void setFlightOffersAttributes(List<FlightOffers> result, String searchId) {
-    flightService.setAircraftType(
-        result, searchStore.getSearchDatas(searchId).getAircraftDictionary());
-    flightService.setCarrierNames(
-        result, searchStore.getSearchDatas(searchId).getCarrierDictionary());
-    flightService.setAirportNames(
-        result,
-        flightService.getAirportNamesByItsIata(
-            searchStore.getSearchDatas(searchId).getLocationDictionary(),
-            flightService.getToken().getAccess_token()));
   }
 }
