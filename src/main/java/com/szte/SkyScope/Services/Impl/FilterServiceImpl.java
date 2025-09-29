@@ -1,6 +1,7 @@
 package com.szte.SkyScope.Services.Impl;
 
 import com.szte.SkyScope.Models.ChosenFilters;
+import com.szte.SkyScope.Models.FilterValue;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Services.FilterService;
 import com.szte.SkyScope.Services.SortResultService;
@@ -21,50 +22,6 @@ public class FilterServiceImpl implements FilterService {
   }
 
   @Override
-  public List<String> getAirlineNames(List<FlightOffers> flightOffers) {
-    return flightOffers.stream()
-        .flatMap(offer -> offer.getItineraries().stream())
-        .flatMap(itinerary -> itinerary.getSegments().stream())
-        .map(segment -> segment.getOperating().getCarrierName())
-        .distinct()
-        .filter(airlineName -> !airlineName.isEmpty())
-        .toList();
-  }
-
-  @Override
-  public List<String> getTransferNumbers(List<FlightOffers> flightOffers) {
-    return flightOffers.stream()
-        .flatMap(offer -> offer.getItineraries().stream())
-        .map(FlightOffers.Itinerary::getTransferNumber)
-        .distinct()
-        .toList();
-  }
-
-  @Override
-  public List<String> getTransferDurations(List<FlightOffers> flightOffers) {
-    return flightOffers.stream()
-        .flatMap(offer -> offer.getItineraries().stream())
-        .flatMap(
-            itinerary ->
-                FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
-        .distinct()
-        .sorted(Duration::compareTo)
-        .map(duration -> FlightOfferFormatter.formatDuration(duration.toString()))
-        .toList();
-  }
-
-  @Override
-  public List<String> getAirplanes(List<FlightOffers> flightOffers) {
-    return flightOffers.stream()
-        .flatMap(offer -> offer.getItineraries().stream())
-        .flatMap(itinerary -> itinerary.getSegments().stream())
-        .map(segment -> segment.getAircraft().getName())
-        .filter(aircraft -> !aircraft.isEmpty())
-        .distinct()
-        .toList();
-  }
-
-  @Override
   public List<FlightOffers> filterOffers(List<FlightOffers> flightOffers, ChosenFilters filter) {
     return flightOffers.stream()
         .filter(
@@ -78,7 +35,55 @@ public class FilterServiceImpl implements FilterService {
   }
 
   @Override
-  public String getMaxPrice(List<FlightOffers> flightOffers) {
+  public FilterValue getFilterOptions(List<FlightOffers> flightOffers) {
+    return new FilterValue(
+        getAirlineNames(flightOffers),
+        getTransferNumbers(flightOffers),
+        getTransferDurations(flightOffers),
+        getAirplanes(flightOffers),
+        getMaxPrice(flightOffers));
+  }
+
+  private List<String> getAirlineNames(List<FlightOffers> flightOffers) {
+    return flightOffers.stream()
+        .flatMap(offer -> offer.getItineraries().stream())
+        .flatMap(itinerary -> itinerary.getSegments().stream())
+        .map(segment -> segment.getOperating().getCarrierName())
+        .distinct()
+        .filter(airlineName -> !airlineName.isEmpty())
+        .toList();
+  }
+
+  private List<String> getTransferNumbers(List<FlightOffers> flightOffers) {
+    return flightOffers.stream()
+        .flatMap(offer -> offer.getItineraries().stream())
+        .map(FlightOffers.Itinerary::getTransferNumber)
+        .distinct()
+        .toList();
+  }
+
+  private List<Duration> getTransferDurations(List<FlightOffers> flightOffers) {
+    return flightOffers.stream()
+        .flatMap(offer -> offer.getItineraries().stream())
+        .flatMap(
+            itinerary ->
+                FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
+        .distinct()
+        .sorted(Duration::compareTo)
+        .toList();
+  }
+
+  private List<String> getAirplanes(List<FlightOffers> flightOffers) {
+    return flightOffers.stream()
+        .flatMap(offer -> offer.getItineraries().stream())
+        .flatMap(itinerary -> itinerary.getSegments().stream())
+        .map(segment -> segment.getAircraft().getName())
+        .filter(aircraft -> !aircraft.isEmpty())
+        .distinct()
+        .toList();
+  }
+
+  private String getMaxPrice(List<FlightOffers> flightOffers) {
     List<FlightOffers> orderedOffers = sortResultService.sortOffersByPriceDSC(flightOffers);
     if (!orderedOffers.isEmpty()) {
       return FlightOfferFormatter.formatPrice(orderedOffers.getFirst().getPrice().getTotal())

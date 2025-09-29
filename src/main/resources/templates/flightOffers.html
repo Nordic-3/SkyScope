@@ -50,13 +50,13 @@
                         <p class="text-primary mb-0 fw-bolder">Ár szerint</p><hr>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="max">Max</span>
-                            <input type="number" class="form-control" th:placeholder="${maximumPrice}" aria-label="Max"
+                            <input type="number" class="form-control" th:placeholder="${filterOptions.getMaxPrice()}" aria-label="Max"
                                    aria-describedby="Max" th:field="*{maxPrice}">
                         </div>
                         <p class="text-primary mb-0 fw-bolder">Átszállás száma szerint</p><hr>
                         <select class="form-select mb-3" aria-label="transfers" th:field="*{transferNumber}">
                             <option value="" selected>Választ</option>
-                            <option th:each="option : ${transferNumbers}"
+                            <option th:each="option : ${filterOptions.getTransferNumbers()}"
                                     th:value="${option}"
                                     th:text="${option}">
                             </option>
@@ -64,13 +64,13 @@
                         <p class="text-primary mb-0 fw-bolder">Átszállási idő szerint</p><hr>
                         <select class="form-select mb-3" aria-label="transferDuration" th:field="*{transferDuration}">
                             <option value="" selected>Választ</option>
-                            <option th:each="option : ${transferDurations}"
+                            <option th:each="option : ${filterOptions.getLayoverTimes()}"
                                     th:value="${option}"
-                                    th:text="${option}">
+                                    th:text="${filterOptions.getFormattedLayoverTime(option)}">
                             </option>
                         </select>
                         <p class="text-primary mb-0 fw-bolder">Légitársaság szerint</p><hr>
-                        <div th:each="airline : ${allAirline}" class="form-check form-switch mb">
+                        <div th:each="airline : ${filterOptions.getAllAirline()}" class="form-check form-switch mb">
                             <input class="form-check-input"
                                    type="checkbox"
                                    role="switch"
@@ -82,7 +82,7 @@
                                    th:text="${airline}"></label>
                         </div>
                         <p class="mt-3 text-primary mb-0 fw-bolder">Repülőgép szerint</p><hr>
-                        <div th:each="airplane : ${airplaneTypes}" class="form-check form-switch">
+                        <div th:each="airplane : ${filterOptions.getAirplaneTypes()}" class="form-check form-switch">
                             <input class="form-check-input"
                                    type="checkbox"
                                    role="switch"

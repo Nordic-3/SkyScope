@@ -171,21 +171,9 @@ public class FlightSearchController {
             searchStore.getSearchDatas(searchId).getSearchResult()));
     model.addAttribute("searchId", searchId);
     model.addAttribute("sortBy", by);
-    model.addAttribute(
-        "allAirline",
-        filterService.getAirlineNames(searchStore.getSearchDatas(searchId).getSearchResult()));
     model.addAttribute("filterOffers", searchStore.getSearchDatas(searchId).getFilterAttribute());
     model.addAttribute(
-        "transferNumbers",
-        filterService.getTransferNumbers(searchStore.getSearchDatas(searchId).getSearchResult()));
-    model.addAttribute(
-        "transferDurations",
-        filterService.getTransferDurations(searchStore.getSearchDatas(searchId).getSearchResult()));
-    model.addAttribute(
-        "airplaneTypes",
-        filterService.getAirplanes(searchStore.getSearchDatas(searchId).getSearchResult()));
-    model.addAttribute(
-        "maximumPrice",
-        filterService.getMaxPrice(searchStore.getSearchDatas(searchId).getSearchResult()));
+        "filterOptions",
+        filterService.getFilterOptions(searchStore.getSearchDatas(searchId).getSearchResult()));
   }
 }
