@@ -147,7 +147,7 @@
                                             <div class="row text-start"
                                                  th:if="${itinerary.getLayoverTime().size() > 0}">
                                                 <p class="col fs-6"
-                                                   th:each="layover : ${itinerary.getLayoverTime()}"
+                                                   th:each="layover : ${itinerary.getFormattedLayoverTime()}"
                                                    th:text="${'Átszállási idő: ' + layover}">
                                                 </p>
                                             </div>

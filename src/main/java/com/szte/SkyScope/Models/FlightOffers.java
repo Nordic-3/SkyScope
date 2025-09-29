@@ -1,6 +1,8 @@
 package com.szte.SkyScope.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.szte.SkyScope.Utils.FlightOfferFormatter;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class FlightOffers {
 
     private List<Segment> segments = new ArrayList<>();
     private String duration = "";
-    private List<String> layoverTime = new ArrayList<>();
+    private List<Duration> layoverTime = new ArrayList<>();
 
     public Itinerary() {}
 
@@ -68,11 +70,17 @@ public class FlightOffers {
       this.layoverTime = new ArrayList<>(itinerary.getLayoverTime());
     }
 
-    public List<String> getLayoverTime() {
+    public List<Duration> getLayoverTime() {
       return layoverTime;
     }
 
-    public void setLayoverTime(List<String> layoverTime) {
+    public List<String> getFormattedLayoverTime() {
+      return this.layoverTime.stream()
+          .map(layoverTime -> FlightOfferFormatter.formatDuration(layoverTime.toString()))
+          .toList();
+    }
+
+    public void setLayoverTime(List<Duration> layoverTime) {
       this.layoverTime = layoverTime;
     }
 

@@ -5,6 +5,7 @@ import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Services.FilterService;
 import com.szte.SkyScope.Services.SortResultService;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
+import java.time.Duration;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,8 @@ public class FilterServiceImpl implements FilterService {
             itinerary ->
                 FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
         .distinct()
+        .sorted(Duration::compareTo)
+        .map(duration -> FlightOfferFormatter.formatDuration(duration.toString()))
         .toList();
   }
 
@@ -106,7 +109,7 @@ public class FilterServiceImpl implements FilterService {
   }
 
   private boolean filterTransferTime(FlightOffers offer, FilterAttribute filter) {
-    List<String> layoverTime = getOutGoingFlightLayoverTime(offer);
+    List<String> layoverTime = getLayoverTime(offer);
     return filter.getTransferDuration().isEmpty()
         || layoverTime.contains(filter.getTransferDuration());
   }
@@ -118,11 +121,12 @@ public class FilterServiceImpl implements FilterService {
             .anyMatch(segment -> filter.getAirplanes().contains(segment.getAircraft().getName()));
   }
 
-  private List<String> getOutGoingFlightLayoverTime(FlightOffers flightOffer) {
+  private List<String> getLayoverTime(FlightOffers flightOffer) {
     return flightOffer.getItineraries().stream()
         .flatMap(
             itinerary ->
                 FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
+        .map(duration -> FlightOfferFormatter.formatDuration(duration.toString()))
         .toList();
   }
 }

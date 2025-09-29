@@ -35,12 +35,12 @@ public class FlightOfferFormatter {
     return formattedFlightOffers;
   }
 
-  public static List<String> calculateLayoverTime(List<FlightOffers.Segment> segments) {
-    List<String> layoverTimes = new ArrayList<>();
+  public static List<Duration> calculateLayoverTime(List<FlightOffers.Segment> segments) {
+    List<Duration> layoverTimes = new ArrayList<>();
     for (int i = 0; i < segments.size() - 1; i++) {
       LocalDateTime arrival = LocalDateTime.parse(segments.get(i).getArrival().getAt());
       LocalDateTime departure = LocalDateTime.parse(segments.get(i + 1).getDeparture().getAt());
-      layoverTimes.add(formatDuration(Duration.between(arrival, departure).toString()));
+      layoverTimes.add(Duration.between(arrival, departure));
     }
     return layoverTimes;
   }
