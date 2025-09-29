@@ -1,6 +1,6 @@
 package com.szte.SkyScope.Services.Impl;
 
-import com.szte.SkyScope.Models.FilterAttribute;
+import com.szte.SkyScope.Models.ChosenFilters;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Services.FilterService;
 import com.szte.SkyScope.Services.SortResultService;
@@ -65,7 +65,7 @@ public class FilterServiceImpl implements FilterService {
   }
 
   @Override
-  public List<FlightOffers> filterOffers(List<FlightOffers> flightOffers, FilterAttribute filter) {
+  public List<FlightOffers> filterOffers(List<FlightOffers> flightOffers, ChosenFilters filter) {
     return flightOffers.stream()
         .filter(
             offer ->
@@ -87,13 +87,13 @@ public class FilterServiceImpl implements FilterService {
     return "";
   }
 
-  private boolean filterPrice(FlightOffers offer, FilterAttribute filter) {
+  private boolean filterPrice(FlightOffers offer, ChosenFilters filter) {
     return filter.getMaxPrice().isEmpty()
         || Integer.parseInt(offer.getPrice().getTotal().split("\\.")[0])
             <= Integer.parseInt(filter.getMaxPrice());
   }
 
-  private boolean filterAirline(FlightOffers offer, FilterAttribute filter) {
+  private boolean filterAirline(FlightOffers offer, ChosenFilters filter) {
     return filter.getAirlines().isEmpty()
         || offer.getItineraries().stream()
             .flatMap(itinerary -> itinerary.getSegments().stream())
@@ -101,20 +101,20 @@ public class FilterServiceImpl implements FilterService {
                 segment -> filter.getAirlines().contains(segment.getOperating().getCarrierName()));
   }
 
-  private boolean filterTransferNumber(FlightOffers offer, FilterAttribute filter) {
+  private boolean filterTransferNumber(FlightOffers offer, ChosenFilters filter) {
     return filter.getTransferNumber().isEmpty()
         || offer.getItineraries().stream()
             .anyMatch(
                 itinerary -> itinerary.getTransferNumber().equals(filter.getTransferNumber()));
   }
 
-  private boolean filterTransferTime(FlightOffers offer, FilterAttribute filter) {
+  private boolean filterTransferTime(FlightOffers offer, ChosenFilters filter) {
     List<String> layoverTime = getLayoverTime(offer);
     return filter.getTransferDuration().isEmpty()
         || layoverTime.contains(filter.getTransferDuration());
   }
 
-  private boolean filterAirplane(FlightOffers offer, FilterAttribute filter) {
+  private boolean filterAirplane(FlightOffers offer, ChosenFilters filter) {
     return filter.getAirplanes().isEmpty()
         || offer.getItineraries().stream()
             .flatMap(itinerary -> itinerary.getSegments().stream())

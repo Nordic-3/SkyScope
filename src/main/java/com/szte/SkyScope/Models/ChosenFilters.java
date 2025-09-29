@@ -3,7 +3,7 @@ package com.szte.SkyScope.Models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterAttribute {
+public class ChosenFilters {
   private String maxPrice = "";
   private List<String> airlines = new ArrayList<>();
   private String transferNumber = "";

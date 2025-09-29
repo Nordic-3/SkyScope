@@ -1,6 +1,6 @@
 package com.szte.SkyScope.Services;
 
-import com.szte.SkyScope.Models.FilterAttribute;
+import com.szte.SkyScope.Models.ChosenFilters;
 import com.szte.SkyScope.Models.FlightOffers;
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface FilterService {
 
   List<String> getAirplanes(List<FlightOffers> flightOffers);
 
-  List<FlightOffers> filterOffers(List<FlightOffers> flightOffers, FilterAttribute filterAttribute);
+  List<FlightOffers> filterOffers(List<FlightOffers> flightOffers, ChosenFilters chosenFilters);
 
   String getMaxPrice(List<FlightOffers> flightOffers);
 }

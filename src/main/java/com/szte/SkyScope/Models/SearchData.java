@@ -9,7 +9,7 @@ public class SearchData {
   private Map<String, String> aircraftDictionary;
   private Map<String, Location> locationDictionary;
   private Map<String, String> carrierDictionary;
-  private FilterAttribute filterAttribute = new FilterAttribute();
+  private ChosenFilters chosenFilters = new ChosenFilters();
   private List<FlightOffers> originalSearchResult;
   private boolean cheaperOfferAvailable = false;
   private boolean haveToCheckForCheaperOffer = true;
@@ -88,12 +88,12 @@ public class SearchData {
     this.carrierDictionary = carrierDictionary;
   }
 
-  public FilterAttribute getFilterAttribute() {
-    return filterAttribute;
+  public ChosenFilters getFilterAttribute() {
+    return chosenFilters;
   }
 
-  public void setFilterAttribute(FilterAttribute filterAttribute) {
-    this.filterAttribute = filterAttribute;
+  public void setFilterAttribute(ChosenFilters chosenFilters) {
+    this.chosenFilters = chosenFilters;
   }
 
   public List<FlightOffers> getOriginalSearchResult() {

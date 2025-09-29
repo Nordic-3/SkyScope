@@ -1,6 +1,6 @@
 package com.szte.SkyScope.Controllers;
 
-import com.szte.SkyScope.Models.FilterAttribute;
+import com.szte.SkyScope.Models.ChosenFilters;
 import com.szte.SkyScope.Services.FilterService;
 import com.szte.SkyScope.Services.SearchStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class FilterFlightOfferController {
 
   @PostMapping("/filter/{searchId}")
   public String filterOffers(
-      @ModelAttribute("filterOffers") FilterAttribute filters,
+      @ModelAttribute("filterOffers") ChosenFilters filters,
       @PathVariable String searchId,
       @RequestParam String by) {
     searchStore.getSearchDatas(searchId).setFilterAttribute(filters);
@@ -34,7 +34,7 @@ public class FilterFlightOfferController {
 
   @PostMapping("filter/reset/{searchId}")
   public String resetFilters(@PathVariable String searchId, @RequestParam String by) {
-    searchStore.getSearchDatas(searchId).setFilterAttribute(new FilterAttribute());
+    searchStore.getSearchDatas(searchId).setFilterAttribute(new ChosenFilters());
     searchStore
         .getSearchDatas(searchId)
         .setSearchResult(searchStore.getSearchDatas(searchId).getOriginalSearchResult());
