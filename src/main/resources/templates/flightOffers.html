@@ -63,7 +63,7 @@
                         </select>
                         <p class="text-primary mb-0 fw-bolder">Átszállási idő szerint</p><hr>
                         <select class="form-select mb-3" aria-label="transferDuration" th:field="*{transferDuration}">
-                            <option value="" selected>Választ</option>
+                            <option value="" selected>Legfeljebb...</option>
                             <option th:each="option : ${filterOptions.getLayoverTimes()}"
                                     th:value="${option}"
                                     th:text="${filterOptions.getFormattedLayoverTime(option)}">

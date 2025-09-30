@@ -29,7 +29,7 @@ public class FilterServiceImpl implements FilterService {
                 filterPrice(offer, filter)
                     && filterAirline(offer, filter)
                     && filterTransferNumber(offer, filter)
-                    && filterTransferTime(offer, filter)
+                    && filterLayoverTime(offer, filter)
                     && filterAirplane(offer, filter))
         .toList();
   }
@@ -113,10 +113,12 @@ public class FilterServiceImpl implements FilterService {
                 itinerary -> itinerary.getTransferNumber().equals(filter.getTransferNumber()));
   }
 
-  private boolean filterTransferTime(FlightOffers offer, ChosenFilters filter) {
-    List<String> layoverTime = getLayoverTime(offer);
+  private boolean filterLayoverTime(FlightOffers offer, ChosenFilters filter) {
+    List<Duration> layoverTime = getLayoverTime(offer);
     return filter.getTransferDuration().isEmpty()
-        || layoverTime.contains(filter.getTransferDuration());
+        || layoverTime.stream()
+            .allMatch(
+                duration -> duration.compareTo(Duration.parse(filter.getTransferDuration())) <= 0);
   }
 
   private boolean filterAirplane(FlightOffers offer, ChosenFilters filter) {
@@ -126,12 +128,11 @@ public class FilterServiceImpl implements FilterService {
             .anyMatch(segment -> filter.getAirplanes().contains(segment.getAircraft().getName()));
   }
 
-  private List<String> getLayoverTime(FlightOffers flightOffer) {
+  private List<Duration> getLayoverTime(FlightOffers flightOffer) {
     return flightOffer.getItineraries().stream()
         .flatMap(
             itinerary ->
                 FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
-        .map(duration -> FlightOfferFormatter.formatDuration(duration.toString()))
         .toList();
   }
 }
