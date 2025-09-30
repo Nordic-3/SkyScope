@@ -33,11 +33,11 @@ public class FilterFlightOfferController {
   }
 
   @PostMapping("filter/reset/{searchId}")
-  public String resetFilters(@PathVariable String searchId, @RequestParam String by) {
+  public String resetFilters(@PathVariable String searchId) {
     searchStore.getSearchDatas(searchId).setFilterAttribute(new ChosenFilters());
     searchStore
         .getSearchDatas(searchId)
         .setSearchResult(searchStore.getSearchDatas(searchId).getOriginalSearchResult());
-    return "redirect:/resultsPage/" + searchId + "?by=" + by;
+    return "redirect:/resultsPage/" + searchId + "?by=transferTimeAsc";
   }
 }
