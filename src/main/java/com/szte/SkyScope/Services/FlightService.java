@@ -1,6 +1,5 @@
 package com.szte.SkyScope.Services;
 
-import com.szte.SkyScope.Models.AmadeusApiCred;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.Location;
@@ -9,9 +8,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public interface FlightService {
-  AmadeusApiCred getToken();
-
-  String getIataCode(String city, String token);
+  String getToken();
 
   void setIataCodes(FlightSearch flightSearch, String token);
 

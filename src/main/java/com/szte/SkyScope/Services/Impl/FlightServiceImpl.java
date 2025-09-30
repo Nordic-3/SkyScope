@@ -2,29 +2,20 @@ package com.szte.SkyScope.Services.Impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.szte.SkyScope.Config.ApplicationConfig;
-import com.szte.SkyScope.Models.AmadeusApiCred;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.Location;
 import com.szte.SkyScope.Parsers.Parser;
-import com.szte.SkyScope.Services.CityService;
-import com.szte.SkyScope.Services.FlightService;
-import com.szte.SkyScope.Services.JsonReaderService;
-import com.szte.SkyScope.Services.SearchStore;
+import com.szte.SkyScope.Services.*;
 import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -37,61 +28,34 @@ public class FlightServiceImpl implements FlightService {
   private final JsonReaderService jsonReaderService;
   private final SearchStore searchStore;
   private final CityService cityService;
+  private final CachedApiCalls cachedApiCalls;
 
   @Autowired
   public FlightServiceImpl(
       ApplicationConfig applicationConfig,
       JsonReaderService jsonReaderService,
       SearchStore searchStore,
-      CityService cityService) {
+      CityService cityService,
+      CachedApiCalls cachedApiCalls) {
     this.applicationConfig = applicationConfig;
     this.jsonReaderService = jsonReaderService;
     this.searchStore = searchStore;
     this.cityService = cityService;
+    this.cachedApiCalls = cachedApiCalls;
   }
 
   @Override
-  @Cacheable("amadeusApiToken")
-  public AmadeusApiCred getToken() {
-    if (!applicationConfig.useApis() || applicationConfig.getAmadeusClientId().equals("noApi")) {
-      return new AmadeusApiCred();
-    }
-    String body =
-        "grant_type=client_credentials"
-            + "&client_id="
-            + applicationConfig.getAmadeusClientId()
-            + "&client_secret="
-            + applicationConfig.getAmadeusClientSecret();
-    return restClient
-        .post()
-        .uri(applicationConfig.getAmadeusAuthUrl())
-        .header("Content-Type", "application/x-www-form-urlencoded")
-        .body(body)
-        .retrieve()
-        .body(AmadeusApiCred.class);
-  }
-
-  @Override
-  public String getIataCode(String city, String token) {
-    if (applicationConfig.getAmadeusCitySearchApi().equals("noApi")
-        || !applicationConfig.useApis()) {
-      return getIataCodeFromLocalJson(city);
-    }
-    try {
-      return Parser.getIataFromJson(getCityAirportSearchApiResponse(city, "CITY", token), "data");
-    } catch (Exception exception) {
-      Logger.getLogger(FlightServiceImpl.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
-      return null;
-    }
+  public String getToken() {
+    return cachedApiCalls.getAmadeusApiCred().getAccess_token();
   }
 
   @Override
   public void setIataCodes(FlightSearch flightSearch, String token) {
     setEnglishNameOfTheCities(flightSearch);
     removeAccents(flightSearch);
-    flightSearch.setOriginCityIata(getIataCode(flightSearch.getOriginCity(), token));
-    flightSearch.setDestinationCityIata(getIataCode(flightSearch.getDestinationCity(), token));
+    flightSearch.setOriginCityIata(cachedApiCalls.getIataCode(flightSearch.getOriginCity(), token));
+    flightSearch.setDestinationCityIata(
+        cachedApiCalls.getIataCode(flightSearch.getDestinationCity(), token));
   }
 
   @Async
@@ -171,7 +135,8 @@ public class FlightServiceImpl implements FlightService {
       Map<String, Location> locations, String token) {
     Map<String, String> airportNamesByIataCode = new HashMap<>();
     locations.forEach(
-        (key, value) -> airportNamesByIataCode.put(key, getAirportNameFromApi(key, token)));
+        (key, value) ->
+            airportNamesByIataCode.put(key, cachedApiCalls.getAirportNameFromApi(key, token)));
     return airportNamesByIataCode;
   }
 
@@ -210,38 +175,6 @@ public class FlightServiceImpl implements FlightService {
   private void removeAccents(FlightSearch flightSearch) {
     flightSearch.setOriginCity(normalizeCityNames(flightSearch.getOriginCity()));
     flightSearch.setDestinationCity(normalizeCityNames(flightSearch.getDestinationCity()));
-  }
-
-  private String getIataCodeFromLocalJson(String city) {
-    return Parser.getIataFromJson(
-        jsonReaderService.readJsonFromResources("exampleDatas/iataCodes.json"), city);
-  }
-
-  private String getAirportNameFromLocalJson(String iata) {
-    String json = jsonReaderService.readJsonFromResources("exampleDatas/airportNames.json");
-    return Parser.getCityNameFromAirportAndCityApi(json, iata)
-        + ", "
-        + Parser.getAirportNameFromJson(json, iata);
-  }
-
-  private String getAirportNameFromApi(String iata, String token) {
-    if (applicationConfig.getAmadeusCitySearchApi().equals("noApi")
-        || !applicationConfig.useApis()) {
-      return getAirportNameFromLocalJson(iata);
-    }
-    String response = getCityAirportSearchApiResponse(iata, "AIRPORT", token);
-    return Parser.getCityNameFromAirportAndCityApi(response, "data")
-        + ", "
-        + Parser.getAirportNameFromJson(response, "data");
-  }
-
-  private String getCityAirportSearchApiResponse(String keyword, String subType, String token) {
-    return restClient
-        .get()
-        .uri(applicationConfig.getAmadeusCitySearchApi(), keyword.strip(), subType)
-        .header("Authorization", "Bearer " + token)
-        .retrieve()
-        .body(String.class);
   }
 
   private Stream<FlightOffers.Segment> getSegmentStream(List<FlightOffers> flightOffers) {
@@ -283,8 +216,4 @@ public class FlightServiceImpl implements FlightService {
   private boolean isNotNullAndNotEmpty(String dataToCheck) {
     return dataToCheck != null && !dataToCheck.isEmpty();
   }
-
-  @CacheEvict(value = "amadeusApiToken", allEntries = true)
-  @Scheduled(fixedRateString = "${amadeus_token_expiry}")
-  public void emptyAmadeusApiToken() {}
 }

@@ -48,7 +48,7 @@ public class FlightSearchController {
     if (!inputValidationService.isValidInputDatas(flightSearch, model)) {
       return "flightSearchPage";
     }
-    flightService.setIataCodes(flightSearch, flightService.getToken().getAccess_token());
+    flightService.setIataCodes(flightSearch, flightService.getToken());
     if (!inputValidationService.isValidIataCodes(flightSearch, model)) {
       return "flightSearchPage";
     }
@@ -58,7 +58,7 @@ public class FlightSearchController {
 
     try {
       flightService
-          .getFlightOffers(flightSearch, flightService.getToken().getAccess_token(), searchId)
+          .getFlightOffers(flightSearch, flightService.getToken(), searchId)
           .thenAccept(
               result -> {
                 setFlightOffersAttributes(result, searchId);
@@ -118,7 +118,7 @@ public class FlightSearchController {
         result,
         flightService.getAirportNamesByItsIata(
             searchStore.getSearchDatas(searchId).getLocationDictionary(),
-            flightService.getToken().getAccess_token()));
+            flightService.getToken()));
   }
 
   public void ifUserChoseCheaperOfferShow(String cheaper, String searchId) {
@@ -147,7 +147,7 @@ public class FlightSearchController {
       cheapestFlightDateService
           .checkForCheaperOfferAndGetIt(
               searchStore.getSearchDatas(searchId).getFlightSearch(),
-              flightService.getToken().getAccess_token(),
+              flightService.getToken(),
               searchId,
               sortResultService.sortOffersByPriceASC(
                   searchStore.getSearchDatas(searchId).getSearchResult()))
