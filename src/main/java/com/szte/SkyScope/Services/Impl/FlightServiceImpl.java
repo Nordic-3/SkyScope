@@ -104,10 +104,10 @@ public class FlightServiceImpl implements FlightService {
                 segment
                     .getAircraft()
                     .setName(
-                        aircrafts
-                            .getOrDefault(
-                                segment.getAircraft().getCode(), segment.getAircraft().getCode())
-                            .toLowerCase()));
+                        WordUtils.capitalizeFully(
+                            aircrafts.getOrDefault(
+                                segment.getAircraft().getCode(),
+                                segment.getAircraft().getCode()))));
   }
 
   @Override
@@ -116,17 +116,15 @@ public class FlightServiceImpl implements FlightService {
         .forEach(
             segment -> {
               segment.setCarrierName(
-                  carriers
-                      .getOrDefault(segment.getCarrierCode(), segment.getCarrierCode())
-                      .toLowerCase());
+                  WordUtils.capitalizeFully(
+                      carriers.getOrDefault(segment.getCarrierCode(), segment.getCarrierCode())));
               segment
                   .getOperating()
                   .setCarrierName(
-                      carriers
-                          .getOrDefault(
+                      WordUtils.capitalizeFully(
+                          carriers.getOrDefault(
                               segment.getOperating().getCarrierCode(),
-                              segment.getOperating().getCarrierCode())
-                          .toLowerCase());
+                              segment.getOperating().getCarrierCode())));
             });
   }
 
