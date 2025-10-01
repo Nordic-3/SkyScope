@@ -64,11 +64,17 @@ public class FilterServiceImpl implements FilterService {
 
   private List<Duration> getTransferDurations(List<FlightOffers> flightOffers) {
     return flightOffers.stream()
-        .flatMap(offer -> offer.getItineraries().stream())
-        .flatMap(
-            itinerary ->
-                FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
+        .map(
+            offer ->
+                offer.getItineraries().stream()
+                    .flatMap(
+                        itinerary ->
+                            FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments())
+                                .stream())
+                    .max(Duration::compareTo)
+                    .orElse(Duration.ZERO))
         .distinct()
+        .filter(duration -> !duration.isZero())
         .sorted(Duration::compareTo)
         .toList();
   }
