@@ -33,6 +33,13 @@ public class ApplicationConfig {
   @Value("${amadeus_cheapest_date_search:noApi}")
   private String amadeusCheapestDateSearch;
 
+  @Value("${amadeus_final_price:noApi}")
+  private String amadeusFinalPrice;
+
+  public String getAmadeusFinalPrice() {
+    return amadeusFinalPrice;
+  }
+
   public String getAmadeusCheapestDateSearch() {
     return amadeusCheapestDateSearch;
   }

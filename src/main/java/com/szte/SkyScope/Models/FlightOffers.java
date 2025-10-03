@@ -12,6 +12,9 @@ public class FlightOffers {
   private Price price = new Price();
   private List<TravelerPricing> travelerPricings = new ArrayList<>();
   private String id = "";
+  private String type = "";
+  private String source = "";
+  private List<String> validatingAirlineCodes = new ArrayList<>();
 
   public FlightOffers() {}
 
@@ -21,6 +24,33 @@ public class FlightOffers {
     this.travelerPricings =
         flightOffers.getTravelerPricings().stream().map(TravelerPricing::new).toList();
     this.id = flightOffers.getId();
+    this.type = flightOffers.getType();
+    this.source = flightOffers.getSource();
+    this.validatingAirlineCodes.addAll(flightOffers.getValidatingAirlineCodes());
+  }
+
+  public List<String> getValidatingAirlineCodes() {
+    return validatingAirlineCodes;
+  }
+
+  public void setValidatingAirlineCodes(List<String> validatingAirlineCodes) {
+    this.validatingAirlineCodes = validatingAirlineCodes;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getSource() {
+    return source;
+  }
+
+  public void setSource(String source) {
+    this.source = source;
   }
 
   public String getId() {

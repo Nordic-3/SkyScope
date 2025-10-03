@@ -1,0 +1,318 @@
+{
+  "data": {
+    "type": "flight-offers-pricing",
+    "flightOffers": [
+      {
+        "type": "flight-offer",
+        "id": "1",
+        "source": "GDS",
+        "instantTicketingRequired": false,
+        "nonHomogeneous": false,
+        "paymentCardRequired": false,
+        "lastTicketingDate": "2025-10-06",
+        "itineraries": [
+          {
+            "segments": [
+              {
+                "departure": {
+                  "iataCode": "BUD",
+                  "terminal": "2A",
+                  "at": "2025-11-05T06:20:00"
+                },
+                "arrival": {
+                  "iataCode": "FRA",
+                  "terminal": "1",
+                  "at": "2025-11-05T08:05:00"
+                },
+                "carrierCode": "UA",
+                "number": "9023",
+                "aircraft": {
+                  "code": "320"
+                },
+                "operating": {
+                  "carrierCode": "LH"
+                },
+                "duration": "PT1H45M",
+                "id": "16",
+                "numberOfStops": 0
+              },
+              {
+                "departure": {
+                  "iataCode": "FRA",
+                  "terminal": "1",
+                  "at": "2025-11-05T09:20:00"
+                },
+                "arrival": {
+                  "iataCode": "LAS",
+                  "terminal": "3",
+                  "at": "2025-11-05T12:05:00"
+                },
+                "carrierCode": "UA",
+                "number": "9666",
+                "aircraft": {
+                  "code": "333"
+                },
+                "operating": {
+                  "carrierCode": "4Y"
+                },
+                "duration": "PT11H45M",
+                "id": "17",
+                "numberOfStops": 0
+              }
+            ]
+          },
+          {
+            "segments": [
+              {
+                "departure": {
+                  "iataCode": "LAS",
+                  "terminal": "3",
+                  "at": "2025-11-25T11:00:00"
+                },
+                "arrival": {
+                  "iataCode": "ORD",
+                  "terminal": "1",
+                  "at": "2025-11-25T16:43:00"
+                },
+                "carrierCode": "LX",
+                "number": "3259",
+                "aircraft": {
+                  "code": "32Q"
+                },
+                "operating": {
+                  "carrierCode": "UA"
+                },
+                "duration": "PT3H43M",
+                "id": "20",
+                "numberOfStops": 0
+              },
+              {
+                "departure": {
+                  "iataCode": "ORD",
+                  "terminal": "5",
+                  "at": "2025-11-25T18:50:00"
+                },
+                "arrival": {
+                  "iataCode": "ZRH",
+                  "at": "2025-11-26T10:40:00"
+                },
+                "carrierCode": "LX",
+                "number": "9",
+                "aircraft": {
+                  "code": "333"
+                },
+                "operating": {
+                  "carrierCode": "LX"
+                },
+                "duration": "PT8H50M",
+                "id": "21",
+                "numberOfStops": 0
+              },
+              {
+                "departure": {
+                  "iataCode": "ZRH",
+                  "at": "2025-11-26T12:25:00"
+                },
+                "arrival": {
+                  "iataCode": "BUD",
+                  "terminal": "2B",
+                  "at": "2025-11-26T14:05:00"
+                },
+                "carrierCode": "LX",
+                "number": "2254",
+                "aircraft": {
+                  "code": "223"
+                },
+                "operating": {
+                  "carrierCode": "LX"
+                },
+                "duration": "PT1H40M",
+                "id": "22",
+                "numberOfStops": 0
+              }
+            ]
+          }
+        ],
+        "price": {
+          "currency": "HUF",
+          "total": "258200.00",
+          "base": "107400.00",
+          "fees": [
+            {
+              "amount": "0.00",
+              "type": "SUPPLIER"
+            },
+            {
+              "amount": "0.00",
+              "type": "TICKETING"
+            },
+            {
+              "amount": "0.00",
+              "type": "FORM_OF_PAYMENT"
+            }
+          ],
+          "grandTotal": "258200.00",
+          "billingCurrency": "HUF"
+        },
+        "pricingOptions": {
+          "fareType": [
+            "PUBLISHED"
+          ],
+          "includedCheckedBagsOnly": false
+        },
+        "validatingAirlineCodes": [
+          "UA"
+        ],
+        "travelerPricings": [
+          {
+            "travelerId": "1",
+            "fareOption": "STANDARD",
+            "travelerType": "ADULT",
+            "price": {
+              "currency": "HUF",
+              "total": "258200",
+              "base": "107400",
+              "taxes": [
+                {
+                  "amount": "2400.00",
+                  "code": "XY"
+                },
+                {
+                  "amount": "6700.00",
+                  "code": "CH"
+                },
+                {
+                  "amount": "94300.00",
+                  "code": "YQ"
+                },
+                {
+                  "amount": "1900.00",
+                  "code": "AY"
+                },
+                {
+                  "amount": "1300.00",
+                  "code": "XA"
+                },
+                {
+                  "amount": "2500.00",
+                  "code": "YC"
+                },
+                {
+                  "amount": "12100.00",
+                  "code": "HU"
+                },
+                {
+                  "amount": "15200.00",
+                  "code": "US"
+                },
+                {
+                  "amount": "1500.00",
+                  "code": "XF"
+                },
+                {
+                  "amount": "2300.00",
+                  "code": "FE"
+                },
+                {
+                  "amount": "10600.00",
+                  "code": "RA"
+                }
+              ],
+              "refundableTaxes": "39800"
+            },
+            "fareDetailsBySegment": [
+              {
+                "segmentId": "16",
+                "cabin": "ECONOMY",
+                "fareBasis": "KMPMF8BQ",
+                "brandedFare": "ECOBASIC",
+                "class": "K",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              },
+              {
+                "segmentId": "17",
+                "cabin": "ECONOMY",
+                "fareBasis": "KMPMF8BQ",
+                "brandedFare": "ECOBASIC",
+                "class": "K",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              },
+              {
+                "segmentId": "20",
+                "cabin": "ECONOMY",
+                "fareBasis": "KMPMF8BQ",
+                "brandedFare": "ECOLIGHT",
+                "class": "K",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              },
+              {
+                "segmentId": "21",
+                "cabin": "ECONOMY",
+                "fareBasis": "KMPMF8BQ",
+                "brandedFare": "ECOLIGHT",
+                "class": "K",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              },
+              {
+                "segmentId": "22",
+                "cabin": "ECONOMY",
+                "fareBasis": "KMPMF8BQ",
+                "brandedFare": "ECOLIGHT",
+                "class": "K",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "bookingRequirements": {
+      "emailAddressRequired": true,
+      "mobilePhoneNumberRequired": true,
+      "travelerRequirements": [
+        {
+          "travelerId": "1",
+          "genderRequired": true,
+          "documentRequired": true,
+          "dateOfBirthRequired": true,
+          "redressRequiredIfAny": true,
+          "residenceRequired": true
+        }
+      ]
+    }
+  },
+  "dictionaries": {
+    "locations": {
+      "BUD": {
+        "cityCode": "BUD",
+        "countryCode": "HU"
+      },
+      "ORD": {
+        "cityCode": "CHI",
+        "countryCode": "US"
+      },
+      "ZRH": {
+        "cityCode": "ZRH",
+        "countryCode": "CH"
+      },
+      "FRA": {
+        "cityCode": "FRA",
+        "countryCode": "DE"
+      },
+      "LAS": {
+        "cityCode": "LAS",
+        "countryCode": "US"
+      }
+    }
+  }
+}
