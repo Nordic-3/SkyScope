@@ -15,49 +15,61 @@
             "segments": [
               {
                 "departure": {
-                  "iataCode": "BUD",
-                  "terminal": "2A",
-                  "at": "2025-11-05T06:20:00"
+                  "iataCode": "LGW",
+                  "terminal": "N",
+                  "at": "2025-11-05T11:55:00"
                 },
                 "arrival": {
-                  "iataCode": "FRA",
-                  "terminal": "1",
-                  "at": "2025-11-05T08:05:00"
+                  "iataCode": "KEF",
+                  "at": "2025-11-05T15:20:00"
                 },
-                "carrierCode": "UA",
-                "number": "9023",
+                "carrierCode": "FI",
+                "number": "471",
                 "aircraft": {
-                  "code": "320"
+                  "code": "7M8"
                 },
                 "operating": {
-                  "carrierCode": "LH"
+                  "carrierCode": "FI"
                 },
-                "duration": "PT1H45M",
-                "id": "16",
-                "numberOfStops": 0
+                "duration": "PT3H25M",
+                "id": "1",
+                "numberOfStops": 0,
+                "co2Emissions": [
+                  {
+                    "weight": 130,
+                    "weightUnit": "KG",
+                    "cabin": "ECONOMY"
+                  }
+                ]
               },
               {
                 "departure": {
-                  "iataCode": "FRA",
-                  "terminal": "1",
-                  "at": "2025-11-05T09:20:00"
+                  "iataCode": "KEF",
+                  "at": "2025-11-05T17:00:00"
                 },
                 "arrival": {
-                  "iataCode": "LAS",
-                  "terminal": "3",
-                  "at": "2025-11-05T12:05:00"
+                  "iataCode": "JFK",
+                  "terminal": "7",
+                  "at": "2025-11-05T18:10:00"
                 },
-                "carrierCode": "UA",
-                "number": "9666",
+                "carrierCode": "FI",
+                "number": "615",
                 "aircraft": {
-                  "code": "333"
+                  "code": "76W"
                 },
                 "operating": {
-                  "carrierCode": "4Y"
+                  "carrierCode": "FI"
                 },
-                "duration": "PT11H45M",
-                "id": "17",
-                "numberOfStops": 0
+                "duration": "PT6H10M",
+                "id": "2",
+                "numberOfStops": 0,
+                "co2Emissions": [
+                  {
+                    "weight": 222,
+                    "weightUnit": "KG",
+                    "cabin": "ECONOMY"
+                  }
+                ]
               }
             ]
           },
@@ -65,78 +77,69 @@
             "segments": [
               {
                 "departure": {
-                  "iataCode": "LAS",
-                  "terminal": "3",
-                  "at": "2025-11-25T11:00:00"
+                  "iataCode": "EWR",
+                  "terminal": "B",
+                  "at": "2025-11-25T19:30:00"
                 },
                 "arrival": {
-                  "iataCode": "ORD",
-                  "terminal": "1",
-                  "at": "2025-11-25T16:43:00"
+                  "iataCode": "KEF",
+                  "at": "2025-11-26T06:10:00"
                 },
-                "carrierCode": "LX",
-                "number": "3259",
+                "carrierCode": "FI",
+                "number": "622",
                 "aircraft": {
-                  "code": "32Q"
+                  "code": "7M9"
                 },
                 "operating": {
-                  "carrierCode": "UA"
+                  "carrierCode": "FI"
                 },
-                "duration": "PT3H43M",
-                "id": "20",
-                "numberOfStops": 0
+                "duration": "PT5H40M",
+                "id": "3",
+                "numberOfStops": 0,
+                "co2Emissions": [
+                  {
+                    "weight": 228,
+                    "weightUnit": "KG",
+                    "cabin": "ECONOMY"
+                  }
+                ]
               },
               {
                 "departure": {
-                  "iataCode": "ORD",
-                  "terminal": "5",
-                  "at": "2025-11-25T18:50:00"
+                  "iataCode": "KEF",
+                  "at": "2025-11-26T07:40:00"
                 },
                 "arrival": {
-                  "iataCode": "ZRH",
-                  "at": "2025-11-26T10:40:00"
+                  "iataCode": "LGW",
+                  "terminal": "N",
+                  "at": "2025-11-26T10:55:00"
                 },
-                "carrierCode": "LX",
-                "number": "9",
+                "carrierCode": "FI",
+                "number": "470",
                 "aircraft": {
-                  "code": "333"
+                  "code": "7M8"
                 },
                 "operating": {
-                  "carrierCode": "LX"
+                  "carrierCode": "FI"
                 },
-                "duration": "PT8H50M",
-                "id": "21",
-                "numberOfStops": 0
-              },
-              {
-                "departure": {
-                  "iataCode": "ZRH",
-                  "at": "2025-11-26T12:25:00"
-                },
-                "arrival": {
-                  "iataCode": "BUD",
-                  "terminal": "2B",
-                  "at": "2025-11-26T14:05:00"
-                },
-                "carrierCode": "LX",
-                "number": "2254",
-                "aircraft": {
-                  "code": "223"
-                },
-                "operating": {
-                  "carrierCode": "LX"
-                },
-                "duration": "PT1H40M",
-                "id": "22",
-                "numberOfStops": 0
+                "duration": "PT3H15M",
+                "id": "4",
+                "numberOfStops": 0,
+                "co2Emissions": [
+                  {
+                    "weight": 130,
+                    "weightUnit": "KG",
+                    "cabin": "ECONOMY"
+                  }
+                ]
               }
             ]
           }
         ],
         "price": {
           "currency": "HUF",
-          "total": "258200.00",
-          "base": "107400.00",
+          "total": "233600.00",
+          "base": "59500.00",
           "fees": [
             {
               "amount": "0.00",
@@ -151,7 +154,7 @@
               "type": "FORM_OF_PAYMENT"
             }
           ],
-          "grandTotal": "258200.00",
+          "grandTotal": "233600.00",
           "billingCurrency": "HUF"
         },
         "pricingOptions": {
@@ -161,7 +164,7 @@
           "includedCheckedBagsOnly": false
         },
         "validatingAirlineCodes": [
-          "UA"
+          "FI"
         ],
         "travelerPricings": [
           {
@@ -170,36 +173,48 @@
             "travelerType": "ADULT",
             "price": {
               "currency": "HUF",
-              "total": "258200",
-              "base": "107400",
+              "total": "233600",
+              "base": "59500",
               "taxes": [
                 {
                   "amount": "2400.00",
                   "code": "XY"
                 },
                 {
-                  "amount": "6700.00",
-                  "code": "CH"
-                },
-                {
-                  "amount": "94300.00",
-                  "code": "YQ"
-                },
-                {
                   "amount": "1900.00",
                   "code": "AY"
+                },
+                {
+                  "amount": "92200.00",
+                  "code": "YR"
                 },
                 {
                   "amount": "1300.00",
                   "code": "XA"
                 },
                 {
+                  "amount": "3800.00",
+                  "code": "IS"
+                },
+                {
                   "amount": "2500.00",
                   "code": "YC"
                 },
                 {
-                  "amount": "12100.00",
-                  "code": "HU"
+                  "amount": "40300.00",
+                  "code": "GB"
+                },
+                {
+                  "amount": "2600.00",
+                  "code": "ZU"
+                },
+                {
+                  "amount": "9200.00",
+                  "code": "UB"
+                },
+                {
+                  "amount": "1200.00",
+                  "code": "T1"
                 },
                 {
                   "amount": "15200.00",
@@ -208,65 +223,47 @@
                 {
                   "amount": "1500.00",
                   "code": "XF"
-                },
-                {
-                  "amount": "2300.00",
-                  "code": "FE"
-                },
-                {
-                  "amount": "10600.00",
-                  "code": "RA"
                 }
               ],
-              "refundableTaxes": "39800"
+              "refundableTaxes": "81900"
             },
             "fareDetailsBySegment": [
               {
-                "segmentId": "16",
+                "segmentId": "1",
                 "cabin": "ECONOMY",
-                "fareBasis": "KMPMF8BQ",
-                "brandedFare": "ECOBASIC",
-                "class": "K",
+                "fareBasis": "OJ2QGBLT",
+                "brandedFare": "LIGHT",
+                "class": "O",
                 "includedCheckedBags": {
                   "quantity": 0
                 }
               },
               {
-                "segmentId": "17",
+                "segmentId": "2",
                 "cabin": "ECONOMY",
-                "fareBasis": "KMPMF8BQ",
-                "brandedFare": "ECOBASIC",
-                "class": "K",
+                "fareBasis": "OJ2QGBLT",
+                "brandedFare": "LIGHT",
+                "class": "O",
                 "includedCheckedBags": {
                   "quantity": 0
                 }
               },
               {
-                "segmentId": "20",
+                "segmentId": "3",
                 "cabin": "ECONOMY",
-                "fareBasis": "KMPMF8BQ",
-                "brandedFare": "ECOLIGHT",
-                "class": "K",
+                "fareBasis": "VJ2QGBLT",
+                "brandedFare": "LIGHT",
+                "class": "V",
                 "includedCheckedBags": {
                   "quantity": 0
                 }
               },
               {
-                "segmentId": "21",
+                "segmentId": "4",
                 "cabin": "ECONOMY",
-                "fareBasis": "KMPMF8BQ",
-                "brandedFare": "ECOLIGHT",
-                "class": "K",
-                "includedCheckedBags": {
-                  "quantity": 0
-                }
-              },
-              {
-                "segmentId": "22",
-                "cabin": "ECONOMY",
-                "fareBasis": "KMPMF8BQ",
-                "brandedFare": "ECOLIGHT",
-                "class": "K",
+                "fareBasis": "VJ2QGBLT",
+                "brandedFare": "LIGHT",
+                "class": "V",
                 "includedCheckedBags": {
                   "quantity": 0
                 }
@@ -293,24 +290,20 @@
   },
   "dictionaries": {
     "locations": {
-      "BUD": {
-        "cityCode": "BUD",
-        "countryCode": "HU"
-      },
-      "ORD": {
-        "cityCode": "CHI",
+      "EWR": {
+        "cityCode": "NYC",
         "countryCode": "US"
       },
-      "ZRH": {
-        "cityCode": "ZRH",
-        "countryCode": "CH"
+      "KEF": {
+        "cityCode": "REK",
+        "countryCode": "IS"
       },
-      "FRA": {
-        "cityCode": "FRA",
-        "countryCode": "DE"
+      "LGW": {
+        "cityCode": "LON",
+        "countryCode": "GB"
       },
-      "LAS": {
-        "cityCode": "LAS",
+      "JFK": {
+        "cityCode": "NYC",
         "countryCode": "US"
       }
     }

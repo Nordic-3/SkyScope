@@ -6,6 +6,7 @@ import com.szte.SkyScope.Models.FlightPriceRequest;
 import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.CreateFlightOrderService;
 import com.szte.SkyScope.Services.JsonReaderService;
+import java.util.List;
 import java.util.logging.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,6 +33,14 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
           new FlightPriceRequest(new FlightPriceRequest.Data(flightOffer)), token);
     }
     return getFinalPriceFromJson();
+  }
+
+  @Override
+  public FlightOffers getSelectedOffer(List<FlightOffers> flightOffers, String offerId) {
+    return flightOffers.stream()
+        .filter(flightOffer -> flightOffer.getId().equals(offerId))
+        .toList()
+        .getFirst();
   }
 
   private FlightOffers getFinalPriceFromApi(FlightPriceRequest request, String token) {

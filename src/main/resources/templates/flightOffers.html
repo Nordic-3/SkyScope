@@ -124,6 +124,8 @@
                                     th:attr="data-bs-target=${'#'+offer.getId()}"
                                     aria-expanded="false" aria-controls="details">Részletek
                             </button>
+                            <a class="btn btn-primary mb-2" th:href="@{'/createOrder/' + ${searchId} + '?offerId=' + ${offer.getId()}}">Foglalás
+                            </a>
                             <div class="collapse" th:attr="id=${offer.getId()}">
                                 <div class="card h-100 mb-3">
                                     <div class="card-body">
