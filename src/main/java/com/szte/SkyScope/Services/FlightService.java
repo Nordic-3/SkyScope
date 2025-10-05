@@ -24,4 +24,6 @@ public interface FlightService {
   Map<String, String> getAirportNamesByItsIata(Map<String, Location> locations, String token);
 
   void setAirportNames(List<FlightOffers> flightOffers, Map<String, String> airprots);
+
+  void setFlightOffersAttributes(List<FlightOffers> result, String searchId, String token);
 }

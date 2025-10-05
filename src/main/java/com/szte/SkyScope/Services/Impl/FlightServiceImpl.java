@@ -160,6 +160,16 @@ public class FlightServiceImpl implements FlightService {
             });
   }
 
+  @Override
+  public void setFlightOffersAttributes(List<FlightOffers> result, String searchId, String token) {
+    setAircraftType(result, searchStore.getSearchDatas(searchId).getAircraftDictionary());
+    setCarrierNames(result, searchStore.getSearchDatas(searchId).getCarrierDictionary());
+    setAirportNames(
+        result,
+        getAirportNamesByItsIata(
+            searchStore.getSearchDatas(searchId).getLocationDictionary(), token));
+  }
+
   private void setEnglishNameOfTheCities(FlightSearch flightSearch) {
     flightSearch.setOriginCity(cityService.getCityFromApi(flightSearch.getOriginCity()).getName());
     flightSearch.setDestinationCity(
