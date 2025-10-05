@@ -199,72 +199,6 @@
       }
     }
   ],
-  "LCY": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "CITY AIRPORT",
-      "detailedName": "LONDON/GB:CITY AIRPORT",
-      "id": "ALCY",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ALCY",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "+01:00",
-      "iataCode": "LCY",
-      "geoCode": {
-        "latitude": 51.50528,
-        "longitude": 0.05528
-      },
-      "address": {
-        "cityName": "LONDON",
-        "cityCode": "LON",
-        "countryName": "UNITED KINGDOM",
-        "countryCode": "GB",
-        "regionCode": "EUROP"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 4
-        }
-      }
-    }
-  ],
-  "CMN": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "MOHAMMED V",
-      "detailedName": "CASABLANCA/MA:MOHAMMED V",
-      "id": "ACMN",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ACMN",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "+01:00",
-      "iataCode": "CMN",
-      "geoCode": {
-        "latitude": 33.3675,
-        "longitude": -7.58997
-      },
-      "address": {
-        "cityName": "CASABLANCA",
-        "cityCode": "CAS",
-        "countryName": "MOROCCO",
-        "countryCode": "MA",
-        "regionCode": "AFR"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 3
-        }
-      }
-    }
-  ],
   "BOS": [
     {
       "type": "location",
@@ -329,6 +263,206 @@
       "analytics": {
         "travelers": {
           "score": 17
+        }
+      }
+    }
+  ],
+  "KEF": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "KEFLAVIK INTERNATIONAL",
+      "detailedName": "REYKJAVIK/IS:KEFLAVIK INTERNATIONAL",
+      "id": "AKEF",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AKEF",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+00:00",
+      "iataCode": "KEF",
+      "geoCode": {
+        "latitude": 63.985,
+        "longitude": -22.60556
+      },
+      "address": {
+        "cityName": "REYKJAVIK",
+        "cityCode": "REK",
+        "countryName": "ICELAND",
+        "countryCode": "IS",
+        "regionCode": "EUROP"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 2
+        }
+      }
+    }
+  ],
+  "IAD": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "WASHINGTON DULLES INTL",
+      "detailedName": "WASHINGTON DC/VA/US:WASHINGTON DULLES",
+      "id": "AIAD",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AIAD",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "-04:00",
+      "iataCode": "IAD",
+      "geoCode": {
+        "latitude": 38.94453,
+        "longitude": -77.45581
+      },
+      "address": {
+        "cityName": "WASHINGTON DC",
+        "cityCode": "WAS",
+        "countryName": "UNITED STATES OF AMERICA",
+        "countryCode": "US",
+        "stateCode": "VA",
+        "regionCode": "NAMER"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 13
+        }
+      }
+    }
+  ],
+  "GVA": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "GENEVA COINTRIN",
+      "detailedName": "GENEVA/CH:GENEVA COINTRIN",
+      "id": "AGVA",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AGVA",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+02:00",
+      "iataCode": "GVA",
+      "geoCode": {
+        "latitude": 46.23806,
+        "longitude": 6.10889
+      },
+      "address": {
+        "cityName": "GENEVA",
+        "cityCode": "GVA",
+        "countryName": "SWITZERLAND",
+        "countryCode": "CH",
+        "regionCode": "EUROP"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 8
+        }
+      }
+    }
+  ],
+  "FRA": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "FRANKFURT MAIN",
+      "detailedName": "FRANKFURT/DE:FRANKFURT MAIN",
+      "id": "AFRA",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AFRA",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+02:00",
+      "iataCode": "FRA",
+      "geoCode": {
+        "latitude": 50.03333,
+        "longitude": 8.57056
+      },
+      "address": {
+        "cityName": "FRANKFURT",
+        "cityCode": "FRA",
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 29
+        }
+      }
+    }
+  ],
+  "MUC": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "MUNICH",
+      "detailedName": "MUNICH/DE:MUNICH",
+      "id": "AMUC",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AMUC",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "+02:00",
+      "iataCode": "MUC",
+      "geoCode": {
+        "latitude": 48.35378,
+        "longitude": 11.78609
+      },
+      "address": {
+        "cityName": "MUNICH",
+        "cityCode": "MUC",
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 19
+        }
+      }
+    }
+  ],
+  "YYZ": [
+    {
+      "type": "location",
+      "subType": "AIRPORT",
+      "name": "PEARSON INTL",
+      "detailedName": "TORONTO/ON/CA:PEARSON INTL",
+      "id": "CYYZ",
+      "self": {
+        "href": "https://test.api.amadeus.com/v1/reference-data/locations/CYYZ",
+        "methods": [
+          "GET"
+        ]
+      },
+      "timeZoneOffset": "-04:00",
+      "iataCode": "YYZ",
+      "geoCode": {
+        "latitude": 43.67707,
+        "longitude": -79.63056
+      },
+      "address": {
+        "cityName": "TORONTO",
+        "cityCode": "YTO",
+        "countryName": "CANADA",
+        "countryCode": "CA",
+        "stateCode": "ON",
+        "regionCode": "NAMER"
+      },
+      "analytics": {
+        "travelers": {
+          "score": 21
         }
       }
     }
