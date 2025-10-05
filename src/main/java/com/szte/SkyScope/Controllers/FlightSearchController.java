@@ -61,7 +61,7 @@ public class FlightSearchController {
           .getFlightOffers(flightSearch, flightService.getToken(), searchId)
           .thenAccept(
               result -> {
-                setFlightOffersAttributes(result, searchId);
+                flightService.setFlightOffersAttributes(result, searchId, flightService.getToken());
                 searchStore
                     .getSearchDatas(searchId)
                     .setSearchResult(sortResultService.sortOffersByDeffault(result));
@@ -109,22 +109,12 @@ public class FlightSearchController {
     return ResponseEntity.status(HttpStatus.ACCEPTED).body("IN_PROGRESS");
   }
 
-  public void setFlightOffersAttributes(List<FlightOffers> result, String searchId) {
-    flightService.setAircraftType(
-        result, searchStore.getSearchDatas(searchId).getAircraftDictionary());
-    flightService.setCarrierNames(
-        result, searchStore.getSearchDatas(searchId).getCarrierDictionary());
-    flightService.setAirportNames(
-        result,
-        flightService.getAirportNamesByItsIata(
-            searchStore.getSearchDatas(searchId).getLocationDictionary(),
-            flightService.getToken()));
-  }
-
   public void ifUserChoseCheaperOfferShow(String cheaper, String searchId) {
     if (cheaper != null) {
-      setFlightOffersAttributes(
-          searchStore.getSearchDatas(searchId).getCheaperSearchResult(), searchId);
+      flightService.setFlightOffersAttributes(
+          searchStore.getSearchDatas(searchId).getCheaperSearchResult(),
+          searchId,
+          flightService.getToken());
       searchStore
           .getSearchDatas(searchId)
           .setSearchResult(
