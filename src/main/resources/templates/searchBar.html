@@ -17,10 +17,10 @@
         </div>
     </div>
     <div class="col-auto form-check form-switch mb-3">
-        <input onfocusout="isOneWay()" class="form-check-input me-2" type="checkbox" role="switch" id="onlyOrigin"
+        <input onfocusout="isOneWay()" class="form-check-input me-2" type="checkbox" role="switch" id="onlyOneWay"
                th:field="*{oneWay}"
                style="width: 3rem; height: 1.5rem;">
-        <label class="form-check-label" for="onlyOrigin">Csak oda út</label>
+        <label class="form-check-label" for="onlyOneWay">Csak oda út</label>
     </div>
     <div class="col-auto form-floating mb-3">
         <input onfocusout="setInGoingMin()" type="date" class="form-control form-control-lg" id="outGoingDate"
@@ -41,12 +41,12 @@
         </div>
     </div>
     <div class="col-auto d-flex align-items-center mb-3 form-floating">
-        <button type="submit" class="col-auto btn btn-primary h-100">Keresés</button>
+        <button type="submit" class="col-auto btn btn-primary h-100" id="searchFlightsButton">Keresés</button>
     </div>
     <div class="col-auto d-flex align-items-center mb-3 form-floating">
         <button class="btn btn-primary" type="button"
                 data-bs-toggle="collapse" data-bs-target="#advancedSearch"
-                aria-expanded="false" aria-controls="advancedSearch">
+                aria-expanded="false" aria-controls="advancedSearch" id="advancedSearchButton">
             Összetett keresés
         </button>
     </div>
