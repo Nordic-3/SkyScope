@@ -97,10 +97,10 @@ public class StepDefinitions {
   public void seeOffersForAllTypeOfPassengers() {
     webElementHelper.waitForGivenNumberOfElements(By.name("details"), 100);
     webElementHelper.clickButton(By.name("details"));
-    webElementHelper.waitForTextInElement(By.cssSelector("div[class='collapse show']"), "ADULT");
-    webElementHelper.waitForTextInElement(By.cssSelector("div[class='collapse show']"), "CHILD");
+    webElementHelper.waitForTextInElement(By.cssSelector("div[class='collapse show']"), "Felnőtt");
+    webElementHelper.waitForTextInElement(By.cssSelector("div[class='collapse show']"), "Gyerek");
     webElementHelper.waitForTextInElement(
-        By.cssSelector("div[class='collapse show']"), "HELD_INFANT");
+        By.cssSelector("div[class='collapse show']"), "Csecsemő, ölben");
   }
 
   @Then("the results should be sorted by {string}")
