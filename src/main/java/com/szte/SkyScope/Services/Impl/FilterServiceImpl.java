@@ -115,8 +115,10 @@ public class FilterServiceImpl implements FilterService {
   private boolean filterTransferNumber(FlightOffers offer, ChosenFilters filter) {
     return filter.getTransferNumber().isEmpty()
         || offer.getItineraries().stream()
-            .anyMatch(
-                itinerary -> itinerary.getTransferNumber().equals(filter.getTransferNumber()));
+            .allMatch(
+                itinerary ->
+                    parseTransferNumber(itinerary.getTransferNumber())
+                        <= parseTransferNumber(filter.getTransferNumber()));
   }
 
   private boolean filterLayoverTime(FlightOffers offer, ChosenFilters filter) {
@@ -140,5 +142,9 @@ public class FilterServiceImpl implements FilterService {
             itinerary ->
                 FlightOfferFormatter.calculateLayoverTime(itinerary.getSegments()).stream())
         .toList();
+  }
+
+  private int parseTransferNumber(String transferNumber) {
+    return Integer.parseInt(transferNumber.split(" ")[1]);
   }
 }

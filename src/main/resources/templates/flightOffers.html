@@ -55,7 +55,7 @@
                         </div>
                         <p class="text-primary mb-0 fw-bolder">Átszállás száma szerint</p><hr>
                         <select class="form-select mb-3" aria-label="transfers" th:field="*{transferNumber}">
-                            <option value="" selected>Választ</option>
+                            <option value="" selected>legfeljebb...</option>
                             <option th:each="option : ${filterOptions.getTransferNumbers()}"
                                     th:value="${option}"
                                     th:text="${option}">
