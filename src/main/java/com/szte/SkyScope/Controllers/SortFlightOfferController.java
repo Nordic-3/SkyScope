@@ -21,8 +21,8 @@ public class SortFlightOfferController {
     this.searchStore = searchStore;
   }
 
-  @GetMapping("/order/{searchId}")
-  public String order(@PathVariable String searchId, @RequestParam String by, Model model) {
+  @GetMapping("/sort/{searchId}")
+  public String sort(@PathVariable String searchId, @RequestParam String by, Model model) {
     model.addAttribute("searchId", searchId);
     FlightOffersSortOptions option = FlightOffersSortOptions.getOptionFromValue(by);
     switch (option) {
