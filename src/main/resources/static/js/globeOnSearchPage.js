@@ -12,14 +12,21 @@ let timesNewRomanCharacterset;
 function bodyLoaded() {
     earthContainer = document.getElementById("main");
     searchBarContainer = document.getElementById("searchBar");
+    initEarth();
+    earth.globeOffset([0, getHeightOfElementWithMargin(searchBarContainer) / 2]);
+
+    originCityElement = document.getElementById("originCity");
+    destinationCityElement = document.getElementById("destinationCity");
+    resetInputStatusAndEarthAfterError();
+}
+
+function initEarth() {
     earth = new Globe(earthContainer)
         .globeImageUrl("//cdn.jsdelivr.net/npm/three-globe/example/img/earth-day.jpg")
-        .backgroundImageUrl("//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png")
-        .globeOffset([0, getHeightOfElementWithMargin(searchBarContainer) / 2]);
+        .backgroundImageUrl("//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png");
 
     earth.controls().autoRotate = true;
     earth.controls().autoRotateSpeed = 0.6;
-
     window.addEventListener("resize", resizeEarth);
 
     originCityElement = document.getElementById("originCity");
@@ -40,6 +47,7 @@ function getHeightOfElementWithMargin(element) {
 }
 
 function goToOriginCity() {
+    originCityElement = document.getElementById("originCity");
     let inputOriginCity = originCityElement.value;
     if (originCity !== null && inputOriginCity === "") {
         removeCityFromEarth(originCity);
@@ -56,12 +64,15 @@ function goToOriginCity() {
                 try {
                     let responseJSON = JSON.parse(responseInText);
                     let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
-                    labeledCities.push(cityDetails);
-                    labelCityAndNavigate(cityDetails);
-                    lineDatas.startLat = cityDetails.lat;
-                    lineDatas.startLng = cityDetails.lng;
-                    connectCitesIfAllGiven();
+                    if (earth !== undefined) {
+                        labeledCities.push(cityDetails);
+                        labelCityAndNavigate(cityDetails);
+                        lineDatas.startLat = cityDetails.lat;
+                        lineDatas.startLng = cityDetails.lng;
+                        connectCitesIfAllGiven();
+                    }
                     originCity = cityDetails;
+                    window.localStorage.setItem("originCity", JSON.stringify(cityDetails));
                 } catch (exception) {
                     originCityElement.classList.add("border-danger");
                 }
@@ -71,6 +82,7 @@ function goToOriginCity() {
 }
 
 function goToDestinationCity() {
+    destinationCityElement = document.getElementById("destinationCity");
     let inputDestinationCity = destinationCityElement.value;
     if (destinationCity !== null && inputDestinationCity === "") {
         removeCityFromEarth(destinationCity);
@@ -87,12 +99,15 @@ function goToDestinationCity() {
                 try {
                     let responseJSON = JSON.parse(responseInText);
                     let cityDetails = {lat: responseJSON.lat, lng: responseJSON.lng, text: responseJSON.name};
-                    labeledCities.push(cityDetails);
-                    labelCityAndNavigate(cityDetails);
-                    lineDatas.endLat = cityDetails.lat;
-                    lineDatas.endLng = cityDetails.lng;
-                    connectCitesIfAllGiven();
+                    if (earth !== undefined) {
+                        labeledCities.push(cityDetails);
+                        labelCityAndNavigate(cityDetails);
+                        lineDatas.endLat = cityDetails.lat;
+                        lineDatas.endLng = cityDetails.lng;
+                        connectCitesIfAllGiven();
+                    }
                     destinationCity = cityDetails;
+                    window.localStorage.setItem("destinationCity", JSON.stringify(cityDetails));
                 } catch (exception) {
                     destinationCityElement.classList.add("border-danger");
                 }
@@ -103,6 +118,11 @@ function goToDestinationCity() {
 
 function labelCityAndNavigate(cityDetails) {
     earth.controls().autoRotate = false;
+    labelCity(cityDetails);
+    earth.pointOfView({lat: cityDetails.lat, lng: cityDetails.lng, altitude: 1}, 3000);
+}
+
+function labelCity() {
     earth.labelsData(labeledCities)
         .labelTypeFace(timesNewRomanCharacterset)
         .labelLat(data => data.lat)
@@ -111,7 +131,6 @@ function labelCityAndNavigate(cityDetails) {
         .labelSize(1)
         .labelDotRadius(1)
         .labelColor(() => "black");
-    earth.pointOfView({lat: cityDetails.lat, lng: cityDetails.lng, altitude: 1}, 3000);
 }
 
 function removeCityFromEarth(city) {
@@ -144,9 +163,10 @@ function connectCitesIfAllGiven() {
     }
 }
 
-function resetEarthAfterInputError() {
+function resetInputStatusAndEarthAfterError() {
     goToOriginCity();
     goToDestinationCity();
+    isOneWay();
 }
 
 function readCharacterset() {

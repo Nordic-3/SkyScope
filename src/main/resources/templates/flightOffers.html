@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>SkyScope</title>
+    <link rel="stylesheet" href="/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    <script src="/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/searchBar.js"></script>
+    <script src="/js/globeOnSearchPage.js"></script>
+    <script src="/js/FlightOfferPage.js"></script>
+</head>
+<body onload="offersLoaded(); searchBarLoaded(); bodyLoaded();"
+      style="background-image: url('//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png');">
+<header>
+    <div id="searchBar"
+         class="container align-content d-flex justify-content-center mt-2 rounded-5 bg-white position-relative">
+        <form th:replace="~{searchBar}"></form>
+    </div>
+</header>
+<main class="mt-5 container">
+    <div class="row">
+        <aside class="col-12 col-md-3 mb-4">
+            <div class="card rounded-5 mb-4">
+                <h5 class="card-header">
+                    Találatok rendezése
+                </h5>
+                <div class="card-body d-flex flex-column align-items-center">
+                    <a th:href="@{'/sort/' + ${searchId} + '?by=priceAsc'}" class="btn btn-outline-primary mb-2"
+                       id="priceAsc">Ár szerint növekvő</a>
+                    <a th:href="@{'/sort/' + ${searchId} + '?by=priceDsc'}" class="btn btn-outline-dark mb-3"
+                       id="priceDsc">Ár szerint csökkenő</a>
+                    <a th:href="@{'/sort/' + ${searchId} + '?by=flyTimeAsc'}" class="btn btn-outline-primary mb-2"
+                       id="flyTimeAsc">Repülési idő szerint növekvő</a>
+                    <a th:href="@{'/sort/' + ${searchId} + '?by=flyTimeDsc'}" class="btn btn-outline-dark mb-3"
+                       id="flyTimeDsc">Repülési idő szerint csökkenő</a>
+                    <a th:href="@{'/sort/' + ${searchId} + '?by=transferTimeAsc'}" class="btn btn-outline-primary mb-2"
+                       id="transferTimeAsc">Átszállás száma szerint növekvő</a>
+                    <a th:href="@{'/sort/' + ${searchId} + '?by=transferTimeDsc'}" class="btn btn-outline-dark mb-2"
+                       id="transferTimeDsc">Átszállás száma szerint csökkenő</a>
+                </div>
+            </div>
+            <div class="card rounded-5">
+                <h5 class="card-header">
+                    Találatok szűrése
+                </h5>
+                <div class="card-body container">
+                    <form class="row align-items-center m-auto justify-content-center"
+                          method="POST" th:action="@{/filter/{id}(id=${searchId}, by=${sortBy})}"
+                          th:object="${filterOffers}">
+                        <p class="text-primary mb-0 fw-bolder">Ár szerint</p><hr>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="max">Max</span>
+                            <input type="number" class="form-control" th:placeholder="${filterOptions.getMaxPrice()}" aria-label="Max"
+                                   aria-describedby="Max" th:field="*{maxPrice}">
+                        </div>
+                        <p class="text-primary mb-0 fw-bolder">Átszállás száma szerint</p><hr>
+                        <select class="form-select mb-3" aria-label="transfers" th:field="*{transferNumber}">
+                            <option value="" selected>legfeljebb...</option>
+                            <option th:each="option : ${filterOptions.getTransferNumbers()}"
+                                    th:value="${option}"
+                                    th:text="${option}">
+                            </option>
+                        </select>
+                        <p class="text-primary mb-0 fw-bolder">Átszállási idő szerint</p><hr>
+                        <select class="form-select mb-3" aria-label="transferDuration" th:field="*{transferDuration}">
+                            <option value="" selected>Legfeljebb...</option>
+                            <option th:each="option : ${filterOptions.getLayoverTimes()}"
+                                    th:value="${option}"
+                                    th:text="${filterOptions.getFormattedLayoverTime(option)}">
+                            </option>
+                        </select>
+                        <p class="text-primary mb-0 fw-bolder">Légitársaság szerint</p><hr>
+                        <div th:each="airline : ${filterOptions.getAllAirline()}" class="form-check form-switch mb">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   th:id="${airline}"
+                                   th:name="selectedAirlines"
+                                   th:value="${airline}"
+                                   th:field="*{airlines}">
+                            <label class="form-check-label" th:for="${airline}"
+                                   th:text="${airline}"></label>
+                        </div>
+                        <p class="mt-3 text-primary mb-0 fw-bolder">Repülőgép szerint</p><hr>
+                        <div th:each="airplane : ${filterOptions.getAirplaneTypes()}" class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   th:id="${airplane}"
+                                   th:name="selectedAirplane"
+                                   th:value="${airplane}"
+                                   th:field="*{airplanes}">
+                            <label class="form-check-label" th:for="${airplane}"
+                                   th:text="${airplane}"></label>
+                        </div>
+                        <button type="submit" class="btn btn-outline-primary mb-2 mt-3">Szűrés</button>
+                        <button type="submit" class="btn btn-outline-dark mb-2"
+                                th:formaction="@{/filter/reset/{id}(id=${searchId}, by=${sortBy})}">Szűrések törlése
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+
+        <section class="col-12 col-md-9">
+            <div class="row row-cols-1 row-cols-md-1 g-4">
+                <div class="col" th:each="offer : ${results}" name="resultCard">
+                    <div class="card h-100 rounded-5">
+                        <div class="card-body">
+                            <div class="card-title container text-center">
+                                <div class="row">
+                                    <h5 class="card-title col"
+                                        th:text="${offer.getItineraries().getFirst().getSegments().getFirst().getDeparture().getAirportName()}"></h5>
+                                    <h5 class="card-title col" name="durationAndTransfers"
+                                        th:text="${offer.getItineraries().getFirst().getDuration() + offer.getItineraries().getFirst().getTransferNumber()}"></h5>
+                                    <h5 class="card-title col"
+                                        th:text="${offer.getItineraries().getFirst().getSegments().getLast().getArrival().getAirportName()}"></h5>
+                                </div>
+                            </div>
+                            <p class="card-text">Ár: <span name="price" th:text="${offer.price.total}"></span> HUF</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary mb-2" type="button" data-bs-toggle="collapse"
+                                    th:attr="data-bs-target=${'#'+offer.getId()}"
+                                    aria-expanded="false" aria-controls="details" name="details">Részletek
+                            </button>
+                            <a class="btn btn-primary mb-2" th:href="@{'/createOrder/' + ${searchId} + '?offerId=' + ${offer.getId()}}">Foglalás
+                            </a>
+                            <div class="collapse" th:attr="id=${offer.getId()}">
+                                <div class="card h-100 mb-3">
+                                    <div class="card-body">
+                                        <div class="card-text container text-center"
+                                             th:each="itinerary, itineraryStatus : ${offer.getItineraries()}">
+                                            <div class="row text-start">
+                                                <h5 th:text="${itineraryStatus.odd ? 'Induló járat' : 'Visszaút'}"></h5>
+                                                <hr>
+                                            </div>
+                                            <div class="row"
+                                                 th:each="segment : ${itinerary.getSegments()}">
+                                                <p class="col fs-6"
+                                                   th:text="${segment.getDeparture().getAirportName()}"></p>
+                                                <p class="col fs-6"
+                                                   th:text="${segment.getDeparture().getAt()}"></p>
+                                                <p class="col fs-6"
+                                                   th:text="${segment.getArrival().getAirportName()}"></p>
+                                                <p class="col fs-6"
+                                                   th:text="${segment.getArrival().getAt()}"></p>
+                                            </div>
+                                            <div class="row text-start"
+                                                 th:if="${itinerary.getLayoverTime().size() > 0}">
+                                                <p class="col fs-6"
+                                                   th:each="layover : ${itinerary.getFormattedLayoverTime()}"
+                                                   th:text="${'Átszállási idő: ' + layover}">
+                                                </p>
+                                            </div>
+                                            <div class="row"
+                                                 th:each="segment, segmentStatus : ${itinerary.getSegments()}">
+                                                <hr th:if="${segmentStatus.first}">
+                                                <p class="col fs-6"
+                                                   th:text="${segment.getOperating().getCarrierName()}"></p>
+                                                <p class="col fs-6"
+                                                   th:if="${segment.getCarrierName() != segment.getOperating().getCarrierName()}"
+                                                   th:text="${'Jegyértékesítő: '+segment.getCarrierName()}"></p>
+                                                <p class="col fs-6"
+                                                   th:text="${segment.getAircraft().getName()}"></p>
+                                            </div>
+                                            <div class="row text-start">
+                                                <h5>Utasok</h5>
+                                                <hr>
+                                            </div>
+                                            <div Class="row"
+                                                 th:each="segment, segmentStatus : ${itinerary.getSegments()}">
+                                                <div class="col" th:each="traveller : ${offer.getTravelerPricings()}">
+                                                    <p class="col fs-6"
+                                                       th:text="${traveller.getTravelerType()}"></p>
+                                                    <div class="col"
+                                                         th:each="fareDetails : ${traveller.getFareDetailBySegmentId(segment.getId())}">
+                                                        <p class="col fs-6"
+                                                           th:text="${fareDetails.getCabin()}"></p>
+                                                        <p class="col fs-6"
+                                                           th:text="${fareDetails.getIncludedCheckedBags().getQuantity() + ' feladott poggyász'}"></p>
+                                                        <p class="col fs-6"
+                                                           th:text="${fareDetails.getIncludedCabinBags().getQuantity() + ' kézipoggyász'}"></p>
+                                                    </div>
+                                                    <hr th:if="${!segmentStatus.last}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="cheaperOfferToast" class="toast text-bg-info" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="toast-header">
+                <strong class="me-auto">Olcsóbb ajánlat</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Rugalmas a dátum? Van olcsóbb ajánlat!
+            </div>
+            <div class="mt-2 mb-2 ms-2 pt-2 border-top">
+                <a id="cheaperOfferBtn" class="btn btn-secondary btn-sm" th:href="@{'/resultsPage/' + ${searchId} + '?by=transferTimeAsc&cheaper=true'}">Megnézem</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

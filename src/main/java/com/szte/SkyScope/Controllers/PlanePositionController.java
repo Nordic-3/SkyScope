@@ -10,24 +10,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PlanePositionController {
-    private final PlanePositionService planePositionService;
-    private final ApplicationConfig applicationConfig;
+  private final PlanePositionService planePositionService;
+  private final ApplicationConfig applicationConfig;
 
+  @Autowired
+  public PlanePositionController(
+      PlanePositionService planePositionService, ApplicationConfig applicationConfig) {
+    this.planePositionService = planePositionService;
+    this.applicationConfig = applicationConfig;
+  }
 
-    @Autowired
-    public PlanePositionController(PlanePositionService planePositionService, ApplicationConfig applicationConfig) {
-        this.planePositionService = planePositionService;
-        this.applicationConfig = applicationConfig;
+  @GetMapping(path = "/planePosition")
+  public Plane planePosition(@RequestParam(name = "callsign") final String callsign) {
+    if (callsign.isEmpty()) {
+      return null;
     }
-
-    @GetMapping(path="/planePosition")
-    public Plane planePosition(@RequestParam(name = "callsign") final String callsign) {
-        if (callsign.isEmpty()) {
-            return null;
-        }
-        if (applicationConfig.useApis()) {
-            return planePositionService.getPlanePositionFromApi(callsign);
-        }
-        return planePositionService.getPlanePositionFromJson(callsign);
+    if (applicationConfig.useApis()) {
+      return planePositionService.getPlanePositionFromApi(callsign);
     }
+    return planePositionService.getPlanePositionFromJson(callsign);
+  }
 }

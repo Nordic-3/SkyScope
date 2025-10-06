@@ -4,5 +4,7 @@ import com.szte.SkyScope.Models.FlightSearch;
 import org.springframework.ui.Model;
 
 public interface InputValidationService {
-    boolean isValidInputDatas(FlightSearch flightSearch, Model model);
+  boolean isValidInputDatas(FlightSearch flightSearch, Model model);
+
+  boolean isValidIataCodes(FlightSearch flightSearch, Model model);
 }

@@ -1,0 +1,53 @@
+package com.szte.SkyScope.Helper;
+
+import java.time.Duration;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class WebElementHelper {
+  private final WebDriver driver;
+
+  public WebElementHelper(WebDriver driver) {
+    this.driver = driver;
+  }
+
+  public void fillInputField(String id, String value) {
+    WebElement element = driver.findElement(By.id(id));
+    element.sendKeys(value);
+  }
+
+  public void clickButton(By locator) {
+    driver.findElement(locator).click();
+  }
+
+  public void waitForGivenNumberOfElements(By locator, int numberOfElements) {
+    new WebDriverWait(driver, Duration.ofSeconds(90))
+        .until(ExpectedConditions.numberOfElementsToBe(locator, numberOfElements));
+  }
+
+  public void checkCheckboxById(String id) {
+    driver.findElement(By.id(id)).click();
+  }
+
+  public boolean isElementDisplayed(By locator) {
+    try {
+      WebElement element = driver.findElement(locator);
+      return element.isDisplayed();
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public void waitForTextInElement(By locator, String text) {
+    new WebDriverWait(driver, Duration.ofSeconds(90))
+        .until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
+  }
+
+  public List<String> getElementsTextInList(By locator) {
+    return driver.findElements(locator).stream().map(WebElement::getText).toList();
+  }
+}

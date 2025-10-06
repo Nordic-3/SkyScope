@@ -11,7 +11,10 @@
 </head>
 <body onload="searchBarLoaded(); bodyLoaded();">
 <main>
-    <div th:replace="~{searchBar}"></div>
+    <div id="searchBar"
+         class="container align-content d-flex justify-content-center mt-2 rounded-5 bg-white position-absolute z-2 start-50 translate-middle-x">
+        <form th:replace="~{searchBar}"></form>
+    </div>
     <div id="main"></div>
 </main>
 </body>

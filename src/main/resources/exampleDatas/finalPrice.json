@@ -1,0 +1,311 @@
+{
+  "data": {
+    "type": "flight-offers-pricing",
+    "flightOffers": [
+      {
+        "type": "flight-offer",
+        "id": "1",
+        "source": "GDS",
+        "instantTicketingRequired": false,
+        "nonHomogeneous": false,
+        "paymentCardRequired": false,
+        "lastTicketingDate": "2025-10-06",
+        "itineraries": [
+          {
+            "segments": [
+              {
+                "departure": {
+                  "iataCode": "LGW",
+                  "terminal": "N",
+                  "at": "2025-11-05T11:55:00"
+                },
+                "arrival": {
+                  "iataCode": "KEF",
+                  "at": "2025-11-05T15:20:00"
+                },
+                "carrierCode": "FI",
+                "number": "471",
+                "aircraft": {
+                  "code": "7M8"
+                },
+                "operating": {
+                  "carrierCode": "FI"
+                },
+                "duration": "PT3H25M",
+                "id": "1",
+                "numberOfStops": 0,
+                "co2Emissions": [
+                  {
+                    "weight": 130,
+                    "weightUnit": "KG",
+                    "cabin": "ECONOMY"
+                  }
+                ]
+              },
+              {
+                "departure": {
+                  "iataCode": "KEF",
+                  "at": "2025-11-05T17:00:00"
+                },
+                "arrival": {
+                  "iataCode": "JFK",
+                  "terminal": "7",
+                  "at": "2025-11-05T18:10:00"
+                },
+                "carrierCode": "FI",
+                "number": "615",
+                "aircraft": {
+                  "code": "76W"
+                },
+                "operating": {
+                  "carrierCode": "FI"
+                },
+                "duration": "PT6H10M",
+                "id": "2",
+                "numberOfStops": 0,
+                "co2Emissions": [
+                  {
+                    "weight": 222,
+                    "weightUnit": "KG",
+                    "cabin": "ECONOMY"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "segments": [
+              {
+                "departure": {
+                  "iataCode": "EWR",
+                  "terminal": "B",
+                  "at": "2025-11-25T19:30:00"
+                },
+                "arrival": {
+                  "iataCode": "KEF",
+                  "at": "2025-11-26T06:10:00"
+                },
+                "carrierCode": "FI",
+                "number": "622",
+                "aircraft": {
+                  "code": "7M9"
+                },
+                "operating": {
+                  "carrierCode": "FI"
+                },
+                "duration": "PT5H40M",
+                "id": "3",
+                "numberOfStops": 0,
+                "co2Emissions": [
+                  {
+                    "weight": 228,
+                    "weightUnit": "KG",
+                    "cabin": "ECONOMY"
+                  }
+                ]
+              },
+              {
+                "departure": {
+                  "iataCode": "KEF",
+                  "at": "2025-11-26T07:40:00"
+                },
+                "arrival": {
+                  "iataCode": "LGW",
+                  "terminal": "N",
+                  "at": "2025-11-26T10:55:00"
+                },
+                "carrierCode": "FI",
+                "number": "470",
+                "aircraft": {
+                  "code": "7M8"
+                },
+                "operating": {
+                  "carrierCode": "FI"
+                },
+                "duration": "PT3H15M",
+                "id": "4",
+                "numberOfStops": 0,
+                "co2Emissions": [
+                  {
+                    "weight": 130,
+                    "weightUnit": "KG",
+                    "cabin": "ECONOMY"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "price": {
+          "currency": "HUF",
+          "total": "233600.00",
+          "base": "59500.00",
+          "fees": [
+            {
+              "amount": "0.00",
+              "type": "SUPPLIER"
+            },
+            {
+              "amount": "0.00",
+              "type": "TICKETING"
+            },
+            {
+              "amount": "0.00",
+              "type": "FORM_OF_PAYMENT"
+            }
+          ],
+          "grandTotal": "233600.00",
+          "billingCurrency": "HUF"
+        },
+        "pricingOptions": {
+          "fareType": [
+            "PUBLISHED"
+          ],
+          "includedCheckedBagsOnly": false
+        },
+        "validatingAirlineCodes": [
+          "FI"
+        ],
+        "travelerPricings": [
+          {
+            "travelerId": "1",
+            "fareOption": "STANDARD",
+            "travelerType": "ADULT",
+            "price": {
+              "currency": "HUF",
+              "total": "233600",
+              "base": "59500",
+              "taxes": [
+                {
+                  "amount": "2400.00",
+                  "code": "XY"
+                },
+                {
+                  "amount": "1900.00",
+                  "code": "AY"
+                },
+                {
+                  "amount": "92200.00",
+                  "code": "YR"
+                },
+                {
+                  "amount": "1300.00",
+                  "code": "XA"
+                },
+                {
+                  "amount": "3800.00",
+                  "code": "IS"
+                },
+                {
+                  "amount": "2500.00",
+                  "code": "YC"
+                },
+                {
+                  "amount": "40300.00",
+                  "code": "GB"
+                },
+                {
+                  "amount": "2600.00",
+                  "code": "ZU"
+                },
+                {
+                  "amount": "9200.00",
+                  "code": "UB"
+                },
+                {
+                  "amount": "1200.00",
+                  "code": "T1"
+                },
+                {
+                  "amount": "15200.00",
+                  "code": "US"
+                },
+                {
+                  "amount": "1500.00",
+                  "code": "XF"
+                }
+              ],
+              "refundableTaxes": "81900"
+            },
+            "fareDetailsBySegment": [
+              {
+                "segmentId": "1",
+                "cabin": "ECONOMY",
+                "fareBasis": "OJ2QGBLT",
+                "brandedFare": "LIGHT",
+                "class": "O",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              },
+              {
+                "segmentId": "2",
+                "cabin": "ECONOMY",
+                "fareBasis": "OJ2QGBLT",
+                "brandedFare": "LIGHT",
+                "class": "O",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              },
+              {
+                "segmentId": "3",
+                "cabin": "ECONOMY",
+                "fareBasis": "VJ2QGBLT",
+                "brandedFare": "LIGHT",
+                "class": "V",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              },
+              {
+                "segmentId": "4",
+                "cabin": "ECONOMY",
+                "fareBasis": "VJ2QGBLT",
+                "brandedFare": "LIGHT",
+                "class": "V",
+                "includedCheckedBags": {
+                  "quantity": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "bookingRequirements": {
+      "emailAddressRequired": true,
+      "mobilePhoneNumberRequired": true,
+      "travelerRequirements": [
+        {
+          "travelerId": "1",
+          "genderRequired": true,
+          "documentRequired": true,
+          "dateOfBirthRequired": true,
+          "redressRequiredIfAny": true,
+          "residenceRequired": true
+        }
+      ]
+    }
+  },
+  "dictionaries": {
+    "locations": {
+      "EWR": {
+        "cityCode": "NYC",
+        "countryCode": "US"
+      },
+      "KEF": {
+        "cityCode": "REK",
+        "countryCode": "IS"
+      },
+      "LGW": {
+        "cityCode": "LON",
+        "countryCode": "GB"
+      },
+      "JFK": {
+        "cityCode": "NYC",
+        "countryCode": "US"
+      }
+    }
+  }
+}
