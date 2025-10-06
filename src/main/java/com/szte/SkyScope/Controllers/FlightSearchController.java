@@ -56,22 +56,23 @@ public class FlightSearchController {
     model.addAttribute("searchId", searchId);
     searchStore.saveSearchDatas(searchId, new SearchData());
 
-    try {
-      flightService
-          .getFlightOffers(flightSearch, flightService.getToken(), searchId)
-          .thenAccept(
-              result -> {
-                flightService.setFlightOffersAttributes(result, searchId, flightService.getToken());
-                searchStore
-                    .getSearchDatas(searchId)
-                    .setSearchResult(sortResultService.sortOffersByDeffault(result));
-                searchStore
-                    .getSearchDatas(searchId)
-                    .setOriginalSearchResult(sortResultService.sortOffersByDeffault(result));
-              });
-    } catch (Exception exception) {
-      logger.log(Level.SEVERE, exception.getMessage(), exception);
-    }
+    flightService
+        .getFlightOffers(flightSearch, flightService.getToken(), searchId)
+        .thenAccept(
+            result -> {
+              flightService.setFlightOffersAttributes(result, searchId, flightService.getToken());
+              searchStore
+                  .getSearchDatas(searchId)
+                  .setSearchResult(sortResultService.sortOffersByDeffault(result));
+              searchStore
+                  .getSearchDatas(searchId)
+                  .setOriginalSearchResult(sortResultService.sortOffersByDeffault(result));
+            })
+        .exceptionally(
+            throwable -> {
+              logger.log(Level.SEVERE, throwable.getMessage(), throwable);
+              return null;
+            });
 
     searchStore.getSearchDatas(searchId).setFlightSearch(flightSearch);
     return "loading";
