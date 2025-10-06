@@ -1,6 +1,7 @@
 package com.szte.SkyScope.Helper;
 
 import java.time.Duration;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,5 +45,9 @@ public class WebElementHelper {
   public void waitForTextInElement(By locator, String text) {
     new WebDriverWait(driver, Duration.ofSeconds(90))
         .until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
+  }
+
+  public List<String> getElementsTextInList(By locator) {
+    return driver.findElements(locator).stream().map(WebElement::getText).toList();
   }
 }
