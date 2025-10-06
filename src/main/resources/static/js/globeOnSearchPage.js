@@ -28,10 +28,6 @@ function initEarth() {
     earth.controls().autoRotate = true;
     earth.controls().autoRotateSpeed = 0.6;
     window.addEventListener("resize", resizeEarth);
-
-    originCityElement = document.getElementById("originCity");
-    destinationCityElement = document.getElementById("destinationCity");
-    resetEarthAfterInputError();
     readCharacterset();
 }
 

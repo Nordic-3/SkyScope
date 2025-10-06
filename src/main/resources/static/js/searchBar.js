@@ -17,6 +17,6 @@ function setOutGoingMin() {
 }
 
 function isOneWay() {
-    oneWay = document.getElementById("onlyOrigin").checked;
+    oneWay = document.getElementById("onlyOneWay").checked;
     inGoingInput.disabled = oneWay;
 }
