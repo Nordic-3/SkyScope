@@ -2,6 +2,7 @@ package com.szte.SkyScope.Services.Impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.szte.SkyScope.Config.ApplicationConfig;
+import com.szte.SkyScope.Enums.TravellerTypes;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.Location;
@@ -168,6 +169,7 @@ public class FlightServiceImpl implements FlightService {
         result,
         getAirportNamesByItsIata(
             searchStore.getSearchDatas(searchId).getLocationDictionary(), token));
+    setHungarianNameOfTravellerTypes(result);
   }
 
   private void setEnglishNameOfTheCities(FlightSearch flightSearch) {
@@ -223,5 +225,14 @@ public class FlightServiceImpl implements FlightService {
 
   private boolean isNotNullAndNotEmpty(String dataToCheck) {
     return dataToCheck != null && !dataToCheck.isEmpty();
+  }
+
+  private void setHungarianNameOfTravellerTypes(List<FlightOffers> flightOffers) {
+    flightOffers.stream()
+        .flatMap(flightOffer -> flightOffer.getTravelerPricings().stream())
+        .forEach(
+            travelerPricing ->
+                travelerPricing.setTravelerType(
+                    TravellerTypes.getValueFromType(travelerPricing.getTravelerType())));
   }
 }
