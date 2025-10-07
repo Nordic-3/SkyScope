@@ -381,6 +381,7 @@ public class FlightOffers {
     private String travelerId = "";
     private String fareOption = "";
     private String travelerType = "";
+    private String traveller = "";
     private Price price = new Price();
     private List<FareDetailsBySegment> fareDetailsBySegment = new ArrayList<>();
 
@@ -390,11 +391,20 @@ public class FlightOffers {
       this.travelerId = travelerPricing.getTravelerId();
       this.fareOption = travelerPricing.getFareOption();
       this.travelerType = travelerPricing.getTravelerType();
+      this.traveller = travelerPricing.getTraveller();
       this.price = new Price(travelerPricing.getPrice());
       this.fareDetailsBySegment =
           travelerPricing.getFareDetailsBySegment().stream()
               .map(FareDetailsBySegment::new)
               .toList();
+    }
+
+    public String getTraveller() {
+      return traveller;
+    }
+
+    public void setTraveller(String traveller) {
+      this.traveller = traveller;
     }
 
     public List<FareDetailsBySegment> getFareDetailsBySegment() {

@@ -172,7 +172,7 @@
                                                  th:each="segment, segmentStatus : ${itinerary.getSegments()}">
                                                 <div class="col" th:each="traveller : ${offer.getTravelerPricings()}">
                                                     <p class="col fs-6"
-                                                       th:text="${traveller.getTravelerType()}"></p>
+                                                       th:text="${traveller.getTraveller()}"></p>
                                                     <div class="col"
                                                          th:each="fareDetails : ${traveller.getFareDetailBySegmentId(segment.getId())}">
                                                         <p class="col fs-6"

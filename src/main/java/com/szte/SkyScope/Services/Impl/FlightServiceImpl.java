@@ -232,7 +232,7 @@ public class FlightServiceImpl implements FlightService {
         .flatMap(flightOffer -> flightOffer.getTravelerPricings().stream())
         .forEach(
             travelerPricing ->
-                travelerPricing.setTravelerType(
+                travelerPricing.setTraveller(
                     TravellerTypes.getValueFromType(travelerPricing.getTravelerType())));
   }
 }
