@@ -1,24 +1,16 @@
 Feature: Flight search functionality
 
   @search-for-return-flight
-  Scenario Outline: Search for return flight
+  Scenario: Search for return flight
     Given I am on the search page
-    When I search for a return flight from "<origin>" to "<destination>" with valid dates
-    Then <numberOfFlights> flights should be displayed
-
-    Examples:
-      | origin | destination | numberOfFlights |
-      | London | New York    | 100             |
+    When I search for a return flight from "London" to "New York" with valid dates
+    Then 100 flights should be displayed
 
   @search-for-one-way-flight
-  Scenario Outline: Search for one way flight
+  Scenario: Search for one way flight
     Given I am on the search page
-    When I search for a one way flight from "<origin>" to "<destination>" with valid date
-    Then <numberOfFlights> flights should be displayed
-
-    Examples:
-      | origin   | destination | numberOfFlights |
-      | Budapest | Barcelona   | 100             |
+    When I search for a one way flight from "Budapest" to "Barcelona" with valid date
+    Then 100 flights should be displayed
 
   @search-with-missing-fields
   Scenario Outline: If not every required field is filled, an error message is displayed
@@ -34,11 +26,7 @@ Feature: Flight search functionality
       | London | Budapest    | 2026-03-30    |            |
 
 @advanced-search
-  Scenario Outline: Search for return flight for 1 adult 1 child and 1 infant
+  Scenario: Search for return flight for 1 adult 1 child and 1 infant
     Given I am on the search page
-    When I use advanced search for a return flight from "<origin>" to "<destination>" with valid dates
+    When I use advanced search for a return flight from "London" to "New York" with valid dates
     Then I see offers for 1 adult, 1 child and 1 infant
-
-  Examples:
-      | origin | destination |
-      | London | New York    |
