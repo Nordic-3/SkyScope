@@ -41,7 +41,9 @@
         </div>
     </div>
     <div class="col-auto d-flex align-items-center mb-3 form-floating">
-        <button type="submit" class="col-auto btn btn-primary h-100" id="searchFlightsButton">Keresés</button>
+        <button type="submit" class="col-auto btn btn-primary h-100" id="searchFlightsButton"
+                onclick="showLoadingIndicator()">Keresés
+            <span hidden id="loadingIndicator" class="spinner-border spinner-border-sm"></span></button>
     </div>
     <div class="col-auto d-flex align-items-center mb-3 form-floating">
         <button class="btn btn-primary" type="button"

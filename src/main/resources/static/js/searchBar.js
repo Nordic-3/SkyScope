@@ -3,6 +3,9 @@ let oneWay = false;
 
 function searchBarLoaded() {
     inGoingInput = document.getElementById("inGoingDate");
+    if (document.getElementsByClassName("text-danger") !== null) {
+        document.getElementById("loadingIndicator").setAttribute("hidden", "");
+    }
 }
 
 function setInGoingMin() {
@@ -19,4 +22,8 @@ function setOutGoingMin() {
 function isOneWay() {
     oneWay = document.getElementById("onlyOneWay").checked;
     inGoingInput.disabled = oneWay;
+}
+
+function showLoadingIndicator() {
+    document.getElementById("loadingIndicator").removeAttribute("hidden");
 }
