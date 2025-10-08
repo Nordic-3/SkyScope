@@ -1,7 +1,7 @@
 Feature: Sort results functionality
 
   @sort-results
-  Scenario Outline: Sort by price
+  Scenario Outline: Sort results by different options
     Given I have searched for a return flight from "London" to "New York" with valid dates
     When I sort the results by "<sortOption>"
     Then the results should be sorted by "<sortOption>"
