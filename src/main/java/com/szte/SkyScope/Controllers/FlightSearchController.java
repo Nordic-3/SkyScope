@@ -5,6 +5,7 @@ import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.SearchData;
 import com.szte.SkyScope.Services.*;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -71,6 +72,7 @@ public class FlightSearchController {
         .exceptionally(
             throwable -> {
               logger.log(Level.SEVERE, throwable.getMessage(), throwable);
+              searchStore.getSearchDatas(searchId).setSearchResult(new ArrayList<>());
               return null;
             });
 
@@ -84,6 +86,9 @@ public class FlightSearchController {
     List<FlightOffers> result = searchStore.getSearchDatas(searchId).getSearchResult();
     if (result == null) {
       return ResponseEntity.status(HttpStatus.ACCEPTED).body("IN_PROGRESS");
+    }
+    if (result.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("ERROR");
     }
     return ResponseEntity.ok("READY");
   }

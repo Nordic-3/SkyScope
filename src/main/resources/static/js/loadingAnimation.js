@@ -3,6 +3,8 @@ function checkResults(searchId) {
         .then(response => {
             if (response.status === 200) {
                 window.location.href = "/resultsPage/" + searchId + "?by=transferTimeAsc";
+            } else if (response.status === 503) {
+                window.location.href = "/aManoba";
             } else {
                 setTimeout(() => checkResults(searchId), 2000);
             }
