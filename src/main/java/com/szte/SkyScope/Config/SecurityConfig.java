@@ -13,19 +13,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/createOrder/**")
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated()
-                )
-                .formLogin(formLogin -> formLogin.loginPage("/").permitAll())
-                .httpBasic(Customizer.withDefaults());
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.securityMatcher("/createOrder/**")
+        .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+        .formLogin(formLogin -> formLogin.loginPage("/").permitAll())
+        .httpBasic(Customizer.withDefaults());
+    return http.build();
+  }
 }
