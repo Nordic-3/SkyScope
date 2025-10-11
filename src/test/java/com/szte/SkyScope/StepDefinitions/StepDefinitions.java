@@ -1,16 +1,17 @@
 package com.szte.SkyScope.StepDefinitions;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.szte.SkyScope.Enums.FlightOffersSortOptions;
 import com.szte.SkyScope.Helper.WebElementHelper;
 import io.cucumber.java.After;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.random.RandomGenerator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -29,6 +30,17 @@ public class StepDefinitions {
     onTheSearchPage();
     searchForReturnFlightWithValidDates(origin, destination);
     flightsShouldBeDisplayed(100);
+  }
+
+  @Given("I have selected an flgiht offer")
+  public void selectedAFlightOffer() {
+    haveSearchedForReturnFlightWithValidDates("Budapest", "London");
+    webElementHelper.clickButton(By.id("book"));
+  }
+
+  @When("I am on login page I click the registration button")
+  public void onLoginPageClickRegistrationButton() {
+    webElementHelper.clickButton(By.id("reg"));
   }
 
   @When("I search for a return flight from {string} to {string} with valid dates")
@@ -83,6 +95,20 @@ public class StepDefinitions {
     flightsShouldBeDisplayed(100);
   }
 
+  @When("I am on login page I enter valid credentials")
+  public void enterValidCredentials() {
+    webElementHelper.fillInputField("email", "automataTest@test.hu");
+    webElementHelper.fillInputField("password", "automatatest");
+    webElementHelper.clickButton(By.id("login"));
+  }
+
+  @When("I am on login page I enter invalid credentials")
+  public void enterInvalidCredentials() {
+    webElementHelper.fillInputField("email", "invalid@invalid");
+    webElementHelper.fillInputField("password", "invalid");
+    webElementHelper.clickButton(By.id("login"));
+  }
+
   @Then("{int} flights should be displayed")
   public void flightsShouldBeDisplayed(int numberOfResults) {
     webElementHelper.waitForGivenNumberOfElements(By.name("resultCard"), numberOfResults);
@@ -118,6 +144,41 @@ public class StepDefinitions {
           assertEquals(
               getTransferNumbers().stream().sorted((a, b) -> b - a).toList(), getTransferNumbers());
     }
+  }
+
+  @Then("the registration is successful")
+  @Then("the login is successful")
+  public void registrationIsSuccessful() {
+    assertFalse(webElementHelper.isElementDisplayed(By.className("text-danger")));
+  }
+
+  @Then("the registration is not successful")
+  public void theRegistrationIsNotSuccessful() {
+    webElementHelper.waitForElementToBeVisible(By.cssSelector("div#registration .text-danger"));
+    assertTrue(
+        webElementHelper.isElementDisplayed(By.cssSelector("div#registration .text-danger")));
+  }
+
+  @Then("the login is not successful")
+  public void loginIsNotSuccessful() {
+    webElementHelper.waitForElementToBeVisible(By.cssSelector("div[id='error']"));
+    assertTrue(webElementHelper.isElementDisplayed(By.cssSelector("div[id='error']")));
+  }
+
+  @And("I submit the registration form")
+  public void submitTheRegistrationForm() {
+    fillRegistrationForm(
+        RandomGenerator.getDefault().nextInt(0, 1000) + "@gmail.com", "01234567", "01234567");
+  }
+
+  @And("I submit the registration form with too short password")
+  public void submitTheRegistrationFormWithInvalidData() {
+    fillRegistrationForm("invalid@invalid", "0123", "0123");
+  }
+
+  @And("I submit the registration form with not matching passwords")
+  public void submitTheRegistrationFormWithNotMatchingPasswords() {
+    fillRegistrationForm("test@test", "01234567", "12345678");
   }
 
   @After
@@ -157,5 +218,12 @@ public class StepDefinitions {
         .map(s -> s.split(" ")[4])
         .map(Integer::valueOf)
         .toList();
+  }
+
+  private void fillRegistrationForm(String email, String password, String rePassword) {
+    webElementHelper.fillInputField("signupEmail", email);
+    webElementHelper.fillInputField("signupPassword", password);
+    webElementHelper.fillInputField("signupRePassword", rePassword);
+    webElementHelper.clickButton(By.id("signup"));
   }
 }

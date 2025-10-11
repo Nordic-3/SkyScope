@@ -16,6 +16,7 @@ public class WebElementHelper {
   }
 
   public void fillInputField(String id, String value) {
+    waitForElementToBeVisible(By.id(id));
     WebElement element = driver.findElement(By.id(id));
     element.sendKeys(value);
   }
@@ -49,5 +50,10 @@ public class WebElementHelper {
 
   public List<String> getElementsTextInList(By locator) {
     return driver.findElements(locator).stream().map(WebElement::getText).toList();
+  }
+
+  public void waitForElementToBeVisible(By locator) {
+    new WebDriverWait(driver, Duration.ofSeconds(90))
+        .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
   }
 }
