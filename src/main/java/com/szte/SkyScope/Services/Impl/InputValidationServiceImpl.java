@@ -62,20 +62,20 @@ public class InputValidationServiceImpl implements InputValidationService {
 
   private String checkEmptySearchFields(FlightSearch flightSearch) {
     StringBuilder errorMessage = new StringBuilder();
-    if (flightSearch.getOriginCity() == null || flightSearch.getOriginCity().isEmpty()) {
+    if (isNullOrEmpty(flightSearch.getOriginCity())) {
       errorMessage.append("indulási város");
     }
-    if (flightSearch.getDestinationCity() == null || flightSearch.getDestinationCity().isEmpty()) {
+    if (isNullOrEmpty(flightSearch.getDestinationCity())) {
       errorMessage.append(" célváros");
     }
-    if (flightSearch.getDepartureDate() == null || flightSearch.getDepartureDate().isEmpty()) {
+    if (isNullOrEmpty(flightSearch.getDepartureDate())) {
       errorMessage.append(" indulás dátuma");
     }
-    if (flightSearch.getNumberOfAdults() == null || flightSearch.getNumberOfAdults().isEmpty()) {
+    if (isNullOrEmpty(flightSearch.getNumberOfAdults())) {
       errorMessage.append(" felnőtt utasok száma");
     }
     if (!flightSearch.isOneWay()) {
-      if (flightSearch.getReturnDate() == null || flightSearch.getReturnDate().isEmpty()) {
+      if (isNullOrEmpty(flightSearch.getReturnDate())) {
         errorMessage.append(" visszaút dátuma");
       }
     }
