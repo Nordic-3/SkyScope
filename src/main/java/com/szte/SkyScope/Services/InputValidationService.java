@@ -8,5 +8,5 @@ public interface InputValidationService {
 
   String validateIataCodes(FlightSearch flightSearch);
 
-  String validatePassword(RegisterUser registerUser);
+  String validatePasswordAndEmail(RegisterUser registerUser);
 }

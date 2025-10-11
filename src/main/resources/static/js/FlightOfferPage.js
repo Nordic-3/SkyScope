@@ -11,6 +11,7 @@ function offersLoaded() {
     if (!isOnceShowedCheaper) {
         checkResults(searchId);
     }
+    window.localStorage.setItem("selectedOffer", document.getElementById("book").attributes.getNamedItem("href").value);
 }
 
 function getUrlParameter() {

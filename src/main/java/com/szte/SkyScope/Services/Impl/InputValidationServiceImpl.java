@@ -44,7 +44,13 @@ public class InputValidationServiceImpl implements InputValidationService {
   }
 
   @Override
-  public String validatePassword(RegisterUser registerUser) {
+  public String validatePasswordAndEmail(RegisterUser registerUser) {
+    if (isNullOrEmpty(registerUser.getEmail())) {
+      return "Email cím" + EMPTY_INPUT_ERROR;
+    }
+    if (isNullOrEmpty(registerUser.getPassword()) || isNullOrEmpty(registerUser.getRePassword())) {
+      return "Jelszó" + EMPTY_INPUT_ERROR;
+    }
     if (!registerUser.getPassword().equals(registerUser.getRePassword())) {
       return NOT_MATCHING_PASSWORD;
     }
@@ -134,5 +140,9 @@ public class InputValidationServiceImpl implements InputValidationService {
       return "";
     }
     return INVALID_TRAVEL_CLASS;
+  }
+
+  private boolean isNullOrEmpty(String value) {
+    return value == null || value.isEmpty();
   }
 }

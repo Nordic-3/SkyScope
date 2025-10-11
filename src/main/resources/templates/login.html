@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 </head>
-<body onload="contentLoaded();" style="background: linear-gradient(135deg, #232526 0%, #414345 100%); min-height: 100vh;">
+<body onload="contentLoaded();"
+      style="background: linear-gradient(135deg, #232526 0%, #414345 100%); min-height: 100vh;">
 <main class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card rounded-5">
         <div class="card-body">
@@ -31,9 +32,47 @@
                 <div class="d-flex gap-2 mt-3">
                     <button type="submit" class="btn btn-outline-primary flex-fill">Bejelentkezés<i
                             class="bi bi-box-arrow-in-right"></i></button>
-                    <a href="/" class="btn btn-outline-dark flex-fill">Regisztráció<i class="bi bi-plus-lg"></i></a>
+                    <button type="button" class="btn btn-outline-dark flex-fill" data-bs-toggle="modal"
+                            data-bs-target="#registration" id="reg">
+                        Regisztráció<i class="bi bi-plus-lg"></i>
+                    </button>
                 </div>
             </form>
+        </div>
+        <div class="modal fade" id="registration" tabindex="-1" aria-labelledby="registrationLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 badge text-bg-info text-wrap" id="registrationLabel">Regisztráció</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div th:if="${validationError != null}">
+                            <div th:text="${validationError}" class="text-danger"></div>
+                        </div>
+                        <form class="row align-items-center m-auto justify-content-center gap-2"
+                              method="POST" th:action="@{/signup}" th:object="${registerUser}">
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="signupEmail" placeholder="email cím" th:field="*{email}" required>
+                                <label for="signupEmail" class="ms-1">Email cím</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="signupPassword" placeholder="jelszó" th:field="*{password}"
+                                       required>
+                                <label for="signupPassword" class="ms-1">Jelszó</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="signupRePassword" placeholder="jelszó újra" th:field="*{rePassword}"
+                                       required>
+                                <label for="signupRePassword" class="ms-1">Jelszó újra</label>
+                            </div><hr class="mb-0 mt-3">
+                            <div class="d-flex gap-2 mt-3">
+                                <button type="submit" class="btn btn-outline-primary flex-fill">Regisztráció<i class="bi bi-plus-lg"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
