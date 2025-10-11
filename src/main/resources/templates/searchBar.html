@@ -4,17 +4,11 @@
         <input onfocusout="goToOriginCity()" type="text" class="form-control form-control" id="originCity"
                th:field="*{originCity}" placeholder="induló város">
         <label for="originCity">induló város</label>
-        <div th:if="${originError != null}">
-            <div th:text="${originError}" class="text-danger"></div>
-        </div>
     </div>
     <div class="col-auto form-floating mb-3">
         <input onfocusout="goToDestinationCity()" type="text" class="form-control form-control" id="destinationCity"
                th:field="*{destinationCity}" placeholder="cél város">
         <label for="destinationCity">cél város</label>
-        <div th:if="${destinationError != null}">
-            <div th:text="${destinationError}" class="text-danger"></div>
-        </div>
     </div>
     <div class="col-auto form-check form-switch mb-3">
         <input onfocusout="isOneWay()" class="form-check-input me-2" type="checkbox" role="switch" id="onlyOneWay"
@@ -27,18 +21,12 @@
                th:field="*{departureDate}"
                placeholder="indulás napja">
         <label for="outGoingDate">indulás napja</label>
-        <div th:if="${errorOutDate != null}">
-            <div th:text="${errorOutDate}" class="text-danger"></div>
-        </div>
     </div>
     <div class="col-auto form-floating mb-3">
         <input onfocusout="setOutGoingMin()" type="date" class="form-control form-control-lg" id="inGoingDate"
                th:field="*{returnDate}"
                placeholder="visszaút apja">
         <label for="inGoingDate">visszaút napja</label>
-        <div th:if="${errorReturnDate != null}">
-            <div th:text="${errorReturnDate}" class="text-danger"></div>
-        </div>
     </div>
     <div class="col-auto d-flex align-items-center mb-3 form-floating">
         <button type="submit" class="col-auto btn btn-primary h-100" id="searchFlightsButton"
@@ -52,8 +40,8 @@
             Összetett keresés <i class="bi bi-caret-down-fill"></i>
         </button>
     </div>
-    <div th:if="${errorInAdvancedSearch != null}" class="mb-3">
-        <div th:text="${errorInAdvancedSearch}" class="text-danger"></div>
+    <div th:if="${errorMessages != null}" class="mb-3">
+        <div th:text="${errorMessages}" class="text-danger"></div>
     </div>
     <div class="collapse mt-2 mb-2" id="advancedSearch">
         <div class="card card-body">

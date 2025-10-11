@@ -1,16 +1,16 @@
 package com.szte.SkyScope.Services.Impl;
 
 import com.szte.SkyScope.Models.FlightSearch;
+import com.szte.SkyScope.Models.RegisterUser;
 import com.szte.SkyScope.Services.InputValidationService;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 @Service
 public class InputValidationServiceImpl implements InputValidationService {
-  private static final String EMPTY_INPUT_ERROR = "A mező kitöltése kötelező!";
+  private static final String EMPTY_INPUT_ERROR = " mező kitöltése kötelező! ";
   private static final String INVALID_DATE_FORMAT = "A dátum formátuma nem megfelelő!";
   private static final String DEPARTURE_BEFORE_TODAY =
       "Az indulás napja nem lehet korábbi a mai napnál!";
@@ -19,58 +19,67 @@ public class InputValidationServiceImpl implements InputValidationService {
   private static final String INVALID_CITY_NAME = "Helyeten város név!";
   private static final String INVALID_NUMBER = "Csak pozitív egész számot használjon!";
   private static final String INVALID_TRAVEL_CLASS = "Kérjük a listából válasszon osztályt!";
+  private static final String NOT_MATCHING_PASSWORD = "A jelszavak nem egyeznek meg!";
+  private static final String TOO_SHORT_PASSWORD =
+      "A jelszónak legalább 8 karakter hosszúnak kell lennie!";
 
   @Override
-  public boolean isValidInputDatas(FlightSearch flightSearch, Model model) {
-    return !isEmptyInputFields(flightSearch, model)
-        && isValidDate(flightSearch, model)
-        && isNaturalNumber(flightSearch.getNumberOfAdults(), model)
-        && isValidTravelClass(flightSearch.getTravelClass(), model)
-        && isValidOptionalInputFileds(flightSearch, model);
+  public String validateInputFields(FlightSearch flightSearch) {
+    return checkEmptySearchFields(flightSearch)
+        + checkValidDates(flightSearch)
+        + checkNaturalNumber(flightSearch.getNumberOfAdults())
+        + checkValidTravelClass(flightSearch.getTravelClass())
+        + checkOptionalInputFileds(flightSearch);
   }
 
   @Override
-  public boolean isValidIataCodes(FlightSearch flightSearch, Model model) {
-    boolean isValid = true;
+  public String validateIataCodes(FlightSearch flightSearch) {
     if (flightSearch.getOriginCityIata() == null) {
-      model.addAttribute("originError", INVALID_CITY_NAME);
-      isValid = false;
+      return INVALID_CITY_NAME;
     }
     if (flightSearch.getDestinationCityIata() == null) {
-      model.addAttribute("destinationError", INVALID_CITY_NAME);
-      isValid = false;
+      return INVALID_CITY_NAME;
     }
-    return isValid;
+    return "";
   }
 
-  private boolean isEmptyInputFields(FlightSearch flightSearch, Model model) {
-    boolean isEmpty = false;
+  @Override
+  public String validatePassword(RegisterUser registerUser) {
+    if (!registerUser.getPassword().equals(registerUser.getRePassword())) {
+      return NOT_MATCHING_PASSWORD;
+    }
+    if (registerUser.getPassword().length() < 8) {
+      return TOO_SHORT_PASSWORD;
+    }
+    return "";
+  }
+
+  private String checkEmptySearchFields(FlightSearch flightSearch) {
+    StringBuilder errorMessage = new StringBuilder();
     if (flightSearch.getOriginCity() == null || flightSearch.getOriginCity().isEmpty()) {
-      model.addAttribute("originError", EMPTY_INPUT_ERROR);
-      isEmpty = true;
+      errorMessage.append("indulási város");
     }
     if (flightSearch.getDestinationCity() == null || flightSearch.getDestinationCity().isEmpty()) {
-      model.addAttribute("destinationError", EMPTY_INPUT_ERROR);
-      isEmpty = true;
+      errorMessage.append(" célváros");
     }
     if (flightSearch.getDepartureDate() == null || flightSearch.getDepartureDate().isEmpty()) {
-      model.addAttribute("errorOutDate", EMPTY_INPUT_ERROR);
-      isEmpty = true;
+      errorMessage.append(" indulás dátuma");
     }
     if (flightSearch.getNumberOfAdults() == null || flightSearch.getNumberOfAdults().isEmpty()) {
-      model.addAttribute("errorInAdvancedSearch", EMPTY_INPUT_ERROR);
-      isEmpty = true;
+      errorMessage.append(" felnőtt utasok száma");
     }
     if (!flightSearch.isOneWay()) {
       if (flightSearch.getReturnDate() == null || flightSearch.getReturnDate().isEmpty()) {
-        model.addAttribute("errorReturnDate", EMPTY_INPUT_ERROR);
-        isEmpty = true;
+        errorMessage.append(" visszaút dátuma");
       }
     }
-    return isEmpty;
+    if (!errorMessage.isEmpty()) {
+      errorMessage.append(EMPTY_INPUT_ERROR);
+    }
+    return errorMessage.toString();
   }
 
-  private boolean isValidDate(FlightSearch flightSearch, Model model) {
+  private String checkValidDates(FlightSearch flightSearch) {
     LocalDate departureDate = null;
     LocalDate returnDate = null;
     try {
@@ -79,58 +88,51 @@ public class InputValidationServiceImpl implements InputValidationService {
         returnDate = LocalDate.parse(flightSearch.getReturnDate());
       }
     } catch (DateTimeParseException exception) {
-      model.addAttribute("errorOutDate", INVALID_DATE_FORMAT);
-      model.addAttribute("errorReturnDate", INVALID_DATE_FORMAT);
-      return false;
+      return INVALID_DATE_FORMAT;
     }
     if (departureDate.isBefore(LocalDate.now())) {
-      model.addAttribute("errorOutDate", DEPARTURE_BEFORE_TODAY);
-      return false;
+      return DEPARTURE_BEFORE_TODAY;
     }
     if (!flightSearch.isOneWay()) {
       if (returnDate.isBefore(departureDate)) {
-        model.addAttribute("errorOutDate", RETURN_BEFORE_DEPARTURE);
-        return false;
+        return RETURN_BEFORE_DEPARTURE;
       }
     }
-    return true;
+    return "";
   }
 
-  private boolean isValidOptionalInputFileds(FlightSearch flightSearch, Model model) {
+  private String checkOptionalInputFileds(FlightSearch flightSearch) {
     if (flightSearch.getNumberOfChildren() != null
         && !flightSearch.getNumberOfChildren().isEmpty()) {
-      return isNaturalNumber(flightSearch.getNumberOfChildren(), model);
+      return checkNaturalNumber(flightSearch.getNumberOfChildren());
     }
     if (flightSearch.getNumberOfInfants() != null && !flightSearch.getNumberOfInfants().isEmpty()) {
-      return isNaturalNumber(flightSearch.getNumberOfInfants(), model);
+      return checkNaturalNumber(flightSearch.getNumberOfInfants());
     }
     if (flightSearch.getMaxPrice() != null && !flightSearch.getMaxPrice().isEmpty()) {
-      return isNaturalNumber(flightSearch.getMaxPrice(), model);
+      return checkNaturalNumber(flightSearch.getMaxPrice());
     }
-    return true;
+    return "";
   }
 
-  private boolean isNaturalNumber(String numberToCheck, Model model) {
+  private String checkNaturalNumber(String numberToCheck) {
     int number;
     try {
       number = Integer.parseInt(numberToCheck);
     } catch (NumberFormatException exception) {
-      model.addAttribute("errorInAdvancedSearch", INVALID_NUMBER);
-      return false;
+      return INVALID_NUMBER;
     }
     if (number <= 0) {
-      model.addAttribute("errorInAdvancedSearch", INVALID_NUMBER);
-      return false;
+      return INVALID_NUMBER;
     }
-    return true;
+    return "";
   }
 
-  private boolean isValidTravelClass(String travelClass, Model model) {
+  private String checkValidTravelClass(String travelClass) {
     if (Arrays.asList("ECONOMY", "PREMIUM_ECONOMY", "BUSINESS", "FIRST", "ALL")
         .contains(travelClass)) {
-      return true;
+      return "";
     }
-    model.addAttribute("errorInAdvancedSearch", INVALID_TRAVEL_CLASS);
-    return false;
+    return INVALID_TRAVEL_CLASS;
   }
 }

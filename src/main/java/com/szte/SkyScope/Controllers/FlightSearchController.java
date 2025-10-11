@@ -46,11 +46,14 @@ public class FlightSearchController {
   @PostMapping("/flightsearch")
   public String flightSubmit(@ModelAttribute FlightSearch flightSearch, Model model) {
     model.addAttribute("flightsearch", flightSearch);
-    if (!inputValidationService.isValidInputDatas(flightSearch, model)) {
+    if (!inputValidationService.validateInputFields(flightSearch).isEmpty()) {
+      model.addAttribute("errorMessages", inputValidationService.validateInputFields(flightSearch));
       return "flightSearchPage";
     }
     flightService.setIataCodes(flightSearch, flightService.getToken());
-    if (!inputValidationService.isValidIataCodes(flightSearch, model)) {
+    String iataError = inputValidationService.validateIataCodes(flightSearch);
+    if (!iataError.isEmpty()) {
+      model.addAttribute("errorMessages", iataError);
       return "flightSearchPage";
     }
     String searchId = UUID.randomUUID().toString();

@@ -1,10 +1,12 @@
 package com.szte.SkyScope.Services;
 
 import com.szte.SkyScope.Models.FlightSearch;
-import org.springframework.ui.Model;
+import com.szte.SkyScope.Models.RegisterUser;
 
 public interface InputValidationService {
-  boolean isValidInputDatas(FlightSearch flightSearch, Model model);
+  String validateInputFields(FlightSearch flightSearch);
 
-  boolean isValidIataCodes(FlightSearch flightSearch, Model model);
+  String validateIataCodes(FlightSearch flightSearch);
+
+  String validatePassword(RegisterUser registerUser);
 }
