@@ -43,6 +43,7 @@ public class SecurityConfig {
             form ->
                 form.loginPage("/login")
                     .loginProcessingUrl("/login")
+                    .failureForwardUrl("/login?error")
                     .successHandler(successHandler())
                     .permitAll())
         .requestCache(cache -> cache.requestCache(requestCache()))
