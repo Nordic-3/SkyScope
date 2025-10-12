@@ -1,11 +1,11 @@
 package com.szte.SkyScope.Services.Impl;
 
-import com.szte.SkyScope.Models.FlightSearch;
-import com.szte.SkyScope.Models.RegisterUser;
+import com.szte.SkyScope.Models.*;
 import com.szte.SkyScope.Services.InputValidationService;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,6 +58,15 @@ public class InputValidationServiceImpl implements InputValidationService {
       return TOO_SHORT_PASSWORD;
     }
     return "";
+  }
+
+  @Override
+  public String validateTravellers(TravellerWrapper travellers, FlightOffers flightOffers) {
+    return allFieldIsCompulsory(travellers)
+        + validEmailAddress(travellers)
+        + validateCountryCodes(travellers)
+        + validPassportAtTravelDate(travellers, flightOffers)
+        + passportExpireBeforeIssueDate(travellers);
   }
 
   private String checkEmptySearchFields(FlightSearch flightSearch) {
@@ -144,5 +153,129 @@ public class InputValidationServiceImpl implements InputValidationService {
 
   private boolean isNullOrEmpty(String value) {
     return value == null || value.isEmpty();
+  }
+
+  private String allFieldIsCompulsory(TravellerWrapper travellers) {
+    if (travellers.getTravellers().stream()
+        .anyMatch(
+            traveller ->
+                isNullOrEmpty(traveller.getGender())
+                    || isNullOrEmpty(traveller.getDateOfBirth())
+                    || isNullOrEmpty(traveller.getName().getFirstName())
+                    || isNullOrEmpty(traveller.getName().getLastName())
+                    || isNullOrEmptyContacts(traveller.getContact())
+                    || isNullOrEmptyDocuments(traveller.getDocuments()))) {
+      return "Minden mező kitöltése kötelező!";
+    }
+    return "";
+  }
+
+  private boolean isNullOrEmptyContacts(Traveller.Contact contact) {
+    return isNullOrEmpty(contact.getEmailAddress())
+        || contact.getPhones().stream()
+            .anyMatch(
+                phone ->
+                    isNullOrEmpty(phone.getCountryCallingCode())
+                        || isNullOrEmpty(phone.getNumber()));
+  }
+
+  private boolean isNullOrEmptyDocuments(List<Passport> passports) {
+    return passports.stream()
+        .anyMatch(
+            passport ->
+                isNullOrEmpty(passport.getIssuanceCountry())
+                    || isNullOrEmpty(passport.getNumber())
+                    || isNullOrEmpty(passport.getDocumentType())
+                    || isNullOrEmpty(passport.getBirthPlace())
+                    || isNullOrEmpty(passport.getIssuanceDate())
+                    || isNullOrEmpty(passport.getNationality())
+                    || isNullOrEmpty(passport.getExpiryDate())
+                    || isNullOrEmpty(passport.getValidityCountry()));
+  }
+
+  private String validEmailAddress(TravellerWrapper travellers) {
+    if (travellers.getTravellers().stream()
+        .noneMatch(
+            traveller ->
+                traveller
+                    .getContact()
+                    .getEmailAddress()
+                    .matches("^[\\w\\-.]+@([\\w-]+\\.)+[\\w-]{2,}$"))) {
+      return " Az email formátuma nem megfelelő!";
+    }
+    return "";
+  }
+
+  private String validateCountryCodes(TravellerWrapper travellers) {
+    if (travellers.getTravellers().stream()
+        .flatMap(traveller -> traveller.getDocuments().stream())
+        .anyMatch(
+            passport ->
+                passport.getIssuanceCountry().length() != 2
+                    || passport.getNationality().length() != 2)) {
+      return " Az állampolgárság és kiállító ország mezőbe két betűs rövidítést használjon!";
+    }
+    return "";
+  }
+
+  private String validPassportAtTravelDate(TravellerWrapper travellers, FlightOffers flightOffers) {
+    try {
+      LocalDate lastFlight =
+          LocalDate.parse(
+              flightOffers
+                  .getItineraries()
+                  .getLast()
+                  .getSegments()
+                  .getLast()
+                  .getArrival()
+                  .getAt()
+                  .split("T")[0]);
+      if (travellers.getTravellers().stream()
+          .flatMap(traveller -> traveller.getDocuments().stream())
+          .anyMatch(passport -> LocalDate.parse(passport.getExpiryDate()).isBefore(lastFlight))) {
+        return " Az úti okmány nem érvényes az utazás idején!";
+      }
+    } catch (DateTimeParseException exception) {
+      return " Nem érvényes dátum formátum!";
+    }
+    return "";
+  }
+
+  private String validDates(TravellerWrapper travellers) {
+    if (travellers.getTravellers().stream()
+        .anyMatch(
+            traveller -> {
+              try {
+                LocalDate.parse(traveller.getDateOfBirth());
+                LocalDate.parse(traveller.getDocuments().getFirst().getIssuanceDate());
+                LocalDate.parse(traveller.getDocuments().getFirst().getExpiryDate());
+                return false;
+              } catch (DateTimeParseException exception) {
+                return true;
+              }
+            })) {
+      return " Nem érvényes dátum formátum!";
+    }
+    return "";
+  }
+
+  private String passportExpireBeforeIssueDate(TravellerWrapper travellers) {
+    if (travellers.getTravellers().stream()
+        .flatMap(t -> t.getDocuments().stream())
+        .anyMatch(
+            passport -> {
+              try {
+                if (LocalDate.parse(passport.getExpiryDate())
+                    .isBefore(LocalDate.parse(passport.getIssuanceDate()))) {
+                  return true;
+                }
+                return false;
+              } catch (DateTimeParseException exception) {
+                return true;
+              }
+            })) {
+      return " Az úti okmány lejárati dátuma hamarabb van, mint a kiállítása!";
+    }
+    return "";
   }
 }

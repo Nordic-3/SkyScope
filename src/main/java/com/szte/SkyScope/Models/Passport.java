@@ -17,7 +17,7 @@ public class Passport {
   private String issuanceCountry;
   private String validityCountry;
   private String nationality;
-  private boolean holder;
+  private boolean holder = true;
 
   public Passport() {}
 
@@ -40,9 +40,9 @@ public class Passport {
     this.issuanceDate = issuanceDate;
     this.number = number;
     this.expiryDate = expiryDate;
-    this.issuanceCountry = issuanceCountry;
-    this.validityCountry = validityCountry;
-    this.nationality = nationality;
+    this.issuanceCountry = issuanceCountry.toUpperCase();
+    this.validityCountry = validityCountry.toUpperCase();
+    this.nationality = nationality.toUpperCase();
     this.holder = holder;
   }
 
@@ -107,7 +107,7 @@ public class Passport {
   }
 
   public void setIssuanceCountry(String issuanceCountry) {
-    this.issuanceCountry = issuanceCountry;
+    this.issuanceCountry = issuanceCountry.toUpperCase();
   }
 
   public String getValidityCountry() {
@@ -115,7 +115,7 @@ public class Passport {
   }
 
   public void setValidityCountry(String validityCountry) {
-    this.validityCountry = validityCountry;
+    this.validityCountry = validityCountry.toUpperCase();
   }
 
   public String getNationality() {
@@ -123,7 +123,7 @@ public class Passport {
   }
 
   public void setNationality(String nationality) {
-    this.nationality = nationality;
+    this.nationality = nationality.toUpperCase();
   }
 
   public boolean isHolder() {

@@ -1,8 +1,8 @@
 package com.szte.SkyScope.Services.Impl;
 
 import com.szte.SkyScope.Config.ApplicationConfig;
-import com.szte.SkyScope.Models.FlightOffers;
-import com.szte.SkyScope.Models.FlightPriceRequest;
+import com.szte.SkyScope.Enums.TravellerTypes;
+import com.szte.SkyScope.Models.*;
 import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.CreateFlightOrderService;
 import com.szte.SkyScope.Services.JsonReaderService;
@@ -41,6 +41,37 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
         .filter(flightOffer -> flightOffer.getId().equals(offerId))
         .toList()
         .getFirst();
+  }
+
+  @Override
+  public void setTravellers(TravellerWrapper travellers, String email, FlightOffers flightOffers) {
+    flightOffers
+        .getTravelerPricings()
+        .forEach(
+            travelerPricing ->
+                travellers
+                    .getTravellers()
+                    .add(
+                        new Traveller(
+                            travelerPricing.getTravelerId(),
+                            TravellerTypes.getValueFromType(travelerPricing.getTravelerType()))));
+    travellers.getTravellers().getFirst().getContact().setEmailAddress(email);
+  }
+
+  @Override
+  public void setPassportValidations(TravellerWrapper travellers) {
+    travellers.getTravellers().stream()
+        .flatMap(traveller -> traveller.getDocuments().stream())
+        .forEach(passport -> passport.setValidityCountry(passport.getIssuanceCountry()));
+  }
+
+  @Override
+  public void setContacts(TravellerWrapper travellers) {
+    travellers
+        .getTravellers()
+        .forEach(
+            traveller1 ->
+                traveller1.setContact(travellers.getTravellers().getFirst().getContact()));
   }
 
   private FlightOffers getFinalPriceFromApi(FlightPriceRequest request, String token) {

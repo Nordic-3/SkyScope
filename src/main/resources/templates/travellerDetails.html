@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>SkyScope</title>
+    <link rel="stylesheet" href="/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/travellerDetails.css">
+    <script src="/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/travellerDetails.js"></script>
+</head>
+<body onload="contentLoaded();">
+<main class="container py-5 d-flex justify-content-center">
+    <div class="card-main">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-info">Utasok megadása</h2>
+        </div>
+        <form class="row g-4"
+              method="POST" th:action="@{/travellerDetails/{id}(id=${searchId})}" th:object="${travellers}">
+            <div th:if="${error != null}">
+                <div class="alert alert-danger text-center" th:text="${error}"></div>
+            </div>
+            <div th:each="traveller, istat : ${travellers.getTravellers()}">
+                <div class="card-secondary">
+                    <div class="mb-3 text-center card-name">
+                        <span th:text="${traveller.getType()}"></span>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md">
+                            <input type="text" class="form-control" placeholder="Vezetéknév" id="lastName"
+                                   th:field="*{travellers[__${istat.index}__].name.lastName}">
+                        </div>
+                        <div class="col-md">
+                            <input type="text" class="form-control" placeholder="Keresztnév" id="firstName"
+                                   th:field="*{travellers[__${istat.index}__].name.firstName}">
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="date" class="form-control"
+                                       th:field="*{travellers[__${istat.index}__].dateOfBirth}"
+                                       id="dob__${istat.index}">
+                                <label th:for="'dob__' + ${istat.index}">Születési dátum</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <select class="form-select h-100" th:field="*{travellers[__${istat.index}__].gender}">
+                                <option value="">Neme</option>
+                                <option value="MALE">Férfi</option>
+                                <option value="FEMALE">Nő</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3" th:if="${istat.first}">
+                        <div class="col-md-5">
+                            <input type="email" class="form-control" placeholder="Email cím"
+                                   th:field="*{travellers[__${istat.index}__].contact.emailAddress}">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" placeholder="+36"
+                                   th:field="*{travellers[__${istat.index}__].contact.phones[0].countryCallingCode}">
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" placeholder="Telefonszám"
+                                   th:field="*{travellers[__${istat.index}__].contact.phones[0].number}">
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md">
+                            <select class="form-select"
+                                    th:field="*{travellers[__${istat.index}__].documents[0].documentType}">
+                                <option value="">Úti okmány típusa</option>
+                                <option value="PASSPORT">Útlevél</option>
+                                <option value="ID">Személyi igazolvány</option>
+                            </select>
+                        </div>
+                        <div class="col-md">
+                            <input type="text" class="form-control" placeholder="Okmány száma"
+                                   th:field="*{travellers[__${istat.index}__].documents[0].number}">
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="date" class="form-control"
+                                       th:field="*{travellers[__${istat.index}__].documents[0].issuanceDate}"
+                                       id="iss__${istat.index}">
+                                <label th:for="'iss__' + ${istat.index}">Kiállítás dátuma</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="date" class="form-control"
+                                       th:field="*{travellers[__${istat.index}__].documents[0].expiryDate}"
+                                       id="exp__${istat.index}">
+                                <label th:for="'exp__' + ${istat.index}">Lejárat dátuma</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md">
+                            <input type="text" class="form-control" placeholder="Kiállító ország kódja (pl. HU)"
+                                   th:field="*{travellers[__${istat.index}__].documents[0].issuanceCountry}">
+                        </div>
+                        <div class="col-md">
+                            <input type="text" class="form-control" placeholder="Kiállítás helye"
+                                   th:field="*{travellers[__${istat.index}__].documents[0].issuanceLocation}">
+                        </div>
+                    </div>
+
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <input type="text" class="form-control" placeholder="Születési hely"
+                                   th:field="*{travellers[__${istat.index}__].documents[0].birthPlace}">
+                        </div>
+                        <div class="col-md">
+                            <input type="text" class="form-control" placeholder="Állampolgárság (pl. HU)"
+                                   th:field="*{travellers[__${istat.index}__].documents[0].nationality}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-primary btn-lg" type="submit">Tovább</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast bg-warning text-dark" role="alert" aria-live="assertive" aria-atomic="true"
+             data-bs-autohide="false">
+            <div class="toast-body">
+                Az állampolgárságnál és az úti okmány kiállítási országánál az ország két betűs rövidítése
+                használandó.<br>
+                Felnőtt: az utazás napján 12 év felett<br>
+                Gyermek: az utazás napján 2–12 év között<br>
+                Csecsemő: az utazás napján 2 év alatt
+                <div class="mt-2 pt-2 border-top">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Bezár</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

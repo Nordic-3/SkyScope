@@ -15,6 +15,15 @@ public class SearchData {
   private boolean haveToCheckForCheaperOffer = true;
   private FlightSearch cheaperSearch;
   private List<FlightOffers> cheaperSearchResult;
+  private String offerId;
+
+  public String getOfferId() {
+    return offerId;
+  }
+
+  public void setOfferId(String offerId) {
+    this.offerId = offerId;
+  }
 
   public boolean haveToCheckForCheaperOffer() {
     return haveToCheckForCheaperOffer;
