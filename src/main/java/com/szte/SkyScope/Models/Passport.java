@@ -1,13 +1,6 @@
 package com.szte.SkyScope.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "passports")
 public class Passport {
-  @Id private long id;
   private String documentType;
   private String birthPlace;
   private String issuanceLocation;
@@ -22,7 +15,6 @@ public class Passport {
   public Passport() {}
 
   public Passport(
-      long id,
       String documentType,
       String birthPlace,
       String issuanceLocation,
@@ -33,7 +25,6 @@ public class Passport {
       String validityCountry,
       String nationality,
       boolean holder) {
-    this.id = id;
     this.documentType = documentType;
     this.birthPlace = birthPlace;
     this.issuanceLocation = issuanceLocation;
@@ -44,14 +35,6 @@ public class Passport {
     this.validityCountry = validityCountry.toUpperCase();
     this.nationality = nationality.toUpperCase();
     this.holder = holder;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getDocumentType() {

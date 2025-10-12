@@ -42,8 +42,7 @@ public class SessionHandleController {
     String validationError = inputValidationService.validatePasswordAndEmail(registerUser);
     if (validationError.isEmpty()) {
       userService.saveUser(
-          new UserCreationDTO(
-              "", "", "", registerUser.getEmail(), "", "", registerUser.getPassword()));
+          new UserCreationDTO(registerUser.getEmail(), registerUser.getPassword()));
       try {
         authWithHttpServletRequest(request, registerUser.getEmail(), registerUser.getPassword());
       } catch (ServletException exception) {
