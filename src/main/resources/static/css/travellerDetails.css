@@ -49,3 +49,7 @@ body {
 .btn-primary:hover {
     background: #138496;
 }
+
+select:has(option[value=""]:checked) {
+    color: #6c757d;
+}
