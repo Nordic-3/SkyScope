@@ -67,7 +67,8 @@ public class InputValidationServiceImpl implements InputValidationService {
         + validEmailAddress(travellers)
         + validateCountryCodes(travellers)
         + validPassportAtTravelDate(travellers, flightOffers)
-        + passportExpireBeforeIssueDate(travellers);
+        + passportExpireBeforeIssueDate(travellers)
+        + validDates(travellers);
   }
 
   private String checkEmptySearchFields(FlightSearch flightSearch) {
@@ -266,11 +267,8 @@ public class InputValidationServiceImpl implements InputValidationService {
         .anyMatch(
             passport -> {
               try {
-                if (LocalDate.parse(passport.getExpiryDate())
-                    .isBefore(LocalDate.parse(passport.getIssuanceDate()))) {
-                  return true;
-                }
-                return false;
+                  return LocalDate.parse(passport.getExpiryDate())
+                          .isBefore(LocalDate.parse(passport.getIssuanceDate()));
               } catch (DateTimeParseException exception) {
                 return true;
               }
