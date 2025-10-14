@@ -1,7 +1,6 @@
 package com.szte.SkyScope.Controllers;
 
 import com.szte.SkyScope.DTOs.UserCreationDTO;
-import com.szte.SkyScope.Models.RegisterUser;
 import com.szte.SkyScope.Services.InputValidationService;
 import com.szte.SkyScope.Services.UserService;
 import jakarta.servlet.ServletException;
@@ -30,21 +29,20 @@ public class SessionHandleController {
 
   @GetMapping("/login")
   public String login(Model model) {
-    model.addAttribute("registerUser", new RegisterUser());
+    model.addAttribute("registerUser", new UserCreationDTO("", "", ""));
     return "login";
   }
 
   @PostMapping("/signup")
   public String signup(
-      @ModelAttribute("registerUser") RegisterUser registerUser,
+      @ModelAttribute("registerUser") UserCreationDTO userCreationDTO,
       RedirectAttributes redirectAttributes,
       HttpServletRequest request) {
-    String validationError = inputValidationService.validatePasswordAndEmail(registerUser);
+    String validationError = inputValidationService.validatePasswordAndEmail(userCreationDTO);
     if (validationError.isEmpty()) {
-      userService.saveUser(
-          new UserCreationDTO(registerUser.getEmail(), registerUser.getPassword()));
+      userService.saveUser(userCreationDTO);
       try {
-        authWithHttpServletRequest(request, registerUser.getEmail(), registerUser.getPassword());
+        authWithHttpServletRequest(request, userCreationDTO.email(), userCreationDTO.password());
       } catch (ServletException exception) {
         Logger.getLogger(SessionHandleController.class.getName())
             .log(Level.SEVERE, exception.toString(), exception);

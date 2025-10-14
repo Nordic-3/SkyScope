@@ -1,5 +1,6 @@
 package com.szte.SkyScope.Services.Impl;
 
+import com.szte.SkyScope.DTOs.UserCreationDTO;
 import com.szte.SkyScope.Models.*;
 import com.szte.SkyScope.Services.InputValidationService;
 import java.time.LocalDate;
@@ -44,17 +45,17 @@ public class InputValidationServiceImpl implements InputValidationService {
   }
 
   @Override
-  public String validatePasswordAndEmail(RegisterUser registerUser) {
-    if (isNullOrEmpty(registerUser.getEmail())) {
+  public String validatePasswordAndEmail(UserCreationDTO userCreationDTO) {
+    if (isNullOrEmpty(userCreationDTO.email())) {
       return "Email cím" + EMPTY_INPUT_ERROR;
     }
-    if (isNullOrEmpty(registerUser.getPassword()) || isNullOrEmpty(registerUser.getRePassword())) {
+    if (isNullOrEmpty(userCreationDTO.password()) || isNullOrEmpty(userCreationDTO.rePassword())) {
       return "Jelszó" + EMPTY_INPUT_ERROR;
     }
-    if (!registerUser.getPassword().equals(registerUser.getRePassword())) {
+    if (!userCreationDTO.password().equals(userCreationDTO.rePassword())) {
       return NOT_MATCHING_PASSWORD;
     }
-    if (registerUser.getPassword().length() < 8) {
+    if (userCreationDTO.rePassword().length() < 8) {
       return TOO_SHORT_PASSWORD;
     }
     return "";
