@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +24,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SessionHandleController {
   private final InputValidationService inputValidationService;
   private final UserService userService;
+  private final RequestCache requestCache;
 
   @Autowired
   public SessionHandleController(
-      InputValidationService inputValidationService, UserService userService) {
+      InputValidationService inputValidationService,
+      UserService userService,
+      RequestCache requestCache) {
     this.inputValidationService = inputValidationService;
     this.userService = userService;
+    this.requestCache = requestCache;
   }
 
   @GetMapping("/login")
@@ -41,7 +46,8 @@ public class SessionHandleController {
   public String signup(
       @ModelAttribute("registerUser") UserCreationDTO userCreationDTO,
       RedirectAttributes redirectAttributes,
-      HttpServletRequest request) {
+      HttpServletRequest request,
+      HttpServletResponse response) {
     String validationError = inputValidationService.validatePasswordAndEmail(userCreationDTO);
     if (validationError.isEmpty()) {
       userService.saveUser(userCreationDTO);
@@ -52,7 +58,7 @@ public class SessionHandleController {
             .log(Level.SEVERE, exception.toString(), exception);
         return "login";
       }
-      return "redirect:/login?success";
+      return "redirect:" + requestCache.getRequest(request, response).getRedirectUrl();
     }
     redirectAttributes.addFlashAttribute("validationError", validationError);
     return "redirect:/login?invalidPassword";
