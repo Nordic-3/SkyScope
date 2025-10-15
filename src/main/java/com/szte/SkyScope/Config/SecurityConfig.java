@@ -37,7 +37,7 @@ public class SecurityConfig {
   @Bean
   @Order(1)
   public SecurityFilterChain createOrderSecurity(HttpSecurity http) throws Exception {
-    http.securityMatcher("/createOrder/**")
+    http.securityMatcher("/createOrder/**", "/profile")
         .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
         .formLogin(
             form ->

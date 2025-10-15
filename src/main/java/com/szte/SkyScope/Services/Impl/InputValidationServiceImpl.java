@@ -267,8 +267,8 @@ public class InputValidationServiceImpl implements InputValidationService {
         .anyMatch(
             passport -> {
               try {
-                  return LocalDate.parse(passport.getExpiryDate())
-                          .isBefore(LocalDate.parse(passport.getIssuanceDate()));
+                return LocalDate.parse(passport.getExpiryDate())
+                    .isBefore(LocalDate.parse(passport.getIssuanceDate()));
               } catch (DateTimeParseException exception) {
                 return true;
               }

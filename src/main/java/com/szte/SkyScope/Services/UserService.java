@@ -10,7 +10,7 @@ public interface UserService {
 
   UserDTO saveUser(UserCreationDTO userCreationDTO);
 
-  void deleteById(Long id);
+  void deleteByEmail(String email);
 
   UserDTO updateUser(UserCreationDTO userCreationDTO);
 }

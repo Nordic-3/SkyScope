@@ -5,6 +5,7 @@ import com.szte.SkyScope.DTOs.UserDTO;
 import com.szte.SkyScope.Models.User;
 import com.szte.SkyScope.Repositories.UserRepository;
 import com.szte.SkyScope.Services.UserService;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,8 +34,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void deleteById(Long id) {
-    userRepository.deleteById(id);
+  @Transactional
+  public void deleteByEmail(String email) {
+    userRepository.deleteByEmail(email);
   }
 
   @Override
