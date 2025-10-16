@@ -20,6 +20,8 @@
                 <div class="alert alert-danger text-center" th:text="${error}"></div>
             </div>
             <div th:each="traveller, istat : ${travellers.getTravellers()}">
+                <input type="hidden" th:field="*{travellers[__${istat.index}__].id}" th:value="${traveller.id}">
+                <input type="hidden" th:field="*{travellers[__${istat.index}__].type}" th:value="${traveller.type}">
                 <div class="card-secondary">
                     <div class="mb-3 text-center card-name">
                         <span th:text="${traveller.getType()}"></span>
