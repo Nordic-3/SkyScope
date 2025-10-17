@@ -140,11 +140,11 @@ public class Parser {
     return cheapestDateOffers;
   }
 
-  public static FlightPriceRequest parseFlightPriceRequest(String json) {
+  public static FinalPriceResponse parseFlightPriceRequest(String json) {
     JsonNode root;
     try {
       root = objectMapper.readTree(json);
-      return objectMapper.treeToValue(root, FlightPriceRequest.class);
+      return objectMapper.treeToValue(root, FinalPriceResponse.class);
     } catch (Exception exception) {
       logger.log(Level.SEVERE, exception.getMessage(), exception);
       return null;

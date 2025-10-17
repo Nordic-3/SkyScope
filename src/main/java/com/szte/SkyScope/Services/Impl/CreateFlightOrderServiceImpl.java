@@ -27,7 +27,7 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
   }
 
   @Override
-  public FlightOffers getFinalPrice(FlightOffers flightOffer, String token) {
+  public FinalPriceResponse getFinalPrice(FlightOffers flightOffer, String token) {
     if (applicationConfig.useApis() && !applicationConfig.getAmadeusFinalPrice().equals("noApi")) {
       return getFinalPriceFromApi(
           new FlightPriceRequest(new FlightPriceRequest.Data(flightOffer)), token);
@@ -74,10 +74,11 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
                 traveller1.setContact(travellers.getTravellers().getFirst().getContact()));
   }
 
-  private FlightOffers getFinalPriceFromApi(FlightPriceRequest request, String token) {
-    FlightPriceRequest flightPriceRequest = null;
+  private FinalPriceResponse getFinalPriceFromApi(
+      FlightPriceRequest request, String token) {
+    FinalPriceResponse finalPrice = null;
     try {
-      flightPriceRequest =
+      finalPrice =
           restClient
               .post()
               .uri(applicationConfig.getAmadeusFinalPrice())
@@ -85,24 +86,22 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
               .contentType(MediaType.APPLICATION_JSON)
               .body(request)
               .retrieve()
-              .body(FlightPriceRequest.class);
+              .body(FinalPriceResponse.class);
 
     } catch (Exception exception) {
       java.util.logging.Logger.getLogger(FlightServiceImpl.class.getName())
           .log(Level.SEVERE, exception.getMessage(), exception);
     }
-    return flightPriceRequest != null
-        ? flightPriceRequest.getData().getFlightOffers().getFirst()
-        : new FlightOffers();
+    return finalPrice != null ? finalPrice : new FinalPriceResponse();
   }
 
-  private FlightOffers getFinalPriceFromJson() {
-    FlightPriceRequest flightPriceRequest =
+  private FinalPriceResponse getFinalPriceFromJson() {
+    FinalPriceResponse finalPrice =
         Parser.parseFlightPriceRequest(
             jsonReaderService.readJsonFromResources("exampleDatas/finalPrice.json"));
-    if (flightPriceRequest == null) {
-      return new FlightOffers();
+    if (finalPrice == null) {
+      return new FinalPriceResponse();
     }
-    return flightPriceRequest.getData().getFlightOffers().getFirst();
+    return finalPrice;
   }
 }
