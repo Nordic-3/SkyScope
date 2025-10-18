@@ -3,7 +3,7 @@ package com.szte.SkyScope.Models;
 public class BankCard {
   private String cardNumber;
   private String name;
-  private String cvc;
+  private String cvv;
   private String expiration;
 
   public String getCardNumber() {
@@ -22,12 +22,12 @@ public class BankCard {
     this.name = name;
   }
 
-  public String getCvc() {
-    return cvc;
+  public String getCvv() {
+    return cvv;
   }
 
-  public void setCvc(String cvc) {
-    this.cvc = cvc;
+  public void setCvv(String cvv) {
+    this.cvv = cvv;
   }
 
   public String getExpiration() {

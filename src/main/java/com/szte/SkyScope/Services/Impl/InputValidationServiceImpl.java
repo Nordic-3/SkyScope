@@ -75,7 +75,7 @@ public class InputValidationServiceImpl implements InputValidationService {
   @Override
   public String validateCardDetails(BankCard card) {
     if (isNullOrEmpty(card.getCardNumber())
-        || isNullOrEmpty(card.getCvc())
+        || isNullOrEmpty(card.getCvv())
         || isNullOrEmpty(card.getExpiration())
         || isNullOrEmpty(card.getName())) {
       return ALL_FIELD_IS_COMPULSORY;
