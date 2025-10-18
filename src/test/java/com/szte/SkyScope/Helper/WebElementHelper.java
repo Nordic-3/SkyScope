@@ -2,10 +2,12 @@ package com.szte.SkyScope.Helper;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebElementHelper {
@@ -55,5 +57,22 @@ public class WebElementHelper {
   public void waitForElementToBeVisible(By locator) {
     new WebDriverWait(driver, Duration.ofSeconds(90))
         .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+  }
+
+  public void fillAllinputFieldsByLocator(By locator, String value) {
+    driver.findElements(locator).forEach(element -> element.sendKeys(value));
+  }
+
+  public boolean isTextVisibleInElement(By locator, String text) {
+    try {
+      WebElement element = driver.findElement(locator);
+      return element.getText().contains(text);
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public void selectOptionFromAllDropDownsByValue(By locator, String value) {
+    driver.findElements(locator).forEach(element -> new Select(element).selectByValue(value));
   }
 }

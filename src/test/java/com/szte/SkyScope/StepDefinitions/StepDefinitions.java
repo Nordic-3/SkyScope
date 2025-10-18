@@ -38,6 +38,54 @@ public class StepDefinitions {
     webElementHelper.clickButton(By.id("book"));
   }
 
+  @Given("I have selected a flight from {string} to {string} and logged in")
+  public void selectFlightAndLogin(String origin, String destination) {
+    haveSearchedForReturnFlightWithValidDates(origin, destination);
+    webElementHelper.clickButton(By.id("book"));
+    enterValidCredentials();
+  }
+
+  @When("I fill in the traveller details with valid information")
+  public void fillTheTravellerDetails() {
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Vezetéknév']"), "Test");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Keresztnév']"), "Elek");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='születési dátum']"), "1990-01-01");
+    webElementHelper.selectOptionFromAllDropDownsByValue(
+        By.cssSelector("#gender > select"), "MALE");
+    webElementHelper.fillInputField("countryCode", "36");
+    webElementHelper.fillInputField("phoneNumber", "123456789");
+    webElementHelper.selectOptionFromAllDropDownsByValue(
+        By.cssSelector("#docType > select"), "PASSPORT");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Okmány száma']"),
+        Integer.toString(RandomGenerator.getDefault().nextInt(100000, 999999)));
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='kiállítás dátuma']"), "2020-01-01");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='lejárat dátuma']"), "2030-01-01");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Kiállító ország kódja (pl. HU)']"), "hu");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Kiállítás helye']"), "Budapest");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Születési hely']"), "Budapest");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Állampolgárság (pl. HU)']"), "hu");
+    webElementHelper.clickButton(By.id("next"));
+  }
+
+  @When("I fill in the traveller details with missing information")
+  public void fillTheTravellerDetailsWithMissingInformation() {
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Vezetéknév']"), "Test");
+    webElementHelper.fillAllinputFieldsByLocator(
+        By.cssSelector("input[placeholder='Keresztnév']"), "Elek");
+    webElementHelper.clickButton(By.id("next"));
+  }
+
   @When("I am on login page I click the registration button")
   public void onLoginPageClickRegistrationButton() {
     webElementHelper.clickButton(By.id("reg"));
@@ -107,6 +155,18 @@ public class StepDefinitions {
     webElementHelper.fillInputField("email", "invalid@invalid");
     webElementHelper.fillInputField("password", "invalid");
     webElementHelper.clickButton(By.id("login"));
+  }
+
+  @Then("I should see the payment page")
+  public void shouldSeeThePaymentPage() {
+    webElementHelper.waitForTextInElement(By.className("text-info"), "Fizetendő összeg");
+    assertTrue(
+        webElementHelper.isTextVisibleInElement(By.className("text-info"), "Fizetendő összeg"));
+  }
+
+  @Then("I should see error message for missing fields")
+  public void shouldSeeErrorMessageForMissingFields() {
+    assertTrue(webElementHelper.isElementDisplayed(By.className("alert-danger")));
   }
 
   @Then("{int} flights should be displayed")
