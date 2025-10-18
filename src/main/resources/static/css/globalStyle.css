@@ -81,7 +81,7 @@ input {
 }
 
 label {
-    color: white !important;
+    color: rgba(255, 255, 255, 0.67) !important;
 }
 
 #max, label[class="input-group-text"] {

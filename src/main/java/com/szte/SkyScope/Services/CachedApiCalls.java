@@ -8,4 +8,6 @@ public interface CachedApiCalls {
   String getIataCode(String city, String token);
 
   String getAirportNameFromApi(String iata, String token);
+
+  AmadeusApiCred getTestAmadeusApiCred();
 }

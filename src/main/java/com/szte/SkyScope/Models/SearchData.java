@@ -16,6 +16,24 @@ public class SearchData {
   private FlightSearch cheaperSearch;
   private List<FlightOffers> cheaperSearchResult;
   private String offerId;
+  private List<Traveller> travelers;
+  private List<FinalPriceResponse.FlightOffer> validatedOffers;
+
+  public List<FinalPriceResponse.FlightOffer> getValidatedOffers() {
+    return validatedOffers;
+  }
+
+  public void setValidatedOffers(List<FinalPriceResponse.FlightOffer> validatedOffers) {
+    this.validatedOffers = validatedOffers;
+  }
+
+  public List<Traveller> getTravelers() {
+    return travelers;
+  }
+
+  public void setTravelers(List<Traveller> travelers) {
+    this.travelers = travelers;
+  }
 
   public String getOfferId() {
     return offerId;

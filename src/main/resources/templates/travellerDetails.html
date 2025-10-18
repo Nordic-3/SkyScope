@@ -28,11 +28,13 @@
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col-md">
-                            <input type="text" class="form-control" placeholder="Vezetéknév" id="lastName"
+                            <input type="text" class="form-control" placeholder="Vezetéknév"
+                                   th:id="'lastName' + ${istat.index}"
                                    th:field="*{travellers[__${istat.index}__].name.lastName}">
                         </div>
                         <div class="col-md">
-                            <input type="text" class="form-control" placeholder="Keresztnév" id="firstName"
+                            <input type="text" class="form-control" placeholder="Keresztnév"
+                                   th:id="'firstName' + ${istat.index}"
                                    th:field="*{travellers[__${istat.index}__].name.firstName}">
                         </div>
                     </div>
@@ -41,12 +43,13 @@
                             <div class="form-floating">
                                 <input type="date" class="form-control"
                                        th:field="*{travellers[__${istat.index}__].dateOfBirth}"
-                                       id="dob__${istat.index}">
-                                <label th:for="'dob__' + ${istat.index}">Születési dátum</label>
+                                       th:id="'dateOfBirth' + ${istat.index}" placeholder="születési dátum">
+                                <label th:for="'dateOfBirth' + ${istat.index}">Születési dátum</label>
                             </div>
                         </div>
-                        <div class="col-md">
-                            <select class="form-select h-100" th:field="*{travellers[__${istat.index}__].gender}">
+                        <div class="col-md" id="gender">
+                            <select class="form-select h-100" th:field="*{travellers[__${istat.index}__].gender}"
+                                    th:id="'gender' + ${istat.index}">
                                 <option value="">Neme</option>
                                 <option value="MALE">Férfi</option>
                                 <option value="FEMALE">Nő</option>
@@ -55,22 +58,23 @@
                     </div>
                     <div class="row g-2 mb-3" th:if="${istat.first}">
                         <div class="col-md-5">
-                            <input type="email" class="form-control" placeholder="Email cím"
+                            <input type="email" class="form-control" placeholder="Email cím" id="email"
                                    th:field="*{travellers[__${istat.index}__].contact.emailAddress}">
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" placeholder="+36"
+                            <input type="text" class="form-control" placeholder="+36" id="countryCode"
                                    th:field="*{travellers[__${istat.index}__].contact.phones[0].countryCallingCode}">
                         </div>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" placeholder="Telefonszám"
+                            <input type="text" class="form-control" placeholder="Telefonszám" id="phoneNumber"
                                    th:field="*{travellers[__${istat.index}__].contact.phones[0].number}">
                         </div>
                     </div>
                     <div class="row g-2 mb-3">
-                        <div class="col-md">
+                        <div class="col-md" id="docType">
                             <select class="form-select"
-                                    th:field="*{travellers[__${istat.index}__].documents[0].documentType}">
+                                    th:field="*{travellers[__${istat.index}__].documents[0].documentType}"
+                                    th:id="'docType' + ${istat.index}">
                                 <option value="">Úti okmány típusa</option>
                                 <option value="PASSPORT">Útlevél</option>
                                 <option value="ID">Személyi igazolvány</option>
@@ -78,6 +82,7 @@
                         </div>
                         <div class="col-md">
                             <input type="text" class="form-control" placeholder="Okmány száma"
+                                   th:id="'docNumber' + ${istat.index}"
                                    th:field="*{travellers[__${istat.index}__].documents[0].number}">
                         </div>
                     </div>
@@ -86,26 +91,28 @@
                             <div class="form-floating">
                                 <input type="date" class="form-control"
                                        th:field="*{travellers[__${istat.index}__].documents[0].issuanceDate}"
-                                       id="iss__${istat.index}">
-                                <label th:for="'iss__' + ${istat.index}">Kiállítás dátuma</label>
+                                       th:id="'issuanceDate' + ${istat.index}" placeholder="kiállítás dátuma">
+                                <label th:for="'issuanceDate' + ${istat.index}">Kiállítás dátuma</label>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-floating">
                                 <input type="date" class="form-control"
                                        th:field="*{travellers[__${istat.index}__].documents[0].expiryDate}"
-                                       id="exp__${istat.index}">
-                                <label th:for="'exp__' + ${istat.index}">Lejárat dátuma</label>
+                                       th:id="'expiry' + ${istat.index}" placeholder="lejárat dátuma">
+                                <label th:for="'expiry' + ${istat.index}">Lejárat dátuma</label>
                             </div>
                         </div>
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col-md">
                             <input type="text" class="form-control" placeholder="Kiállító ország kódja (pl. HU)"
-                                   th:field="*{travellers[__${istat.index}__].documents[0].issuanceCountry}">
+                                   th:field="*{travellers[__${istat.index}__].documents[0].issuanceCountry}"
+                                   th:id="'issuanceCountry' + ${istat.index}">
                         </div>
                         <div class="col-md">
                             <input type="text" class="form-control" placeholder="Kiállítás helye"
+                                   th:id="'issuanceLocation' + ${istat.index}"
                                    th:field="*{travellers[__${istat.index}__].documents[0].issuanceLocation}">
                         </div>
                     </div>
@@ -113,10 +120,12 @@
                     <div class="row g-2">
                         <div class="col-md">
                             <input type="text" class="form-control" placeholder="Születési hely"
+                                   th:id="'birthPlace' + ${istat.index}"
                                    th:field="*{travellers[__${istat.index}__].documents[0].birthPlace}">
                         </div>
                         <div class="col-md">
                             <input type="text" class="form-control" placeholder="Állampolgárság (pl. HU)"
+                                   th:id="'nationality' + ${istat.index}"
                                    th:field="*{travellers[__${istat.index}__].documents[0].nationality}">
                         </div>
                     </div>
@@ -124,7 +133,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <button class="btn btn-primary btn-lg" type="submit">Tovább</button>
+                <button class="btn btn-primary btn-lg" type="submit" id="next">Tovább</button>
             </div>
         </form>
     </div>

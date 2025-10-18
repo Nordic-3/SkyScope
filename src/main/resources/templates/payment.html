@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>SkyScope</title>
+    <link rel="stylesheet" href="/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/globalStyle.css">
+    <script src="/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/payment.js"></script>
+</head>
+<body onload="contentLoaded();">
+<main class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card card-main">
+        <div class="card-title">
+            <h2 class="fw-bold text-info">Fizetendő összeg: <span th:text="${price}"></span> HUF</h2>
+        </div>
+        <div class="card-body card-secondary">
+            <div th:if="${error != null}" class="mb-3">
+                <div th:text="${error}" class="text-danger"></div>
+            </div>
+            <form method="POST" th:action="@{/createOrder/pay/{id}(id=${searchId})}" th:object="${card}">
+                <div class="row">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="cardNumber" placeholder="Bankkártya száma"
+                               th:field="*{cardNumber}" required>
+                        <label for="cardNumber" class="ms-1">Bankkártya száma</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col form-floating mb-3">
+                        <input type="text" class="form-control" id="expirity" placeholder="Lejárati dátuma"
+                               th:field="*{expiration}" required>
+                        <label for="expirity" class="ms-1">Lejárati dátuma</label>
+                    </div>
+                    <div class="col form-floating mb-3">
+                        <input type="text" class="form-control" id="cvc" placeholder="CVC kódja" th:field="*{cvc}"
+                               required>
+                        <label for="cvc" class="ms-1">CVC kódja</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="Kártyán szereplő név"
+                               th:field="*{name}" required>
+                        <label for="name" class="ms-1">Kártyán szereplő név</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit" id="payBtn">Fizetés</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="success" tabindex="-1" aria-labelledby="successModel" aria-hidden="true"
+         data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content card-secondary">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 badge text-bg-success text-wrap" id="successModel">Sikeres foglalás</h1>
+                </div>
+                <div class="modal-body">
+                    <p>A visszaigazolást és repülőjegyet emailben küldjük.</p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary btn-sm rounded-btn" href="/">Vissza a főoldalra</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

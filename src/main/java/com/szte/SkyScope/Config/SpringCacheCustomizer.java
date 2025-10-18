@@ -10,6 +10,7 @@ public class SpringCacheCustomizer implements CacheManagerCustomizer<ConcurrentM
 
   @Override
   public void customize(ConcurrentMapCacheManager cacheManager) {
-    cacheManager.setCacheNames(List.of("amadeusApiToken", "city", "iataOfCity", "tesztelek"));
+    cacheManager.setCacheNames(
+        List.of("amadeusApiToken", "city", "iataOfCity", "tesztelek", "amadeusTestApiToken"));
   }
 }

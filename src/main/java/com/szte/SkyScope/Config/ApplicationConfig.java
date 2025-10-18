@@ -36,6 +36,34 @@ public class ApplicationConfig {
   @Value("${amadeus_final_price:noApi}")
   private String amadeusFinalPrice;
 
+  @Value("${amadeus_test_client_id:noApi}")
+  private String amadeusTestClientId;
+
+  @Value("${amadeus_test_client_secret:noApi}")
+  private String amadeusTestClientSecret;
+
+  @Value("${amadeus_create_order:noApi}")
+  private String amadeusCreateOrder;
+
+  @Value("${amadeus_test_auth_url:noApi}")
+  private String amadeusTestAuthUrl;
+
+  public String getAmadeusTestAuthUrl() {
+    return amadeusTestAuthUrl;
+  }
+
+  public String getAmadeusCreateOrder() {
+    return amadeusCreateOrder;
+  }
+
+  public String getAmadeusTestClientId() {
+    return amadeusTestClientId;
+  }
+
+  public String getAmadeusTestClientSecret() {
+    return amadeusTestClientSecret;
+  }
+
   public String getAmadeusFinalPrice() {
     return amadeusFinalPrice;
   }

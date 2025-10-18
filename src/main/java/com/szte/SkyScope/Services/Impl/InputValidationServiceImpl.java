@@ -23,6 +23,7 @@ public class InputValidationServiceImpl implements InputValidationService {
   private static final String NOT_MATCHING_PASSWORD = "A jelszavak nem egyeznek meg!";
   private static final String TOO_SHORT_PASSWORD =
       "A jelszónak legalább 8 karakter hosszúnak kell lennie!";
+  private static final String ALL_FIELD_IS_COMPULSORY = "Minden mező kitöltése kötelező!";
 
   @Override
   public String validateInputFields(FlightSearch flightSearch) {
@@ -69,6 +70,17 @@ public class InputValidationServiceImpl implements InputValidationService {
         + validPassportAtTravelDate(travellers, flightOffers)
         + passportExpireBeforeIssueDate(travellers)
         + validDates(travellers);
+  }
+
+  @Override
+  public String validateCardDetails(BankCard card) {
+    if (isNullOrEmpty(card.getCardNumber())
+        || isNullOrEmpty(card.getCvc())
+        || isNullOrEmpty(card.getExpiration())
+        || isNullOrEmpty(card.getName())) {
+      return ALL_FIELD_IS_COMPULSORY;
+    }
+    return "";
   }
 
   private String checkEmptySearchFields(FlightSearch flightSearch) {
@@ -167,7 +179,7 @@ public class InputValidationServiceImpl implements InputValidationService {
                     || isNullOrEmpty(traveller.getName().getLastName())
                     || isNullOrEmptyContacts(traveller.getContact())
                     || isNullOrEmptyDocuments(traveller.getDocuments()))) {
-      return "Minden mező kitöltése kötelező!";
+      return ALL_FIELD_IS_COMPULSORY;
     }
     return "";
   }

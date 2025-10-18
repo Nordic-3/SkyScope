@@ -31,22 +31,10 @@ public class CachedApiCallsImpl implements CachedApiCalls {
   @Override
   @Cacheable("amadeusApiToken")
   public AmadeusApiCred getAmadeusApiCred() {
-    if (!applicationConfig.useApis() || applicationConfig.getAmadeusClientId().equals("noApi")) {
-      return new AmadeusApiCred();
-    }
-    String body =
-        "grant_type=client_credentials"
-            + "&client_id="
-            + applicationConfig.getAmadeusClientId()
-            + "&client_secret="
-            + applicationConfig.getAmadeusClientSecret();
-    return restClient
-        .post()
-        .uri(applicationConfig.getAmadeusAuthUrl())
-        .header("Content-Type", "application/x-www-form-urlencoded")
-        .body(body)
-        .retrieve()
-        .body(AmadeusApiCred.class);
+    return getApiCred(
+        applicationConfig.getAmadeusClientId(),
+        applicationConfig.getAmadeusClientSecret(),
+        applicationConfig.getAmadeusAuthUrl());
   }
 
   @Override
@@ -78,9 +66,22 @@ public class CachedApiCallsImpl implements CachedApiCalls {
         + Parser.getAirportNameFromJson(response, "data");
   }
 
+  @Override
+  @Cacheable("amadeusTestApiToken")
+  public AmadeusApiCred getTestAmadeusApiCred() {
+    return getApiCred(
+        applicationConfig.getAmadeusTestClientId(),
+        applicationConfig.getAmadeusTestClientSecret(),
+        applicationConfig.getAmadeusTestAuthUrl());
+  }
+
   @CacheEvict(value = "amadeusApiToken", allEntries = true)
   @Scheduled(fixedRateString = "${amadeus_token_expiry}")
   public void emptyAmadeusApiToken() {}
+
+  @CacheEvict(value = "amadeusTestApiToken", allEntries = true)
+  @Scheduled(fixedRateString = "${amadeus_token_expiry}")
+  public void emptyTestToken() {}
 
   private String getAirportNameFromLocalJson(String iata) {
     String json = jsonReaderService.readJsonFromResources("exampleDatas/airportNames.json");
@@ -101,5 +102,24 @@ public class CachedApiCallsImpl implements CachedApiCalls {
   private String getIataCodeFromLocalJson(String city) {
     return Parser.getIataFromJson(
         jsonReaderService.readJsonFromResources("exampleDatas/iataCodes.json"), city);
+  }
+
+  private AmadeusApiCred getApiCred(String clientId, String clientSecret, String authUrl) {
+    if (!applicationConfig.useApis() || applicationConfig.getAmadeusClientId().equals("noApi")) {
+      return new AmadeusApiCred();
+    }
+    String body =
+        "grant_type=client_credentials"
+            + "&client_id="
+            + clientId
+            + "&client_secret="
+            + clientSecret;
+    return restClient
+        .post()
+        .uri(authUrl)
+        .header("Content-Type", "application/x-www-form-urlencoded")
+        .body(body)
+        .retrieve()
+        .body(AmadeusApiCred.class);
   }
 }
