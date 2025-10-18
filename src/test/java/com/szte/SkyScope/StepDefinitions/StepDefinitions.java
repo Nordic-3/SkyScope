@@ -45,6 +45,21 @@ public class StepDefinitions {
     enterValidCredentials();
   }
 
+  @Given("I am on the payment page")
+  public void onThePaymentPage() {
+    selectFlightAndLogin("Budapest", "London");
+    fillTheTravellerDetails();
+  }
+
+  @When("I fill in the payment details with valid information")
+  public void fillThePaymentDetails() {
+    webElementHelper.fillInputField("cardNumber", "4111111111111111");
+    webElementHelper.fillInputField("expiry", "12/30");
+    webElementHelper.fillInputField("cvv", "123");
+    webElementHelper.fillInputField("name", "Teszt Elek");
+    webElementHelper.clickButton(By.id("payBtn"));
+  }
+
   @When("I fill in the traveller details with valid information")
   public void fillTheTravellerDetails() {
     webElementHelper.fillAllinputFieldsByLocator(
@@ -155,6 +170,12 @@ public class StepDefinitions {
     webElementHelper.fillInputField("email", "invalid@invalid");
     webElementHelper.fillInputField("password", "invalid");
     webElementHelper.clickButton(By.id("login"));
+  }
+
+  @Then("I should see the success confirmation message")
+  public void shouldSeeTheSuccessConfirmationMessage() {
+    webElementHelper.waitForTextInElement(By.id("successModel"), "Sikeres foglalás");
+    assertTrue(webElementHelper.isTextVisibleInElement(By.id("successModel"), "Sikeres foglalás"));
   }
 
   @Then("I should see the payment page")

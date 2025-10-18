@@ -2,7 +2,6 @@ package com.szte.SkyScope.Helper;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
