@@ -16,9 +16,9 @@ public class WebElementHelper {
     this.driver = driver;
   }
 
-  public void fillInputField(String id, String value) {
-    waitForElementToBeVisible(By.id(id));
-    WebElement element = driver.findElement(By.id(id));
+  public void fillInputField(By locator, String value) {
+    waitForElementToBeVisible(locator);
+    WebElement element = driver.findElement(locator);
     element.sendKeys(value);
   }
 

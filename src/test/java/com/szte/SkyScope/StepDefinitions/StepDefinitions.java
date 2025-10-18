@@ -53,10 +53,10 @@ public class StepDefinitions {
 
   @When("I fill in the payment details with valid information")
   public void fillThePaymentDetails() {
-    webElementHelper.fillInputField("cardNumber", "4111111111111111");
-    webElementHelper.fillInputField("expiry", "12/30");
-    webElementHelper.fillInputField("cvv", "123");
-    webElementHelper.fillInputField("name", "Teszt Elek");
+    webElementHelper.fillInputField(By.id("cardNumber"), "4111111111111111");
+    webElementHelper.fillInputField(By.id("expiry"), "12/30");
+    webElementHelper.fillInputField(By.id("cvv"), "123");
+    webElementHelper.fillInputField(By.id("name"), "Teszt Elek");
     webElementHelper.clickButton(By.id("payBtn"));
   }
 
@@ -70,8 +70,8 @@ public class StepDefinitions {
         By.cssSelector("input[placeholder='születési dátum']"), "1990-01-01");
     webElementHelper.selectOptionFromAllDropDownsByValue(
         By.cssSelector("#gender > select"), "MALE");
-    webElementHelper.fillInputField("countryCode", "36");
-    webElementHelper.fillInputField("phoneNumber", "123456789");
+    webElementHelper.fillInputField(By.id("countryCode"), "36");
+    webElementHelper.fillInputField(By.id("phoneNumber"), "123456789");
     webElementHelper.selectOptionFromAllDropDownsByValue(
         By.cssSelector("#docType > select"), "PASSPORT");
     webElementHelper.fillAllinputFieldsByLocator(
@@ -120,8 +120,10 @@ public class StepDefinitions {
   public void searchForOneWayFlightWithValidDate(String origin, String destination) {
     webElementHelper.fillInputField("originCity", origin);
     webElementHelper.fillInputField("destinationCity", destination);
+    webElementHelper.fillInputField(By.id("originCity"), origin);
+    webElementHelper.fillInputField(By.id("destinationCity"), destination);
     webElementHelper.checkCheckboxById("onlyOneWay");
-    webElementHelper.fillInputField("outGoingDate", LocalDate.now().plusDays(15).toString());
+    webElementHelper.fillInputField(By.id("outGoingDate"), LocalDate.now().plusDays(15).toString());
     webElementHelper.clickButton(By.id("searchFlightsButton"));
   }
 
@@ -140,8 +142,8 @@ public class StepDefinitions {
         LocalDate.now().plusDays(15).toString(),
         LocalDate.now().plusDays(25).toString());
     webElementHelper.clickButton(By.id("advancedSearchButton"));
-    webElementHelper.fillInputField("numberOfChildren", "1");
-    webElementHelper.fillInputField("numberOfInfants", "1");
+    webElementHelper.fillInputField(By.id("numberOfChildren"), "1");
+    webElementHelper.fillInputField(By.id("numberOfInfants"), "1");
     webElementHelper.clickButton(By.id("searchFlightsButton"));
   }
 
@@ -160,15 +162,15 @@ public class StepDefinitions {
 
   @When("I am on login page I enter valid credentials")
   public void enterValidCredentials() {
-    webElementHelper.fillInputField("email", "automataTest@test.hu");
-    webElementHelper.fillInputField("password", "automatatest");
+    webElementHelper.fillInputField(By.id("email"), "automataTest@test.hu");
+    webElementHelper.fillInputField(By.id("password"), "automatatest");
     webElementHelper.clickButton(By.id("login"));
   }
 
   @When("I am on login page I enter invalid credentials")
   public void enterInvalidCredentials() {
-    webElementHelper.fillInputField("email", "invalid@invalid");
-    webElementHelper.fillInputField("password", "invalid");
+    webElementHelper.fillInputField(By.id("email"), "invalid@invalid");
+    webElementHelper.fillInputField(By.id("password"), "invalid");
     webElementHelper.clickButton(By.id("login"));
   }
 
@@ -269,10 +271,10 @@ public class StepDefinitions {
 
   private void fillSearchBar(
       String origin, String destination, String departureDate, String returnDate) {
-    webElementHelper.fillInputField("originCity", origin);
-    webElementHelper.fillInputField("destinationCity", destination);
-    webElementHelper.fillInputField("outGoingDate", departureDate);
-    webElementHelper.fillInputField("inGoingDate", returnDate);
+    webElementHelper.fillInputField(By.id("originCity"), origin);
+    webElementHelper.fillInputField(By.id("destinationCity"), destination);
+    webElementHelper.fillInputField(By.id("outGoingDate"), departureDate);
+    webElementHelper.fillInputField(By.id("inGoingDate"), returnDate);
   }
 
   private List<Integer> getPrices() {
@@ -302,9 +304,9 @@ public class StepDefinitions {
   }
 
   private void fillRegistrationForm(String email, String password, String rePassword) {
-    webElementHelper.fillInputField("signupEmail", email);
-    webElementHelper.fillInputField("signupPassword", password);
-    webElementHelper.fillInputField("signupRePassword", rePassword);
+    webElementHelper.fillInputField(By.id("signupEmail"), email);
+    webElementHelper.fillInputField(By.id("signupPassword"), password);
+    webElementHelper.fillInputField(By.id("signupRePassword"), rePassword);
     webElementHelper.clickButton(By.id("signup"));
   }
 }
