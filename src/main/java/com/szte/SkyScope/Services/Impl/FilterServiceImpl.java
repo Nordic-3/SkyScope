@@ -56,9 +56,15 @@ public class FilterServiceImpl implements FilterService {
 
   private List<String> getTransferNumbers(List<FlightOffers> flightOffers) {
     return flightOffers.stream()
-        .flatMap(offer -> offer.getItineraries().stream())
-        .map(FlightOffers.Itinerary::getTransferNumber)
+        .map(
+            offer ->
+                offer.getItineraries().stream()
+                    .mapToInt(itinerary -> itinerary.getSegments().size() - 1)
+                    .max()
+                    .orElse(0))
         .distinct()
+        .sorted()
+        .map(number -> " " + number + " átszállás")
         .toList();
   }
 
