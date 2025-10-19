@@ -47,7 +47,7 @@ public class CachedApiCallsImpl implements CachedApiCalls {
     try {
       return Parser.getIataFromJson(getCityAirportSearchApiResponse(city, "CITY", token), "data");
     } catch (Exception exception) {
-      Logger.getLogger(FlightServiceImpl.class.getName())
+      Logger.getLogger(CachedApiCallsImpl.class.getName())
           .log(Level.SEVERE, exception.getMessage(), exception);
       return null;
     }
