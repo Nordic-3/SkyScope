@@ -120,8 +120,6 @@ public class StepDefinitions {
   public void searchForOneWayFlightWithValidDate(String origin, String destination) {
     webElementHelper.fillInputField(By.id("originCity"), origin);
     webElementHelper.fillInputField(By.id("destinationCity"), destination);
-    webElementHelper.fillInputField(By.id("originCity"), origin);
-    webElementHelper.fillInputField(By.id("destinationCity"), destination);
     webElementHelper.checkCheckboxById("onlyOneWay");
     webElementHelper.fillInputField(By.id("outGoingDate"), LocalDate.now().plusDays(15).toString());
     webElementHelper.clickButton(By.id("searchFlightsButton"));
