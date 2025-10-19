@@ -1,38 +1,4 @@
 {
-  "EWR": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "NEWARK LIBERTY INTL",
-      "detailedName": "NEW YORK/NJ/US:NEWARK LIBERTY",
-      "id": "AEWR",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AEWR",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "-04:00",
-      "iataCode": "EWR",
-      "geoCode": {
-        "latitude": 40.69112,
-        "longitude": -74.17888
-      },
-      "address": {
-        "cityName": "NEW YORK",
-        "cityCode": "NYC",
-        "countryName": "UNITED STATES OF AMERICA",
-        "countryCode": "US",
-        "stateCode": "NJ",
-        "regionCode": "NAMER"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 24
-        }
-      }
-    }
-  ],
   "LHR": [
     {
       "type": "location",
@@ -99,372 +65,314 @@
       }
     }
   ],
-  "JFK": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "JOHN F KENNEDY INTL",
-      "detailedName": "NEW YORK/NY/US:JOHN F KENNEDY",
-      "id": "AJFK",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AJFK",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "-04:00",
-      "iataCode": "JFK",
-      "geoCode": {
-        "latitude": 40.63973,
-        "longitude": -73.77861
-      },
-      "address": {
-        "cityName": "NEW YORK",
-        "cityCode": "NYC",
-        "countryName": "UNITED STATES OF AMERICA",
-        "countryCode": "US",
-        "stateCode": "NY",
-        "regionCode": "NAMER"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 35
-        }
+  "RUH": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "KING KHALID INTL",
+    "detailedName": "RIYADH/SA:KING KHALID INTL",
+    "id": "ARUH",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/ARUH",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+03:00",
+    "iataCode": "RUH",
+    "geoCode": {
+      "latitude": 24.95764,
+      "longitude": 46.69869
+    },
+    "address": {
+      "cityName": "RIYADH",
+      "cityCode": "RUH",
+      "countryName": "SAUDI ARABIA",
+      "countryCode": "SA",
+      "regionCode": "MEA"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 12
       }
     }
-  ],
-  "YUL": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "YUYANG",
-      "detailedName": "YULIN - SHANXI/CN:YUYANG",
-      "id": "AUYN",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AUYN",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "+08:00",
-      "iataCode": "UYN",
-      "geoCode": {
-        "latitude": 38.26917,
-        "longitude": 109.7311
-      },
-      "address": {
-        "cityName": "YULIN - SHANXI",
-        "cityCode": "UYN",
-        "countryName": "CHINA",
-        "countryCode": "CN",
-        "regionCode": "ASIA"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 1
-        }
+  }],
+  "ESB": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "ESENBOGA",
+    "detailedName": "ANKARA/TR:ESENBOGA",
+    "id": "AESB",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/AESB",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+03:00",
+    "iataCode": "ESB",
+    "geoCode": {
+      "latitude": 40.12806,
+      "longitude": 32.99583
+    },
+    "address": {
+      "cityName": "ANKARA",
+      "cityCode": "ANK",
+      "countryName": "TURKEY",
+      "countryCode": "TR",
+      "regionCode": "EMEA"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 8
       }
     }
-  ],
-  "ZRH": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "ZURICH AIRPORT",
-      "detailedName": "ZURICH/CH:ZURICH AIRPORT",
-      "id": "AZRH",
-      "self": {
-        "href": "https://api.amadeus.com/v1/reference-data/locations/AZRH",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "+02:00",
-      "iataCode": "ZRH",
-      "geoCode": {
-        "latitude": 47.45278,
-        "longitude": 8.56056
-      },
-      "address": {
-        "cityName": "ZURICH",
-        "cityCode": "ZRH",
-        "countryName": "SWITZERLAND",
-        "countryCode": "CH",
-        "regionCode": "EUROP"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 17
-        }
+  }],
+  "CDG": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "CHARLES DE GAULLE",
+    "detailedName": "PARIS/FR:CHARLES DE GAULLE",
+    "id": "ACDG",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/ACDG",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+02:00",
+    "iataCode": "CDG",
+    "geoCode": {
+      "latitude": 49.00969,
+      "longitude": 2.547925
+    },
+    "address": {
+      "cityName": "PARIS",
+      "cityCode": "PAR",
+      "countryName": "FRANCE",
+      "countryCode": "FR",
+      "regionCode": "EUROP"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 33
       }
     }
-  ],
-  "BOS": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "EDWARD L LOGAN INTL",
-      "detailedName": "BOSTON/MA/US:EDWARD L LOGAN IN",
-      "id": "ABOS",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ABOS",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "-04:00",
-      "iataCode": "BOS",
-      "geoCode": {
-        "latitude": 42.36528,
-        "longitude": -71.01777
-      },
-      "address": {
-        "cityName": "BOSTON",
-        "cityCode": "BOS",
-        "countryName": "UNITED STATES OF AMERICA",
-        "countryCode": "US",
-        "stateCode": "MA",
-        "regionCode": "NAMER"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 23
-        }
+  }],
+  "AMS": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "SCHIPHOL",
+    "detailedName": "AMSTERDAM/NL:SCHIPHOL",
+    "id": "AAMS",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/AAMS",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+02:00",
+    "iataCode": "AMS",
+    "geoCode": {
+      "latitude": 52.310539,
+      "longitude": 4.768274
+    },
+    "address": {
+      "cityName": "AMSTERDAM",
+      "cityCode": "AMS",
+      "countryName": "NETHERLANDS",
+      "countryCode": "NL",
+      "regionCode": "EUROP"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 29
       }
     }
-  ],
-  "LGA": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "LAGUARDIA",
-      "detailedName": "NEW YORK/NY/US:LAGUARDIA",
-      "id": "ALGA",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/ALGA",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "-04:00",
-      "iataCode": "LGA",
-      "geoCode": {
-        "latitude": 40.77612,
-        "longitude": -73.87277
-      },
-      "address": {
-        "cityName": "NEW YORK",
-        "cityCode": "NYC",
-        "countryName": "UNITED STATES OF AMERICA",
-        "countryCode": "US",
-        "stateCode": "NY",
-        "regionCode": "NAMER"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 17
-        }
+  }],
+  "SAW": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "SABIHA GOKCEN",
+    "detailedName": "ISTANBUL/TR:SABIHA GOKCEN",
+    "id": "ASAW",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/ASAW",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+03:00",
+    "iataCode": "SAW",
+    "geoCode": {
+      "latitude": 40.898611,
+      "longitude": 29.309167
+    },
+    "address": {
+      "cityName": "ISTANBUL",
+      "cityCode": "IST",
+      "countryName": "TURKEY",
+      "countryCode": "TR",
+      "regionCode": "EMEA"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 15
       }
     }
-  ],
-  "KEF": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "KEFLAVIK INTERNATIONAL",
-      "detailedName": "REYKJAVIK/IS:KEFLAVIK INTERNATIONAL",
-      "id": "AKEF",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AKEF",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "+00:00",
-      "iataCode": "KEF",
-      "geoCode": {
-        "latitude": 63.985,
-        "longitude": -22.60556
-      },
-      "address": {
-        "cityName": "REYKJAVIK",
-        "cityCode": "REK",
-        "countryName": "ICELAND",
-        "countryCode": "IS",
-        "regionCode": "EUROP"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 2
-        }
+  }],
+  "JED": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "KING ABDULAZIZ INTL",
+    "detailedName": "JEDDAH/SA:KING ABDULAZIZ INTL",
+    "id": "AJED",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/AJED",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+03:00",
+    "iataCode": "JED",
+    "geoCode": {
+      "latitude": 21.679559,
+      "longitude": 39.156998
+    },
+    "address": {
+      "cityName": "JEDDAH",
+      "cityCode": "JED",
+      "countryName": "SAUDI ARABIA",
+      "countryCode": "SA",
+      "regionCode": "MEA"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 10
       }
     }
-  ],
-  "IAD": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "WASHINGTON DULLES INTL",
-      "detailedName": "WASHINGTON DC/VA/US:WASHINGTON DULLES",
-      "id": "AIAD",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AIAD",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "-04:00",
-      "iataCode": "IAD",
-      "geoCode": {
-        "latitude": 38.94453,
-        "longitude": -77.45581
-      },
-      "address": {
-        "cityName": "WASHINGTON DC",
-        "cityCode": "WAS",
-        "countryName": "UNITED STATES OF AMERICA",
-        "countryCode": "US",
-        "stateCode": "VA",
-        "regionCode": "NAMER"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 13
-        }
+  }],
+  "BAH": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "BAHRAIN INTL",
+    "detailedName": "MANAMA/BA:BAHRAIN INTL",
+    "id": "ABAH",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/ABAH",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+03:00",
+    "iataCode": "BAH",
+    "geoCode": {
+      "latitude": 26.270782,
+      "longitude": 50.633797
+    },
+    "address": {
+      "cityName": "MANAMA",
+      "cityCode": "BAH",
+      "countryName": "BAHRAIN",
+      "countryCode": "BA",
+      "regionCode": "MEA"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 5
       }
     }
-  ],
-  "GVA": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "GENEVA COINTRIN",
-      "detailedName": "GENEVA/CH:GENEVA COINTRIN",
-      "id": "AGVA",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AGVA",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "+02:00",
-      "iataCode": "GVA",
-      "geoCode": {
-        "latitude": 46.23806,
-        "longitude": 6.10889
-      },
-      "address": {
-        "cityName": "GENEVA",
-        "cityCode": "GVA",
-        "countryName": "SWITZERLAND",
-        "countryCode": "CH",
-        "regionCode": "EUROP"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 8
-        }
+  }],
+  "STN": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "STANSTED",
+    "detailedName": "LONDON/GB:STANSTED",
+    "id": "ASTN",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/ASTN",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+01:00",
+    "iataCode": "STN",
+    "geoCode": {
+      "latitude": 51.885,
+      "longitude": 0.235
+    },
+    "address": {
+      "cityName": "LONDON",
+      "cityCode": "LON",
+      "countryName": "UNITED KINGDOM",
+      "countryCode": "GB",
+      "regionCode": "EUROP"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 18
       }
     }
-  ],
-  "FRA": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "FRANKFURT MAIN",
-      "detailedName": "FRANKFURT/DE:FRANKFURT MAIN",
-      "id": "AFRA",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AFRA",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "+02:00",
-      "iataCode": "FRA",
-      "geoCode": {
-        "latitude": 50.03333,
-        "longitude": 8.57056
-      },
-      "address": {
-        "cityName": "FRANKFURT",
-        "cityCode": "FRA",
-        "countryName": "GERMANY",
-        "countryCode": "DE",
-        "regionCode": "EUROP"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 29
-        }
+  }],
+  "AYT": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "ANTALYA",
+    "detailedName": "ANTALYA/TR:ANTALYA",
+    "id": "AAYT",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/AAYT",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+03:00",
+    "iataCode": "AYT",
+    "geoCode": {
+      "latitude": 36.898731,
+      "longitude": 30.800444
+    },
+    "address": {
+      "cityName": "ANTALYA",
+      "cityCode": "AYT",
+      "countryName": "TURKEY",
+      "countryCode": "TR",
+      "regionCode": "EMEA"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 20
       }
     }
-  ],
-  "MUC": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "MUNICH",
-      "detailedName": "MUNICH/DE:MUNICH",
-      "id": "AMUC",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/AMUC",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "+02:00",
-      "iataCode": "MUC",
-      "geoCode": {
-        "latitude": 48.35378,
-        "longitude": 11.78609
-      },
-      "address": {
-        "cityName": "MUNICH",
-        "cityCode": "MUC",
-        "countryName": "GERMANY",
-        "countryCode": "DE",
-        "regionCode": "EUROP"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 19
-        }
+  }],
+    "DXB": [{
+    "type": "location",
+    "subType": "AIRPORT",
+    "name": "DUBAI INTL",
+    "detailedName": "DUBAI/AE:DUBAI INTL",
+    "id": "ADXB",
+    "self": {
+      "href": "https://test.api.amadeus.com/v1/reference-data/locations/ADXB",
+      "methods": [
+        "GET"
+      ]
+    },
+    "timeZoneOffset": "+04:00",
+    "iataCode": "DXB",
+    "geoCode": {
+      "latitude": 25.252778,
+      "longitude": 55.364444
+    },
+    "address": {
+      "cityName": "DUBAI",
+      "cityCode": "DXB",
+      "countryName": "UNITED ARAB EMIRATES",
+      "countryCode": "AE",
+      "regionCode": "MEA"
+    },
+    "analytics": {
+      "travelers": {
+        "score": 40
       }
     }
-  ],
-  "YYZ": [
-    {
-      "type": "location",
-      "subType": "AIRPORT",
-      "name": "PEARSON INTL",
-      "detailedName": "TORONTO/ON/CA:PEARSON INTL",
-      "id": "CYYZ",
-      "self": {
-        "href": "https://test.api.amadeus.com/v1/reference-data/locations/CYYZ",
-        "methods": [
-          "GET"
-        ]
-      },
-      "timeZoneOffset": "-04:00",
-      "iataCode": "YYZ",
-      "geoCode": {
-        "latitude": 43.67707,
-        "longitude": -79.63056
-      },
-      "address": {
-        "cityName": "TORONTO",
-        "cityCode": "YTO",
-        "countryName": "CANADA",
-        "countryCode": "CA",
-        "stateCode": "ON",
-        "regionCode": "NAMER"
-      },
-      "analytics": {
-        "travelers": {
-          "score": 21
-        }
-      }
-    }
-  ]
+  }]
 }
