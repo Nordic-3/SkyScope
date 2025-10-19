@@ -118,8 +118,8 @@ public class StepDefinitions {
 
   @When("I search for a one way flight from {string} to {string} with valid date")
   public void searchForOneWayFlightWithValidDate(String origin, String destination) {
-    webElementHelper.fillInputField("originCity", origin);
-    webElementHelper.fillInputField("destinationCity", destination);
+    webElementHelper.fillInputField(By.id("originCity"), origin);
+    webElementHelper.fillInputField(By.id("destinationCity"), destination);
     webElementHelper.fillInputField(By.id("originCity"), origin);
     webElementHelper.fillInputField(By.id("destinationCity"), destination);
     webElementHelper.checkCheckboxById("onlyOneWay");
