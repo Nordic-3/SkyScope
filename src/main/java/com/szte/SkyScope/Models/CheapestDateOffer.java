@@ -72,28 +72,4 @@ public class CheapestDateOffer {
   public void setFlightOfferApiLink(String flightOfferApiLink) {
     this.flightOfferApiLink = flightOfferApiLink;
   }
-
-  @Override
-  public String toString() {
-    return "CheapestDateOffer{"
-        + "origin='"
-        + origin
-        + '\''
-        + ", destination='"
-        + destination
-        + '\''
-        + ", departureDate='"
-        + departureDate
-        + '\''
-        + ", returnDate='"
-        + returnDate
-        + '\''
-        + ", price='"
-        + price
-        + '\''
-        + ", flightOfferApiLink='"
-        + flightOfferApiLink
-        + '\''
-        + '}';
-  }
 }
