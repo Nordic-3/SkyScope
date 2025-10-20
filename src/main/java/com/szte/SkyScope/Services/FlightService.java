@@ -3,6 +3,7 @@ package com.szte.SkyScope.Services;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.Location;
+import com.szte.SkyScope.Models.Plane;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -26,4 +27,10 @@ public interface FlightService {
   void setAirportNames(List<FlightOffers> flightOffers, Map<String, String> airprots);
 
   void setFlightOffersAttributes(List<FlightOffers> result, String searchId, String token);
+
+  Map<String, String> getIcaoCodes(Map<String, String> carrierDictionary, String token);
+
+  void setCallsigns(List<FlightOffers> result, Map<String, String> icaoCodes);
+
+  void setIsCurrentlyFlying(List<FlightOffers> result, Map<String, Plane> planePositions);
 }

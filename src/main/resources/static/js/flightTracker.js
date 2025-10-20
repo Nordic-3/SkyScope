@@ -17,6 +17,11 @@ function documentLoaded() {
     }).addTo(map);
     flightNumberInput = document.getElementById("flightNumber");
     loadingIndicator = document.getElementById("loadingIndicator");
+    if (window.location.href.includes("flightNumber")) {
+        flightNumber = new URL(window.location.href).searchParams.get("flightNumber");
+        flightNumberInput.value = flightNumber;
+        searchFlightNumber();
+    }
 }
 
 function searchFlightNumber() {
@@ -56,6 +61,7 @@ function searchFlightNumber() {
                 lastApiCallTime = Date.now();
             } catch (exception) {
                 flightNumberInput.classList.add("border-danger");
+                loadingIndicator.setAttribute("hidden", "");
             }
         });
 }

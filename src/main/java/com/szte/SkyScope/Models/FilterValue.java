@@ -10,18 +10,29 @@ public class FilterValue {
   private List<Duration> layoverTimes;
   private List<String> airplaneTypes;
   private String maxPrice;
+  private boolean isCurrentlyFlying;
 
   public FilterValue(
       List<String> allAirline,
       List<String> transferNumbers,
       List<Duration> layoverTimes,
       List<String> airplaneTypes,
-      String maxPrice) {
+      String maxPrice,
+      boolean isCurrentlyFlying) {
     this.allAirline = allAirline;
     this.transferNumbers = transferNumbers;
     this.layoverTimes = layoverTimes;
     this.airplaneTypes = airplaneTypes;
     this.maxPrice = maxPrice;
+    this.isCurrentlyFlying = isCurrentlyFlying;
+  }
+
+  public boolean isCurrentlyFlying() {
+    return isCurrentlyFlying;
+  }
+
+  public void setCurrentlyFlying(boolean currentlyFlying) {
+    isCurrentlyFlying = currentlyFlying;
   }
 
   public List<String> getAirplaneTypes() {

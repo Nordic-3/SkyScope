@@ -19,7 +19,8 @@
     </div>
 </header>
 <main class="mt-5 container">
-    <a class="btn btn-primary position-fixed top-0 end-0 mt-4 me-2" href="/profile"><i class="bi bi-person-fill"></i></a>
+    <a class="btn btn-primary position-fixed top-0 end-0 mt-4 me-2" href="/profile"><i
+            class="bi bi-person-fill"></i></a>
     <div class="row">
         <aside class="col-12 col-md-3 mb-4">
             <div class="card card-main-sidenav rounded-5 mb-4 shadow-sm border-0">
@@ -56,6 +57,18 @@
                             <input type="number" class="form-control" th:placeholder="${filterOptions.getMaxPrice()}"
                                    aria-label="Max"
                                    aria-describedby="Max" th:field="*{maxPrice}">
+                        </div>
+                        <p class="text-info mb-0 fw-bolder" th:if="${filterOptions.isCurrentlyFlying()}">Jelenleg látható a térképen</p>
+                        <hr th:if="${filterOptions.isCurrentlyFlying()}">
+                        <div class="form-check form-switch mb-2 ms-4" th:if="${filterOptions.isCurrentlyFlying()}">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="isVisible"
+                                   name="isVisible"
+                                   th:value="${filterOptions.isCurrentlyFlying()}"
+                                   th:field="*{currentlyFlying}">
+                            <label class="form-check-label" for="isVisible">Jelenleg a levegőben van a járat</label>
                         </div>
                         <p class="text-info mb-0 fw-bolder">Átszállás száma szerint</p>
                         <hr>
@@ -185,7 +198,7 @@
                                                th:text="${'Átszállási idő: ' + layover}">
                                             </p>
                                         </div>
-                                        <div class="row"
+                                        <div class="row align-items-center"
                                              th:each="segment, segmentStatus : ${itinerary.getSegments()}">
                                             <hr th:if="${segmentStatus.first}">
                                             <p class="col fs-6 text-info"
@@ -195,6 +208,9 @@
                                                th:text="${'Jegyértékesítő: '+segment.getCarrierName()}"></p>
                                             <p class="col fs-6 text-info"
                                                th:text="${segment.getAircraft().getName()}"></p>
+                                            <a class="col btn btn-outline-info rounded-btn"
+                                               th:href="'/flighttracker?flightNumber=' + ${segment.getCallSign()}"
+                                               th:if="${segment.isCurrentlyFlying()}">Mutasd a térképen</a>
                                         </div>
                                         <div class="row text-start">
                                             <h5 class="fw-bold card-name">Utasok</h5>

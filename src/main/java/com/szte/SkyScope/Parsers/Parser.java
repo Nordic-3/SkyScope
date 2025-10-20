@@ -33,22 +33,21 @@ public class Parser {
     JsonNode root;
     try {
       root = objectMapper.readTree(json);
-
+      root.get("states")
+          .forEach(
+              onePlaneDetails ->
+                  planes.put(
+                      onePlaneDetails.get(1).asText().strip(),
+                      new Plane(
+                          onePlaneDetails.get(1).asText().strip(),
+                          onePlaneDetails.get(5).asText().strip(),
+                          onePlaneDetails.get(6).asText().strip(),
+                          onePlaneDetails.get(9).asDouble(),
+                          onePlaneDetails.get(10).asDouble())));
     } catch (Exception exception) {
       logger.log(Level.SEVERE, exception.getMessage(), exception);
       return null;
     }
-    root.get("states")
-        .forEach(
-            onePlaneDetails ->
-                planes.put(
-                    onePlaneDetails.get(1).asText().strip(),
-                    new Plane(
-                        onePlaneDetails.get(1).asText().strip(),
-                        onePlaneDetails.get(5).asText().strip(),
-                        onePlaneDetails.get(6).asText().strip(),
-                        onePlaneDetails.get(9).asDouble(),
-                        onePlaneDetails.get(10).asDouble())));
     return planes;
   }
 
@@ -149,5 +148,20 @@ public class Parser {
       logger.log(Level.SEVERE, exception.getMessage(), exception);
       return null;
     }
+  }
+
+  public static Map<String, String> getIcaoCodesFromJson(String response) {
+    Map<String, String> icaoCodes = new HashMap<>();
+    try {
+      JsonNode root = objectMapper.readTree(response);
+      root.get("data")
+          .forEach(
+              jsonNode ->
+                  icaoCodes.put(
+                      jsonNode.get("iataCode").asText(), jsonNode.get("icaoCode").asText()));
+    } catch (Exception exception) {
+      logger.log(Level.SEVERE, exception.getMessage(), exception);
+    }
+    return icaoCodes;
   }
 }

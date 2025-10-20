@@ -147,6 +147,8 @@ public class FlightOffers {
     private Aircraft aircraft = new Aircraft();
     private Operating operating = new Operating();
     private String duration = "";
+    private String callSign = "";
+    private boolean isCurrentlyFlying = false;
 
     public Segment() {}
 
@@ -160,6 +162,24 @@ public class FlightOffers {
       this.aircraft = new Aircraft(segment.getAircraft());
       this.operating = new Operating(segment.getOperating());
       this.duration = segment.getDuration();
+      this.callSign = segment.getCallSign();
+      this.isCurrentlyFlying = segment.isCurrentlyFlying();
+    }
+
+    public boolean isCurrentlyFlying() {
+      return isCurrentlyFlying;
+    }
+
+    public void setCurrentlyFlying(boolean currentlyFlying) {
+      isCurrentlyFlying = currentlyFlying;
+    }
+
+    public String getCallSign() {
+      return callSign;
+    }
+
+    public void setCallSign(String callSign) {
+      this.callSign = callSign;
     }
 
     public String getCarrierName() {

@@ -1,0 +1,60 @@
+{
+  "data": [
+    {
+      "type": "airline",
+      "iataCode": "AF",
+      "icaoCode": "AFR",
+      "businessName": "AIR FRANCE",
+      "commonName": "AIR FRANCE"
+    },
+    {
+      "type": "airline",
+      "iataCode": "BI",
+      "icaoCode": "RBA",
+      "businessName": "ROYAL BRUNEI",
+      "commonName": "ROYALBRUNEI"
+    },
+    {
+      "type": "airline",
+      "iataCode": "GF",
+      "icaoCode": "GFA",
+      "businessName": "GULF AIR",
+      "commonName": "GULF AIR"
+    },
+    {
+      "type": "airline",
+      "iataCode": "KL",
+      "icaoCode": "KLM",
+      "businessName": "KLM ROYAL DUTCH AIRLINES",
+      "commonName": "KLM"
+    },
+    {
+      "type": "airline",
+      "iataCode": "PC",
+      "icaoCode": "PGT",
+      "businessName": "PEGASUS AIRLINES",
+      "commonName": "PEGASUS AIRLINES"
+    },
+    {
+      "type": "airline",
+      "iataCode": "SV",
+      "icaoCode": "SVA",
+      "businessName": "SAUDI ARABIAN AIRLINES",
+      "commonName": "SAUDIARABI"
+    },
+    {
+      "type": "airline",
+      "iataCode": "TK",
+      "icaoCode": "THY",
+      "businessName": "TURKISH AIRLINES",
+      "commonName": "TURKISH AIRLINES"
+    },
+    {
+      "type": "airline",
+      "iataCode": "VF",
+      "icaoCode": "TKJ",
+      "businessName": "AJET",
+      "commonName": "AJET"
+    }
+  ]
+}

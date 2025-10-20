@@ -6,6 +6,7 @@ import com.szte.SkyScope.Enums.TravellerTypes;
 import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.Location;
+import com.szte.SkyScope.Models.Plane;
 import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.*;
 import java.text.Normalizer;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,6 +175,34 @@ public class FlightServiceImpl implements FlightService {
     setHungarianNameOfTravellerTypes(result);
   }
 
+  @Override
+  public Map<String, String> getIcaoCodes(Map<String, String> carrierDictionary, String token) {
+    if (!applicationConfig.useApis() || applicationConfig.getAmadeusAirlineCode().equals("noApi")) {
+      return getIcaoCodesFromLocalFile();
+    }
+    return getIcaoCodesFromApi(String.join(",", carrierDictionary.keySet()), token);
+  }
+
+  @Override
+  public void setCallsigns(List<FlightOffers> result, Map<String, String> icaoCodes) {
+    getSegmentStream(result)
+        .forEach(
+            segment ->
+                segment.setCallSign(
+                    icaoCodes.get(segment.getOperating().getCarrierCode()) + segment.getNumber()));
+  }
+
+  @Override
+  public void setIsCurrentlyFlying(List<FlightOffers> result, Map<String, Plane> planePositions) {
+    if (planePositions == null) {
+      return;
+    }
+    getSegmentStream(result)
+        .forEach(
+            segment ->
+                segment.setCurrentlyFlying(planePositions.get(segment.getCallSign()) != null));
+  }
+
   private void setEnglishNameOfTheCities(FlightSearch flightSearch) {
     flightSearch.setOriginCity(cityService.getCityFromApi(flightSearch.getOriginCity()).getName());
     flightSearch.setDestinationCity(
@@ -234,5 +265,28 @@ public class FlightServiceImpl implements FlightService {
             travelerPricing ->
                 travelerPricing.setTraveller(
                     TravellerTypes.getValueFromType(travelerPricing.getTravelerType())));
+  }
+
+  private Map<String, String> getIcaoCodesFromApi(String iataCodes, String token) {
+    String response;
+    try {
+      response =
+          restClient
+              .get()
+              .uri(applicationConfig.getAmadeusAirlineCode(), iataCodes)
+              .header("Authorization", "Bearer " + token)
+              .retrieve()
+              .body(String.class);
+      return Parser.getIcaoCodesFromJson(response);
+    } catch (Exception exception) {
+      Logger.getLogger(FlightServiceImpl.class.getName())
+          .log(Level.SEVERE, exception.getMessage(), exception);
+      return new HashMap<>();
+    }
+  }
+
+  private Map<String, String> getIcaoCodesFromLocalFile() {
+    return Parser.getIcaoCodesFromJson(
+        jsonReaderService.readJsonFromResources("exampleDatas/icaoCodes.json"));
   }
 }

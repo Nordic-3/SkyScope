@@ -9,6 +9,7 @@ public class ChosenFilters {
   private String transferNumber = "";
   private String transferDuration = "";
   private List<String> airplanes = new ArrayList<>();
+  private boolean isCurrentlyFlying = false;
 
   public List<String> getAirplanes() {
     return airplanes;
@@ -48,5 +49,13 @@ public class ChosenFilters {
 
   public void setTransferDuration(String transferDuration) {
     this.transferDuration = transferDuration;
+  }
+
+  public boolean isCurrentlyFlying() {
+    return isCurrentlyFlying;
+  }
+
+  public void setCurrentlyFlying(boolean currentlyFlying) {
+    isCurrentlyFlying = currentlyFlying;
   }
 }

@@ -30,7 +30,8 @@ public class FilterServiceImpl implements FilterService {
                     && filterAirline(offer, filter)
                     && filterTransferNumber(offer, filter)
                     && filterLayoverTime(offer, filter)
-                    && filterAirplane(offer, filter))
+                    && filterAirplane(offer, filter)
+                    && filterCurrentlyFlyng(offer, filter))
         .toList();
   }
 
@@ -41,7 +42,15 @@ public class FilterServiceImpl implements FilterService {
         getTransferNumbers(flightOffers),
         getTransferDurations(flightOffers),
         getAirplanes(flightOffers),
-        getMaxPrice(flightOffers));
+        getMaxPrice(flightOffers),
+        isCurrentlyFlying(flightOffers));
+  }
+
+  private boolean isCurrentlyFlying(List<FlightOffers> flightOffers) {
+    return flightOffers.stream()
+        .flatMap(offer -> offer.getItineraries().stream())
+        .flatMap(itinerary -> itinerary.getSegments().stream())
+        .anyMatch(FlightOffers.Segment::isCurrentlyFlying);
   }
 
   private List<String> getAirlineNames(List<FlightOffers> flightOffers) {
@@ -102,6 +111,13 @@ public class FilterServiceImpl implements FilterService {
           + "Ft";
     }
     return "";
+  }
+
+  private boolean filterCurrentlyFlyng(FlightOffers offer, ChosenFilters filter) {
+    return !filter.isCurrentlyFlying()
+        || offer.getItineraries().stream()
+            .flatMap(itinerary -> itinerary.getSegments().stream())
+            .anyMatch(FlightOffers.Segment::isCurrentlyFlying);
   }
 
   private boolean filterPrice(FlightOffers offer, ChosenFilters filter) {

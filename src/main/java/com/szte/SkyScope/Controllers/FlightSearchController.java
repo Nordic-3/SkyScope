@@ -26,6 +26,7 @@ public class FlightSearchController {
   private final FilterService filterService;
   private final CheapestFlightDateService cheapestFlightDateService;
   private final Logger logger = Logger.getLogger(FlightSearchController.class.getName());
+  private final PlanePositionService planePositionService;
 
   @Autowired
   public FlightSearchController(
@@ -34,13 +35,15 @@ public class FlightSearchController {
       SearchStore searchStore,
       SortResultService sortResultService,
       FilterService filterService,
-      CheapestFlightDateService cheapestFlightDateService) {
+      CheapestFlightDateService cheapestFlightDateService,
+      PlanePositionService planePositionService) {
     this.inputValidationService = inputValidationService;
     this.flightService = flightService;
     this.searchStore = searchStore;
     this.sortResultService = sortResultService;
     this.filterService = filterService;
     this.cheapestFlightDateService = cheapestFlightDateService;
+    this.planePositionService = planePositionService;
   }
 
   @PostMapping("/flightsearch")
@@ -64,6 +67,13 @@ public class FlightSearchController {
         .getFlightOffers(flightSearch, flightService.getToken(), searchId)
         .thenAccept(
             result -> {
+              flightService.setCallsigns(
+                  result,
+                  flightService.getIcaoCodes(
+                      searchStore.getSearchDatas(searchId).getCarrierDictionary(),
+                      flightService.getToken()));
+              flightService.setIsCurrentlyFlying(
+                  result, planePositionService.getAllPlanePositions());
               flightService.setFlightOffersAttributes(result, searchId, flightService.getToken());
               searchStore
                   .getSearchDatas(searchId)

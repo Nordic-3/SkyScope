@@ -48,6 +48,13 @@ public class ApplicationConfig {
   @Value("${amadeus_test_auth_url:noApi}")
   private String amadeusTestAuthUrl;
 
+  @Value("${amadeus_airline_code:noApi}")
+  private String amadeusAirlineCode;
+
+  public String getAmadeusAirlineCode() {
+    return amadeusAirlineCode;
+  }
+
   public String getAmadeusTestAuthUrl() {
     return amadeusTestAuthUrl;
   }
