@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
+    <link rel="stylesheet" href="/css/globalStyle.css">
     <script src="/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -17,7 +18,7 @@
 <body onload="documentLoaded()">
 <main>
     <div id="flightSearch"
-         class="container align-content justify-content-center d-flex mt-2 mb-2 rounded-4 bg-white position-relative w-50 shadow-lg">
+         class="container align-content justify-content-center d-flex mt-2 mb-2 rounded-4 position-relative w-50 card-main p-0">
         <form class="row g-3 align-items-center m-auto">
             <div class="col-auto form-floating mb-3">
                 <input required onfocusout="validate()" type="text" class="form-control form-control" id="flightNumber"
@@ -34,10 +35,11 @@
     </div>
     <div id="map" class="container align-content rounded-4 shadow-lg w-75 mb-2" style="height: 80vh;"></div>
     <div class="container justify-content-center d-flex w-50">
-        <div class="card shadow-lg rounded-4 mb-2">
+        <div class="card card-main shadow-lg rounded-4 mb-2">
             <div class="card-body">
                 <p class="fs-3 card-title">Live position data provided by <a
-                        class="text-reset badge text-bg-info text-wrap" href="https://opensky-network.org">The OpenSky
+                        class="badge text-bg-info text-wrap rounded-5" href="https://opensky-network.org">The
+                    OpenSky
                     Network</a></p>
                 <p class="card-text" style="text-align: justify;">Matthias Schäfer, Martin Strohmeier, Vincent Lenders,
                     Ivan Martinovic and Matthias Wilhelm.
