@@ -30,26 +30,26 @@ public class CreateOrderController {
     this.inputValidationService = inputValidationService;
   }
 
-  @GetMapping("/createOrder/payment/{searchId}")
-  public String payment(@PathVariable String searchId, Model model) {
+  @GetMapping("/createOrder/sumup/{searchId}")
+  public String sumup(@PathVariable String searchId, Model model) {
     FlightOffers selectedOffer =
         createFlightOrderService.getSelectedOffer(
             searchStore.getSearchDatas(searchId).getSearchResult(),
             searchStore.getSearchDatas(searchId).getOfferId());
     FinalPriceResponse validatedOffer =
         createFlightOrderService.getFinalPrice(selectedOffer, flightService.getToken());
-    model.addAttribute(
-        "price",
-        FlightOfferFormatter.formatPrice(
-            validatedOffer.getData().getFlightOffers().getFirst().getPrice().getTotal()));
+    selectedOffer
+        .getPrice()
+        .setTotal(
+            FlightOfferFormatter.formatPrice(
+                validatedOffer.getData().getFlightOffers().getFirst().getPrice().getTotal()));
+    FlightOfferFormatter.formatAndSetSingleOfferDuration(selectedOffer);
+    model.addAttribute("offer", selectedOffer);
     model.addAttribute("searchId", searchId);
-    if (!model.containsAttribute("card")) {
-      model.addAttribute("card", new BankCard());
-    }
     searchStore
         .getSearchDatas(searchId)
         .setValidatedOffers(validatedOffer.getData().getFlightOffers());
-    return "payment";
+    return "sumupPage";
   }
 
   @GetMapping("createOrder/travellerDetails/{searchId}")
@@ -93,30 +93,17 @@ public class CreateOrderController {
       return "redirect:" + request.getHeader("Referer");
     }
     searchStore.getSearchDatas(searchId).setTravelers(travellers.getTravellers());
-    return "redirect:/createOrder/payment/" + searchId;
+    return "redirect:/createOrder/sumup/" + searchId;
   }
 
-  @PostMapping("/createOrder/pay/{searchId}")
-  public String pay(
-      @ModelAttribute BankCard card,
-      @PathVariable String searchId,
-      RedirectAttributes redirectAttributes,
-      HttpServletRequest request) {
-    String errors = inputValidationService.validateCardDetails(card);
-    if (!errors.isEmpty()) {
-      redirectAttributes.addFlashAttribute("error", errors);
-      redirectAttributes.addFlashAttribute("card", card);
-      return "redirect:" + request.getHeader("Referer");
-    }
-    boolean isPaymentSuccessFull = true;
-    if (isPaymentSuccessFull) {
-      CreateOrder createOrder = new CreateOrder();
-      createOrder.getData().setTravelers(searchStore.getSearchDatas(searchId).getTravelers());
-      createOrder
-          .getData()
-          .setFlightOffers(searchStore.getSearchDatas(searchId).getValidatedOffers());
-      createFlightOrderService.createOrder(createOrder, createFlightOrderService.getTestApiToken());
-    }
-    return "redirect:/createOrder/payment/" + searchId + "?success";
+  @GetMapping("/createOrder/create/{searchId}")
+  public String createOrer(@PathVariable String searchId) {
+    CreateOrder createOrder = new CreateOrder();
+    createOrder.getData().setTravelers(searchStore.getSearchDatas(searchId).getTravelers());
+    createOrder
+        .getData()
+        .setFlightOffers(searchStore.getSearchDatas(searchId).getValidatedOffers());
+    createFlightOrderService.createOrder(createOrder, createFlightOrderService.getTestApiToken());
+    return "createOrderSuccess";
   }
 }

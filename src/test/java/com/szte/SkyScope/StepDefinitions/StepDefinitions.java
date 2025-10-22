@@ -49,15 +49,18 @@ public class StepDefinitions {
   public void onThePaymentPage() {
     selectFlightAndLogin("Budapest", "London");
     fillTheTravellerDetails();
+    webElementHelper.waitForElementToBeVisible(By.id("payBtn"));
+    webElementHelper.clickButton(By.id("payBtn"));
   }
 
   @When("I fill in the payment details with valid information")
   public void fillThePaymentDetails() {
-    webElementHelper.fillInputField(By.id("cardNumber"), "4111111111111111");
-    webElementHelper.fillInputField(By.id("expiry"), "12/30");
-    webElementHelper.fillInputField(By.id("cvv"), "123");
-    webElementHelper.fillInputField(By.id("name"), "Teszt Elek");
-    webElementHelper.clickButton(By.id("payBtn"));
+    webElementHelper.fillInputField(By.id("email"), "automataTest@test.hu");
+    webElementHelper.fillInputField(By.id("cardNumber"), "4242 424242424242");
+    webElementHelper.fillInputField(By.id("cardExpiry"), "09/30");
+    webElementHelper.fillInputField(By.id("cardCvc"), "999");
+    webElementHelper.fillInputField(By.id("billingName"), "Test Elek");
+    webElementHelper.clickButton(By.cssSelector("button[type='submit']"));
   }
 
   @When("I fill in the traveller details with valid information")
@@ -178,11 +181,19 @@ public class StepDefinitions {
     assertTrue(webElementHelper.isTextVisibleInElement(By.id("successModel"), "Sikeres foglalás"));
   }
 
+  @Then("I should see the sumumary page")
+  public void shouldSeeTheSummaryPage() {
+    webElementHelper.waitForTextInElement(By.id("payBtn"), "Fizetés");
+    assertTrue(webElementHelper.isTextVisibleInElement(By.id("payBtn"), "Fizetés"));
+  }
+
   @Then("I should see the payment page")
   public void shouldSeeThePaymentPage() {
-    webElementHelper.waitForTextInElement(By.className("text-info"), "Fizetendő összeg");
+    webElementHelper.waitForTextInElement(
+        By.cssSelector("div[class='PaymentHeader] > div'"), "Pay with card");
     assertTrue(
-        webElementHelper.isTextVisibleInElement(By.className("text-info"), "Fizetendő összeg"));
+        webElementHelper.isTextVisibleInElement(
+            By.cssSelector("div[class='PaymentHeader] > div'"), "Pay with card"));
   }
 
   @Then("I should see error message for missing fields")

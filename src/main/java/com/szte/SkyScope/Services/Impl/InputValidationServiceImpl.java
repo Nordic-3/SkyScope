@@ -72,17 +72,6 @@ public class InputValidationServiceImpl implements InputValidationService {
         + validDates(travellers);
   }
 
-  @Override
-  public String validateCardDetails(BankCard card) {
-    if (isNullOrEmpty(card.getCardNumber())
-        || isNullOrEmpty(card.getCvv())
-        || isNullOrEmpty(card.getExpiration())
-        || isNullOrEmpty(card.getName())) {
-      return ALL_FIELD_IS_COMPULSORY;
-    }
-    return "";
-  }
-
   private String checkEmptySearchFields(FlightSearch flightSearch) {
     StringBuilder errorMessage = new StringBuilder();
     if (isNullOrEmpty(flightSearch.getOriginCity())) {

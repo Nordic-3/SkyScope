@@ -51,6 +51,13 @@ public class ApplicationConfig {
   @Value("${amadeus_airline_code:noApi}")
   private String amadeusAirlineCode;
 
+  @Value("${stripe_secret:noApi}")
+  private String stripeSecret;
+
+  public String getStripeSecret() {
+    return stripeSecret;
+  }
+
   public String getAmadeusAirlineCode() {
     return amadeusAirlineCode;
   }

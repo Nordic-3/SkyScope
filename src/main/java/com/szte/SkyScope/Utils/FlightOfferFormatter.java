@@ -68,13 +68,21 @@ public class FlightOfferFormatter {
     return price;
   }
 
+  public static void formatAndSetSingleOfferDuration(FlightOffers flightOffer) {
+    flightOffer
+        .getItineraries()
+        .forEach(
+            itinerary -> {
+              itinerary.setDuration(formatDuration(itinerary.getDuration()));
+              itinerary.getSegments().forEach(FlightOfferFormatter::formatAndSetSegmentDurations);
+            });
+  }
+
   private static void formatAndSetPrice(FlightOffers flightOffers) {
     flightOffers.getPrice().setTotal(formatPrice(flightOffers.getPrice().getTotal()));
   }
 
   private static void formatAndSetSegmentData(FlightOffers.Segment segment) {
-    segment.setDuration(formatDuration(segment.getDuration()));
-
     segment
         .getDeparture()
         .setAirportName(
@@ -85,7 +93,11 @@ public class FlightOfferFormatter {
         .setAirportName(
             formatAirportName(
                 segment.getArrival().getAirportName(), segment.getArrival().getTerminal()));
+    formatAndSetSegmentDurations(segment);
+  }
 
+  private static void formatAndSetSegmentDurations(FlightOffers.Segment segment) {
+    segment.setDuration(formatDuration(segment.getDuration()));
     segment.getDeparture().setAt(formatTime(segment.getDeparture().getAt()));
     segment.getArrival().setAt(formatTime(segment.getArrival().getAt()));
   }
