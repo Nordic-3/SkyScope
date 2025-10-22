@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="/bootstrap-5.3.5-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globalStyle.css">
     <script src="/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/sumupPage.js"></script>
 </head>
-<body>
+<body onload="contentLoaded();">
 <main class="container d-flex justify-content-center align-items-center">
     <div class="card card-main h-100 rounded-5 shadow-lg border-0">
         <div class="card-body">
@@ -26,7 +27,9 @@
         </div>
         <div class="card-footer border-0 d-flex flex-wrap gap-2 justify-content-between">
             <form method="post" th:action="@{'/createOrder/payment/' + ${searchId}}">
-                <button class="btn btn-primary" type="submit" id="payBtn">Fizetés</button>
+                <button class="btn btn-primary" type="submit" id="payBtn">Fizetés <span hidden id="loadingIndicator"
+                                                                                        class="spinner-border spinner-border-sm"></span>
+                </button>
             </form>
         </div>
         <div th:attr="id=${offer.getId()}">
