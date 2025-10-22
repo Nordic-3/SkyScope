@@ -1,6 +1,6 @@
 package com.szte.SkyScope.Controllers;
 
-import com.szte.SkyScope.Models.FlightOffers;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.SearchData;
 import com.szte.SkyScope.Services.*;
@@ -96,7 +96,7 @@ public class FlightSearchController {
   @GetMapping("/results/{searchId}")
   @ResponseBody
   public ResponseEntity<String> checkIfOffersAvaliable(@PathVariable String searchId) {
-    List<FlightOffers> result = searchStore.getSearchDatas(searchId).getSearchResult();
+    List<FlightOfferDTO> result = searchStore.getSearchDatas(searchId).getSearchResult();
     if (result == null) {
       return ResponseEntity.status(HttpStatus.ACCEPTED).body("IN_PROGRESS");
     }

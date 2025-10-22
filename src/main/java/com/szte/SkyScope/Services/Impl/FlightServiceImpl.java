@@ -2,8 +2,8 @@ package com.szte.SkyScope.Services.Impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.szte.SkyScope.Config.ApplicationConfig;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Enums.TravellerTypes;
-import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Models.Location;
 import com.szte.SkyScope.Models.Plane;
@@ -64,7 +64,7 @@ public class FlightServiceImpl implements FlightService {
 
   @Async
   @Override
-  public CompletableFuture<List<FlightOffers>> getFlightOffers(
+  public CompletableFuture<List<FlightOfferDTO>> getFlightOffers(
       FlightSearch flightSearch, String token, String searchId) {
     if (applicationConfig.getAmadeusCitySearchApi().equals("noApi")
         || !applicationConfig.useApis()) {
@@ -93,7 +93,7 @@ public class FlightServiceImpl implements FlightService {
   }
 
   @Override
-  public List<FlightOffers> getFlightOffersFromLocalJson(
+  public List<FlightOfferDTO> getFlightOffersFromLocalJson(
       FlightSearch flightSearch, String searchId) {
     String response = jsonReaderService.readJsonFromResources("exampleDatas/FlightOffers.json");
     saveDictionaries(response, searchId);
@@ -101,7 +101,7 @@ public class FlightServiceImpl implements FlightService {
   }
 
   @Override
-  public void setAircraftType(List<FlightOffers> flightOffers, Map<String, String> aircrafts) {
+  public void setAircraftType(List<FlightOfferDTO> flightOffers, Map<String, String> aircrafts) {
     getSegmentStream(flightOffers)
         .forEach(
             segment ->
@@ -115,7 +115,7 @@ public class FlightServiceImpl implements FlightService {
   }
 
   @Override
-  public void setCarrierNames(List<FlightOffers> flightOffers, Map<String, String> carriers) {
+  public void setCarrierNames(List<FlightOfferDTO> flightOffers, Map<String, String> carriers) {
     getSegmentStream(flightOffers)
         .forEach(
             segment -> {
@@ -143,7 +143,7 @@ public class FlightServiceImpl implements FlightService {
   }
 
   @Override
-  public void setAirportNames(List<FlightOffers> flightOffers, Map<String, String> airprots) {
+  public void setAirportNames(List<FlightOfferDTO> flightOffers, Map<String, String> airprots) {
     getSegmentStream(flightOffers)
         .forEach(
             segment -> {
@@ -165,7 +165,8 @@ public class FlightServiceImpl implements FlightService {
   }
 
   @Override
-  public void setFlightOffersAttributes(List<FlightOffers> result, String searchId, String token) {
+  public void setFlightOffersAttributes(
+      List<FlightOfferDTO> result, String searchId, String token) {
     setAircraftType(result, searchStore.getSearchDatas(searchId).getAircraftDictionary());
     setCarrierNames(result, searchStore.getSearchDatas(searchId).getCarrierDictionary());
     setAirportNames(
@@ -184,7 +185,7 @@ public class FlightServiceImpl implements FlightService {
   }
 
   @Override
-  public void setCallsigns(List<FlightOffers> result, Map<String, String> icaoCodes) {
+  public void setCallsigns(List<FlightOfferDTO> result, Map<String, String> icaoCodes) {
     getSegmentStream(result)
         .forEach(
             segment ->
@@ -193,7 +194,7 @@ public class FlightServiceImpl implements FlightService {
   }
 
   @Override
-  public void setIsCurrentlyFlying(List<FlightOffers> result, Map<String, Plane> planePositions) {
+  public void setIsCurrentlyFlying(List<FlightOfferDTO> result, Map<String, Plane> planePositions) {
     if (planePositions == null) {
       return;
     }
@@ -218,7 +219,7 @@ public class FlightServiceImpl implements FlightService {
     flightSearch.setDestinationCity(normalizeCityNames(flightSearch.getDestinationCity()));
   }
 
-  private Stream<FlightOffers.Segment> getSegmentStream(List<FlightOffers> flightOffers) {
+  private Stream<FlightOfferDTO.Segment> getSegmentStream(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .flatMap(offer -> offer.getItineraries().stream())
         .flatMap(itinerary -> itinerary.getSegments().stream());
@@ -258,7 +259,7 @@ public class FlightServiceImpl implements FlightService {
     return dataToCheck != null && !dataToCheck.isEmpty();
   }
 
-  private void setHungarianNameOfTravellerTypes(List<FlightOffers> flightOffers) {
+  private void setHungarianNameOfTravellerTypes(List<FlightOfferDTO> flightOffers) {
     flightOffers.stream()
         .flatMap(flightOffer -> flightOffer.getTravelerPricings().stream())
         .forEach(

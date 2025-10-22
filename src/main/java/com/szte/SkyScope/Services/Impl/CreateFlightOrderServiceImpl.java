@@ -1,6 +1,7 @@
 package com.szte.SkyScope.Services.Impl;
 
 import com.szte.SkyScope.Config.ApplicationConfig;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Enums.TravellerTypes;
 import com.szte.SkyScope.Models.*;
 import com.szte.SkyScope.Parsers.Parser;
@@ -34,7 +35,7 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
   }
 
   @Override
-  public FinalPriceResponse getFinalPrice(FlightOffers flightOffer, String token) {
+  public FinalPriceResponse getFinalPrice(FlightOfferDTO flightOffer, String token) {
     if (applicationConfig.useApis() && !applicationConfig.getAmadeusFinalPrice().equals("noApi")) {
       return getFinalPriceFromApi(
           new FlightPriceRequest(new FlightPriceRequest.Data(flightOffer)), token);
@@ -43,7 +44,7 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
   }
 
   @Override
-  public FlightOffers getSelectedOffer(List<FlightOffers> flightOffers, String offerId) {
+  public FlightOfferDTO getSelectedOffer(List<FlightOfferDTO> flightOffers, String offerId) {
     return flightOffers.stream()
         .filter(flightOffer -> flightOffer.getId().equals(offerId))
         .toList()
@@ -51,8 +52,8 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
   }
 
   @Override
-  public void setTravellers(TravellerWrapper travellers, String email, FlightOffers flightOffers) {
-    flightOffers
+  public void setTravellers(TravellerWrapper travellers, String email, FlightOfferDTO flightOffer) {
+    flightOffer
         .getTravelerPricings()
         .forEach(
             travelerPricing ->

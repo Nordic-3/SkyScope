@@ -1,17 +1,17 @@
 package com.szte.SkyScope.Services;
 
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Models.CreateOrder;
 import com.szte.SkyScope.Models.FinalPriceResponse;
-import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.TravellerWrapper;
 import java.util.List;
 
 public interface CreateFlightOrderService {
-  FinalPriceResponse getFinalPrice(FlightOffers flightOffer, String token);
+  FinalPriceResponse getFinalPrice(FlightOfferDTO flightOffer, String token);
 
-  FlightOffers getSelectedOffer(List<FlightOffers> flightOffers, String offerId);
+  FlightOfferDTO getSelectedOffer(List<FlightOfferDTO> flightOffers, String offerId);
 
-  void setTravellers(TravellerWrapper travellers, String email, FlightOffers flightOffer);
+  void setTravellers(TravellerWrapper travellers, String email, FlightOfferDTO flightOffer);
 
   void setPassportValidations(TravellerWrapper travellers);
 

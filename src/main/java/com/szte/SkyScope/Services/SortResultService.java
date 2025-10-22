@@ -1,18 +1,18 @@
 package com.szte.SkyScope.Services;
 
-import com.szte.SkyScope.Models.FlightOffers;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import java.util.List;
 
 public interface SortResultService {
-  List<FlightOffers> sortOffersByDeffault(List<FlightOffers> flightOffers);
+  List<FlightOfferDTO> sortOffersByDeffault(List<FlightOfferDTO> flightOffers);
 
-  List<FlightOffers> sortOffersByPriceASC(List<FlightOffers> flightOffers);
+  List<FlightOfferDTO> sortOffersByPriceASC(List<FlightOfferDTO> flightOffers);
 
-  List<FlightOffers> sortOffersByPriceDSC(List<FlightOffers> flightOffers);
+  List<FlightOfferDTO> sortOffersByPriceDSC(List<FlightOfferDTO> flightOffers);
 
-  List<FlightOffers> sortOffersByFlyTimeAsc(List<FlightOffers> flightOffers);
+  List<FlightOfferDTO> sortOffersByFlyTimeAsc(List<FlightOfferDTO> flightOffers);
 
-  List<FlightOffers> sortOffersByFlyTimeDsc(List<FlightOffers> flightOffers);
+  List<FlightOfferDTO> sortOffersByFlyTimeDsc(List<FlightOfferDTO> flightOffers);
 
-  List<FlightOffers> sortOffersByTransferTimeDsc(List<FlightOffers> flightOffers);
+  List<FlightOfferDTO> sortOffersByTransferTimeDsc(List<FlightOfferDTO> flightOffers);
 }

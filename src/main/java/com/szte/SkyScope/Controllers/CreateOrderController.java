@@ -1,5 +1,6 @@
 package com.szte.SkyScope.Controllers;
 
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Models.*;
 import com.szte.SkyScope.Services.*;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
@@ -32,7 +33,7 @@ public class CreateOrderController {
 
   @GetMapping("/createOrder/sumup/{searchId}")
   public String sumup(@PathVariable String searchId, Model model) {
-    FlightOffers selectedOffer =
+    FlightOfferDTO selectedOffer =
         createFlightOrderService.getSelectedOffer(
             searchStore.getSearchDatas(searchId).getSearchResult(),
             searchStore.getSearchDatas(searchId).getOfferId());

@@ -1,6 +1,6 @@
 package com.szte.SkyScope.Utils;
 
-import com.szte.SkyScope.Models.FlightOffers;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.Duration;
@@ -14,9 +14,9 @@ public class FlightOfferFormatter {
 
   private static final Logger logger = Logger.getLogger(FlightOfferFormatter.class.getName());
 
-  public static List<FlightOffers> formatFlightOfferFields(List<FlightOffers> flightOffers) {
-    List<FlightOffers> formattedFlightOffers =
-        flightOffers.stream().map(FlightOffers::new).toList();
+  public static List<FlightOfferDTO> formatFlightOfferFields(List<FlightOfferDTO> flightOffers) {
+    List<FlightOfferDTO> formattedFlightOffers =
+        flightOffers.stream().map(FlightOfferDTO::new).toList();
     formattedFlightOffers.forEach(
         flightOffer -> {
           flightOffer
@@ -35,7 +35,7 @@ public class FlightOfferFormatter {
     return formattedFlightOffers;
   }
 
-  public static List<Duration> calculateLayoverTime(List<FlightOffers.Segment> segments) {
+  public static List<Duration> calculateLayoverTime(List<FlightOfferDTO.Segment> segments) {
     List<Duration> layoverTimes = new ArrayList<>();
     for (int i = 0; i < segments.size() - 1; i++) {
       LocalDateTime arrival = LocalDateTime.parse(segments.get(i).getArrival().getAt());
@@ -68,7 +68,7 @@ public class FlightOfferFormatter {
     return price;
   }
 
-  public static void formatAndSetSingleOfferDuration(FlightOffers flightOffer) {
+  public static void formatAndSetSingleOfferDuration(FlightOfferDTO flightOffer) {
     flightOffer
         .getItineraries()
         .forEach(
@@ -78,11 +78,11 @@ public class FlightOfferFormatter {
             });
   }
 
-  private static void formatAndSetPrice(FlightOffers flightOffers) {
-    flightOffers.getPrice().setTotal(formatPrice(flightOffers.getPrice().getTotal()));
+  private static void formatAndSetPrice(FlightOfferDTO flightOffer) {
+    flightOffer.getPrice().setTotal(formatPrice(flightOffer.getPrice().getTotal()));
   }
 
-  private static void formatAndSetSegmentData(FlightOffers.Segment segment) {
+  private static void formatAndSetSegmentData(FlightOfferDTO.Segment segment) {
     segment
         .getDeparture()
         .setAirportName(
@@ -96,7 +96,7 @@ public class FlightOfferFormatter {
     formatAndSetSegmentDurations(segment);
   }
 
-  private static void formatAndSetSegmentDurations(FlightOffers.Segment segment) {
+  private static void formatAndSetSegmentDurations(FlightOfferDTO.Segment segment) {
     segment.setDuration(formatDuration(segment.getDuration()));
     segment.getDeparture().setAt(formatTime(segment.getDeparture().getAt()));
     segment.getArrival().setAt(formatTime(segment.getArrival().getAt()));

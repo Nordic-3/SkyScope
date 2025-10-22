@@ -1,8 +1,8 @@
 package com.szte.SkyScope.Services.Impl;
 
 import com.szte.SkyScope.Config.ApplicationConfig;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Models.CheapestDateOffer;
-import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Models.FlightSearch;
 import com.szte.SkyScope.Parsers.Parser;
 import com.szte.SkyScope.Services.CheapestFlightDateService;
@@ -41,8 +41,8 @@ public class CheapestFlightDateServiveImpl implements CheapestFlightDateService 
   }
 
   @Override
-  public CompletableFuture<List<FlightOffers>> checkForCheaperOfferAndGetIt(
-      FlightSearch flightSearch, String token, String searchId, List<FlightOffers> flightOffers) {
+  public CompletableFuture<List<FlightOfferDTO>> checkForCheaperOfferAndGetIt(
+      FlightSearch flightSearch, String token, String searchId, List<FlightOfferDTO> flightOffers) {
     List<CheapestDateOffer> cheapestDateOffers = getCheapestDateOffers(flightSearch, token);
     if (cheapestDateOffers == null
         || cheapestDateOffers.isEmpty()
@@ -55,8 +55,9 @@ public class CheapestFlightDateServiveImpl implements CheapestFlightDateService 
     return flightService.getFlightOffers(cheaperFlight, token, searchId);
   }
 
-  private boolean isCheaper(List<FlightOffers> flightOffers, CheapestDateOffer cheapestDateOffer) {
-    FlightOffers flightOffer = flightOffers.getFirst();
+  private boolean isCheaper(
+      List<FlightOfferDTO> flightOffers, CheapestDateOffer cheapestDateOffer) {
+    FlightOfferDTO flightOffer = flightOffers.getFirst();
     return flightOffer.getTravelerPricings().stream()
         .filter(travelerPricing -> travelerPricing.getTravelerType().equals("ADULT"))
         .anyMatch(

@@ -1,4 +1,4 @@
-package com.szte.SkyScope.Models;
+package com.szte.SkyScope.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FlightOffers {
+public class FlightOfferDTO {
   private List<Itinerary> itineraries = new ArrayList<>();
   private Price price = new Price();
   private List<TravelerPricing> travelerPricings = new ArrayList<>();
@@ -16,17 +16,17 @@ public class FlightOffers {
   private String source = "";
   private List<String> validatingAirlineCodes = new ArrayList<>();
 
-  public FlightOffers() {}
+  public FlightOfferDTO() {}
 
-  public FlightOffers(FlightOffers flightOffers) {
-    this.itineraries = flightOffers.getItineraries().stream().map(Itinerary::new).toList();
-    this.price = new Price(flightOffers.getPrice());
+  public FlightOfferDTO(FlightOfferDTO flightOffer) {
+    this.itineraries = flightOffer.getItineraries().stream().map(Itinerary::new).toList();
+    this.price = new Price(flightOffer.getPrice());
     this.travelerPricings =
-        flightOffers.getTravelerPricings().stream().map(TravelerPricing::new).toList();
-    this.id = flightOffers.getId();
-    this.type = flightOffers.getType();
-    this.source = flightOffers.getSource();
-    this.validatingAirlineCodes.addAll(flightOffers.getValidatingAirlineCodes());
+        flightOffer.getTravelerPricings().stream().map(TravelerPricing::new).toList();
+    this.id = flightOffer.getId();
+    this.type = flightOffer.getType();
+    this.source = flightOffer.getSource();
+    this.validatingAirlineCodes.addAll(flightOffer.getValidatingAirlineCodes());
   }
 
   public List<String> getValidatingAirlineCodes() {

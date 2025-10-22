@@ -1,8 +1,8 @@
 package com.szte.SkyScope.Services.Impl;
 
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Models.ChosenFilters;
 import com.szte.SkyScope.Models.FilterValue;
-import com.szte.SkyScope.Models.FlightOffers;
 import com.szte.SkyScope.Services.FilterService;
 import com.szte.SkyScope.Services.SortResultService;
 import com.szte.SkyScope.Utils.FlightOfferFormatter;
@@ -22,7 +22,8 @@ public class FilterServiceImpl implements FilterService {
   }
 
   @Override
-  public List<FlightOffers> filterOffers(List<FlightOffers> flightOffers, ChosenFilters filter) {
+  public List<FlightOfferDTO> filterOffers(
+      List<FlightOfferDTO> flightOffers, ChosenFilters filter) {
     return flightOffers.stream()
         .filter(
             offer ->
@@ -36,7 +37,7 @@ public class FilterServiceImpl implements FilterService {
   }
 
   @Override
-  public FilterValue getFilterOptions(List<FlightOffers> flightOffers) {
+  public FilterValue getFilterOptions(List<FlightOfferDTO> flightOffers) {
     return new FilterValue(
         getAirlineNames(flightOffers),
         getTransferNumbers(flightOffers),
@@ -46,14 +47,14 @@ public class FilterServiceImpl implements FilterService {
         isCurrentlyFlying(flightOffers));
   }
 
-  private boolean isCurrentlyFlying(List<FlightOffers> flightOffers) {
+  private boolean isCurrentlyFlying(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .flatMap(offer -> offer.getItineraries().stream())
         .flatMap(itinerary -> itinerary.getSegments().stream())
-        .anyMatch(FlightOffers.Segment::isCurrentlyFlying);
+        .anyMatch(FlightOfferDTO.Segment::isCurrentlyFlying);
   }
 
-  private List<String> getAirlineNames(List<FlightOffers> flightOffers) {
+  private List<String> getAirlineNames(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .flatMap(offer -> offer.getItineraries().stream())
         .flatMap(itinerary -> itinerary.getSegments().stream())
@@ -63,7 +64,7 @@ public class FilterServiceImpl implements FilterService {
         .toList();
   }
 
-  private List<String> getTransferNumbers(List<FlightOffers> flightOffers) {
+  private List<String> getTransferNumbers(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .map(
             offer ->
@@ -77,7 +78,7 @@ public class FilterServiceImpl implements FilterService {
         .toList();
   }
 
-  private List<Duration> getTransferDurations(List<FlightOffers> flightOffers) {
+  private List<Duration> getTransferDurations(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .map(
             offer ->
@@ -94,7 +95,7 @@ public class FilterServiceImpl implements FilterService {
         .toList();
   }
 
-  private List<String> getAirplanes(List<FlightOffers> flightOffers) {
+  private List<String> getAirplanes(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .flatMap(offer -> offer.getItineraries().stream())
         .flatMap(itinerary -> itinerary.getSegments().stream())
@@ -104,8 +105,8 @@ public class FilterServiceImpl implements FilterService {
         .toList();
   }
 
-  private String getMaxPrice(List<FlightOffers> flightOffers) {
-    List<FlightOffers> orderedOffers = sortResultService.sortOffersByPriceDSC(flightOffers);
+  private String getMaxPrice(List<FlightOfferDTO> flightOffers) {
+    List<FlightOfferDTO> orderedOffers = sortResultService.sortOffersByPriceDSC(flightOffers);
     if (!orderedOffers.isEmpty()) {
       return FlightOfferFormatter.formatPrice(orderedOffers.getFirst().getPrice().getTotal())
           + "Ft";
@@ -113,20 +114,20 @@ public class FilterServiceImpl implements FilterService {
     return "";
   }
 
-  private boolean filterCurrentlyFlyng(FlightOffers offer, ChosenFilters filter) {
+  private boolean filterCurrentlyFlyng(FlightOfferDTO offer, ChosenFilters filter) {
     return !filter.isCurrentlyFlying()
         || offer.getItineraries().stream()
             .flatMap(itinerary -> itinerary.getSegments().stream())
-            .anyMatch(FlightOffers.Segment::isCurrentlyFlying);
+            .anyMatch(FlightOfferDTO.Segment::isCurrentlyFlying);
   }
 
-  private boolean filterPrice(FlightOffers offer, ChosenFilters filter) {
+  private boolean filterPrice(FlightOfferDTO offer, ChosenFilters filter) {
     return filter.getMaxPrice().isEmpty()
         || Integer.parseInt(offer.getPrice().getTotal().split("\\.")[0])
             <= Integer.parseInt(filter.getMaxPrice());
   }
 
-  private boolean filterAirline(FlightOffers offer, ChosenFilters filter) {
+  private boolean filterAirline(FlightOfferDTO offer, ChosenFilters filter) {
     return filter.getAirlines().isEmpty()
         || offer.getItineraries().stream()
             .flatMap(itinerary -> itinerary.getSegments().stream())
@@ -134,7 +135,7 @@ public class FilterServiceImpl implements FilterService {
                 segment -> filter.getAirlines().contains(segment.getOperating().getCarrierName()));
   }
 
-  private boolean filterTransferNumber(FlightOffers offer, ChosenFilters filter) {
+  private boolean filterTransferNumber(FlightOfferDTO offer, ChosenFilters filter) {
     return filter.getTransferNumber().isEmpty()
         || offer.getItineraries().stream()
             .allMatch(
@@ -143,7 +144,7 @@ public class FilterServiceImpl implements FilterService {
                         <= parseTransferNumber(filter.getTransferNumber()));
   }
 
-  private boolean filterLayoverTime(FlightOffers offer, ChosenFilters filter) {
+  private boolean filterLayoverTime(FlightOfferDTO offer, ChosenFilters filter) {
     List<Duration> layoverTime = getLayoverTime(offer);
     return filter.getTransferDuration().isEmpty()
         || layoverTime.stream()
@@ -151,14 +152,14 @@ public class FilterServiceImpl implements FilterService {
                 duration -> duration.compareTo(Duration.parse(filter.getTransferDuration())) <= 0);
   }
 
-  private boolean filterAirplane(FlightOffers offer, ChosenFilters filter) {
+  private boolean filterAirplane(FlightOfferDTO offer, ChosenFilters filter) {
     return filter.getAirplanes().isEmpty()
         || offer.getItineraries().stream()
             .flatMap(itinerary -> itinerary.getSegments().stream())
             .anyMatch(segment -> filter.getAirplanes().contains(segment.getAircraft().getName()));
   }
 
-  private List<Duration> getLayoverTime(FlightOffers flightOffer) {
+  private List<Duration> getLayoverTime(FlightOfferDTO flightOffer) {
     return flightOffer.getItineraries().stream()
         .flatMap(
             itinerary ->

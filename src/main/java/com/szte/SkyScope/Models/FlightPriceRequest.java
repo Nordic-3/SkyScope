@@ -1,6 +1,7 @@
 package com.szte.SkyScope.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +27,11 @@ public class FlightPriceRequest {
   public static class Data {
     private String type = "flight-offers-pricing";
 
-    private List<FlightOffers> flightOffers = new ArrayList<>();
+    private List<FlightOfferDTO> flightOffers = new ArrayList<>();
 
     public Data() {}
 
-    public Data(FlightOffers flightOffer) {
+    public Data(FlightOfferDTO flightOffer) {
       this.flightOffers.add(flightOffer);
     }
 
@@ -42,11 +43,11 @@ public class FlightPriceRequest {
       this.type = type;
     }
 
-    public List<FlightOffers> getFlightOffers() {
+    public List<FlightOfferDTO> getFlightOffers() {
       return flightOffers;
     }
 
-    public void setFlightOffers(List<FlightOffers> flightOffers) {
+    public void setFlightOffers(List<FlightOfferDTO> flightOffers) {
       this.flightOffers = flightOffers;
     }
   }

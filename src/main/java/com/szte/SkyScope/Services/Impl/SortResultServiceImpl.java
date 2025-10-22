@@ -1,6 +1,6 @@
 package com.szte.SkyScope.Services.Impl;
 
-import com.szte.SkyScope.Models.FlightOffers;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Services.SortResultService;
 import java.time.Duration;
 import java.util.Comparator;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class SortResultServiceImpl implements SortResultService {
 
   @Override
-  public List<FlightOffers> sortOffersByDeffault(List<FlightOffers> flightOffers) {
+  public List<FlightOfferDTO> sortOffersByDeffault(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .sorted(
             Comparator.comparingInt(
@@ -20,7 +20,7 @@ public class SortResultServiceImpl implements SortResultService {
   }
 
   @Override
-  public List<FlightOffers> sortOffersByPriceASC(List<FlightOffers> flightOffers) {
+  public List<FlightOfferDTO> sortOffersByPriceASC(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .sorted(
             (o1, o2) -> {
@@ -40,7 +40,7 @@ public class SortResultServiceImpl implements SortResultService {
   }
 
   @Override
-  public List<FlightOffers> sortOffersByPriceDSC(List<FlightOffers> flightOffers) {
+  public List<FlightOfferDTO> sortOffersByPriceDSC(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .sorted(
             (o1, o2) -> {
@@ -60,7 +60,7 @@ public class SortResultServiceImpl implements SortResultService {
   }
 
   @Override
-  public List<FlightOffers> sortOffersByFlyTimeAsc(List<FlightOffers> flightOffers) {
+  public List<FlightOfferDTO> sortOffersByFlyTimeAsc(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .sorted(
             (o1, o2) -> {
@@ -83,7 +83,7 @@ public class SortResultServiceImpl implements SortResultService {
   }
 
   @Override
-  public List<FlightOffers> sortOffersByFlyTimeDsc(List<FlightOffers> flightOffers) {
+  public List<FlightOfferDTO> sortOffersByFlyTimeDsc(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .sorted(
             (o1, o2) -> {
@@ -106,11 +106,12 @@ public class SortResultServiceImpl implements SortResultService {
   }
 
   @Override
-  public List<FlightOffers> sortOffersByTransferTimeDsc(List<FlightOffers> flightOffers) {
+  public List<FlightOfferDTO> sortOffersByTransferTimeDsc(List<FlightOfferDTO> flightOffers) {
     return flightOffers.stream()
         .sorted(
             Comparator.comparingInt(
-                    (FlightOffers offer) -> offer.getItineraries().getFirst().getSegments().size())
+                    (FlightOfferDTO offer) ->
+                        offer.getItineraries().getFirst().getSegments().size())
                 .reversed())
         .toList();
   }

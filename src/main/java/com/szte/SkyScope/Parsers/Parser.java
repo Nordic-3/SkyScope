@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Models.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,16 +65,16 @@ public class Parser {
     return iata;
   }
 
-  public static List<FlightOffers> parseFlightOffersFromJson(String json) {
+  public static List<FlightOfferDTO> parseFlightOffersFromJson(String json) {
     JsonNode root;
-    List<FlightOffers> flightOffers = new ArrayList<>();
+    List<FlightOfferDTO> flightOffers = new ArrayList<>();
     try {
       root = objectMapper.readTree(json);
       JsonNode datas = root.get("data");
       datas.forEach(
           jsonNode -> {
             try {
-              flightOffers.add(objectMapper.treeToValue(jsonNode, FlightOffers.class));
+              flightOffers.add(objectMapper.treeToValue(jsonNode, FlightOfferDTO.class));
             } catch (JsonProcessingException exception) {
               logger.log(Level.SEVERE, exception.getMessage(), exception);
             }

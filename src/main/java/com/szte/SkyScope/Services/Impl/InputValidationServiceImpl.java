@@ -1,5 +1,6 @@
 package com.szte.SkyScope.Services.Impl;
 
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.DTOs.UserCreationDTO;
 import com.szte.SkyScope.Models.*;
 import com.szte.SkyScope.Services.InputValidationService;
@@ -63,11 +64,11 @@ public class InputValidationServiceImpl implements InputValidationService {
   }
 
   @Override
-  public String validateTravellers(TravellerWrapper travellers, FlightOffers flightOffers) {
+  public String validateTravellers(TravellerWrapper travellers, FlightOfferDTO flightOffer) {
     return allFieldIsCompulsory(travellers)
         + validEmailAddress(travellers)
         + validateCountryCodes(travellers)
-        + validPassportAtTravelDate(travellers, flightOffers)
+        + validPassportAtTravelDate(travellers, flightOffer)
         + passportExpireBeforeIssueDate(travellers)
         + validDates(travellers);
   }
@@ -221,11 +222,12 @@ public class InputValidationServiceImpl implements InputValidationService {
     return "";
   }
 
-  private String validPassportAtTravelDate(TravellerWrapper travellers, FlightOffers flightOffers) {
+  private String validPassportAtTravelDate(
+      TravellerWrapper travellers, FlightOfferDTO flightOffer) {
     try {
       LocalDate lastFlight =
           LocalDate.parse(
-              flightOffers
+              flightOffer
                   .getItineraries()
                   .getLast()
                   .getSegments()

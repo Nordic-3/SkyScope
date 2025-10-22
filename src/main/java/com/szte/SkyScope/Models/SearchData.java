@@ -1,20 +1,21 @@
 package com.szte.SkyScope.Models;
 
+import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import java.util.List;
 import java.util.Map;
 
 public class SearchData {
-  private List<FlightOffers> searchResult;
+  private List<FlightOfferDTO> searchResult;
   private FlightSearch flightSearch;
   private Map<String, String> aircraftDictionary;
   private Map<String, Location> locationDictionary;
   private Map<String, String> carrierDictionary;
   private ChosenFilters chosenFilters = new ChosenFilters();
-  private List<FlightOffers> originalSearchResult;
+  private List<FlightOfferDTO> originalSearchResult;
   private boolean cheaperOfferAvailable = false;
   private boolean haveToCheckForCheaperOffer = true;
   private FlightSearch cheaperSearch;
-  private List<FlightOffers> cheaperSearchResult;
+  private List<FlightOfferDTO> cheaperSearchResult;
   private String offerId;
   private List<Traveller> travelers;
   private List<FinalPriceResponse.FlightOffer> validatedOffers;
@@ -51,11 +52,11 @@ public class SearchData {
     this.haveToCheckForCheaperOffer = haveToCheckForCheaperOffer;
   }
 
-  public List<FlightOffers> getCheaperSearchResult() {
+  public List<FlightOfferDTO> getCheaperSearchResult() {
     return cheaperSearchResult;
   }
 
-  public void setCheaperSearchResult(List<FlightOffers> cheaperSearchResult) {
+  public void setCheaperSearchResult(List<FlightOfferDTO> cheaperSearchResult) {
     this.cheaperSearchResult = cheaperSearchResult;
   }
 
@@ -75,11 +76,11 @@ public class SearchData {
     this.cheaperOfferAvailable = cheaperOfferAvailable;
   }
 
-  public List<FlightOffers> getSearchResult() {
+  public List<FlightOfferDTO> getSearchResult() {
     return searchResult;
   }
 
-  public void setSearchResult(List<FlightOffers> searchResult) {
+  public void setSearchResult(List<FlightOfferDTO> searchResult) {
     this.searchResult = searchResult;
   }
 
@@ -123,11 +124,11 @@ public class SearchData {
     this.chosenFilters = chosenFilters;
   }
 
-  public List<FlightOffers> getOriginalSearchResult() {
+  public List<FlightOfferDTO> getOriginalSearchResult() {
     return originalSearchResult;
   }
 
-  public void setOriginalSearchResult(List<FlightOffers> originalSearchResult) {
+  public void setOriginalSearchResult(List<FlightOfferDTO> originalSearchResult) {
     this.originalSearchResult = originalSearchResult;
   }
 }
