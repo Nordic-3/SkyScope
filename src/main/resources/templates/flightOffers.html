@@ -131,9 +131,9 @@
                             </div>
                         </div>
                         <div class="d-flex gap-2 mt-3">
-                            <button type="submit" class="btn btn-outline-info flex-fill rounded-btn">Szűrés</button>
+                            <button type="submit" class="btn btn-outline-info flex-fill rounded-btn" id="filterBtn">Szűrés</button>
                             <button type="submit" class="btn btn-outline-light flex-fill rounded-btn"
-                                    th:formaction="@{/filter/reset/{id}(id=${searchId}, by=${sortBy})}">Szűrések törlése
+                                    th:formaction="@{/filter/reset/{id}(id=${searchId}, by=${sortBy})}" id="deleteFilterBtn">Szűrések törlése
                             </button>
                         </div>
                     </form>
@@ -195,19 +195,19 @@
                                              th:if="${itinerary.getLayoverTime().size() > 0}">
                                             <p class="col fs-6"
                                                th:each="layover : ${itinerary.getFormattedLayoverTime()}"
-                                               th:text="${'Átszállási idő: ' + layover}">
+                                               th:text="${'Átszállási idő: ' + layover}" name="layoverTime">
                                             </p>
                                         </div>
                                         <div class="row align-items-center"
                                              th:each="segment, segmentStatus : ${itinerary.getSegments()}">
                                             <hr th:if="${segmentStatus.first}">
                                             <p class="col fs-6 text-info"
-                                               th:text="${segment.getOperating().getCarrierName()}"></p>
+                                               th:text="${segment.getOperating().getCarrierName()}" name="carrierAirline"></p>
                                             <p class="col fs-6"
                                                th:if="${segment.getCarrierName() != segment.getOperating().getCarrierName()}"
                                                th:text="${'Jegyértékesítő: '+segment.getCarrierName()}"></p>
                                             <p class="col fs-6 text-info"
-                                               th:text="${segment.getAircraft().getName()}"></p>
+                                               th:text="${segment.getAircraft().getName()}" name="aircraftType"></p>
                                             <a class="col btn btn-outline-info rounded-btn"
                                                th:href="'/flighttracker?flightNumber=' + ${segment.getCallSign()}"
                                                th:if="${segment.isCurrentlyFlying()}">Mutasd a térképen</a>

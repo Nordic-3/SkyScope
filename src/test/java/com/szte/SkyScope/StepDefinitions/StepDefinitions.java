@@ -2,6 +2,7 @@ package com.szte.SkyScope.StepDefinitions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.szte.SkyScope.DataStore.DataStore;
 import com.szte.SkyScope.Enums.FlightOffersSortOptions;
 import com.szte.SkyScope.Helper.WebElementHelper;
 import io.cucumber.java.After;
@@ -19,6 +20,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class StepDefinitions {
   private final WebDriver driver = new FirefoxDriver();
   private final WebElementHelper webElementHelper = new WebElementHelper(driver);
+  private final DataStore dataStore = new DataStore();
 
   @Given("I am on the search page")
   public void onTheSearchPage() {
@@ -51,6 +53,75 @@ public class StepDefinitions {
     fillTheTravellerDetails();
     webElementHelper.waitForElementToBeVisible(By.id("payBtn"));
     webElementHelper.clickButton(By.id("payBtn"));
+  }
+
+  @When("I filter results by max price option")
+  public void filterResultsByMaxPriceOption() {
+    int maxPrice =
+        Integer.parseInt(
+            String.join(
+                "",
+                webElementHelper
+                    .getValueOfAnAttribute(By.cssSelector("input[aria-label='Max']"), "placeholder")
+                    .split("Ft")[0]
+                    .split(" ")));
+    dataStore.putData("filteredPrice", Integer.toString(maxPrice / 2));
+    webElementHelper.fillInputField(
+        By.cssSelector("input[aria-label='Max']"),
+        dataStore.getValue("filteredPrice", String.class));
+    webElementHelper.clickButton(By.id("filterBtn"));
+  }
+
+  @When("I filter results by number of transfers")
+  public void filterResultsByNumberOfTransfers() {
+    dataStore.putData(
+        "transferNumber",
+        webElementHelper.getFirstNotDefaultValueOfAnSelectOption(By.id("transferNumber")));
+    webElementHelper.selectOptionFromAllDropDownsByValue(
+        By.id("transferNumber"), dataStore.getValue("transferNumber", String.class));
+    webElementHelper.clickButton(By.id("filterBtn"));
+  }
+
+  @When("I filter results by layover duration")
+  public void filterResultsByLayoverDuration() {
+    webElementHelper.selectOptionFromAllDropDownsByValue(
+        By.id("transferDuration"),
+        webElementHelper.getFirstNotDefaultValueOfAnSelectOption(By.id("transferDuration")));
+    dataStore.putData(
+        "transferDuration",
+        webElementHelper
+            .getElementsTextInList(By.cssSelector("#transferDuration > option:checked"))
+            .getFirst());
+    webElementHelper.clickButton(By.id("filterBtn"));
+  }
+
+  @When("I filter results by airlines")
+  public void filterResultsByAirlines() {
+    webElementHelper.clickButton(By.cssSelector("div[aria-controls='airlineFilter']"));
+    webElementHelper.checkCheckbox(By.name("airlines"));
+    dataStore.putData(
+        "filteredAirline",
+        webElementHelper
+            .getElementsTextInList(By.cssSelector("input[name='airlines']:checked ~ label"))
+            .getFirst());
+    webElementHelper.clickButton(By.id("filterBtn"));
+  }
+
+  @When("I filter results by airplane")
+  public void filterResultsByAirplane() {
+    webElementHelper.clickButton(By.cssSelector("div[aria-controls='airplaneFilter']"));
+    webElementHelper.checkCheckbox(By.name("airplanes"));
+    dataStore.putData(
+        "filteredAirplane",
+        webElementHelper
+            .getElementsTextInList(By.cssSelector("input[name='airplanes']:checked ~ label"))
+            .getFirst());
+    webElementHelper.clickButton(By.id("filterBtn"));
+  }
+
+  @When("I delete applied filters")
+  public void deleteAppliedFilters() {
+    webElementHelper.clickButton(By.id("deleteFilterBtn"));
   }
 
   @When("I fill in the payment details with valid information")
@@ -173,6 +244,69 @@ public class StepDefinitions {
     webElementHelper.fillInputField(By.id("email"), "invalid@invalid");
     webElementHelper.fillInputField(By.id("password"), "invalid");
     webElementHelper.clickButton(By.id("login"));
+  }
+
+  @Then("I should see cheaper or equals offers than the specified max price")
+  public void shouldSeeCheaperOrEqualsOffersThanTheSpecifiedMaxPrice() {
+    int filteredPrice = Integer.parseInt(dataStore.getValue("filteredPrice", String.class));
+    getPrices().forEach(price -> assertTrue(price <= filteredPrice));
+  }
+
+  @Then("I should see offers with less or equals transfers than the specified number")
+  public void shouldSeeOffersWithLessOrEqualsTransfersThanTheSpecifiedNumber() {
+    int transferNumber =
+        Integer.parseInt(dataStore.getValue("transferNumber", String.class).split(" ")[1]);
+    getTransferNumbers().forEach(number -> assertTrue(number <= transferNumber));
+  }
+
+  @Then("I should see offers with layover duration less or equals than the specified duration")
+  public void shouldSeeOffersWithLayoverDurationLessThanTheSpecifiedDuration() {
+    webElementHelper.clickButton(By.name("details"));
+    webElementHelper
+        .getElementsTextInList(By.name("layoverTime"))
+        .forEach(
+            layover -> {
+              int totalMinutes =
+                  Integer.parseInt(layover.split(" ")[2]) * 60
+                      + Integer.parseInt(layover.split(" ")[4]);
+              int filteredTotalMinutes =
+                  Integer.parseInt(
+                              dataStore.getValue("transferDuration", String.class).split(" ")[0])
+                          * 60
+                      + Integer.parseInt(
+                          dataStore.getValue("transferDuration", String.class).split(" ")[2]);
+              assertTrue(totalMinutes <= filteredTotalMinutes);
+            });
+  }
+
+  @Then("I should see offers with at least one flight of the specified airlines")
+  public void shouldSeeOffersWithAtLeastOneFlightOfTheSpecifiedAirlines() {
+    webElementHelper
+        .getElementsByLocator(By.name("details"))
+        .forEach(
+            element -> {
+              element.click();
+              assertTrue(
+                  webElementHelper.getElementsTextInList(By.name("carrierAirline")).stream()
+                      .anyMatch(
+                          s -> s.equals(dataStore.getValue("filteredAirline", String.class))));
+              element.click();
+            });
+  }
+
+  @Then("I should see offers with at least one flight of the specified airplane type")
+  public void shouldSeeOffersWithAtLeastOneFlightOfTheSpecifiedAirplaneType() {
+    webElementHelper
+        .getElementsByLocator(By.name("details"))
+        .forEach(
+            element -> {
+              element.click();
+              assertTrue(
+                  webElementHelper.getElementsTextInList(By.name("aircraftType")).stream()
+                      .anyMatch(
+                          s -> s.equals(dataStore.getValue("filteredAirplane", String.class))));
+              element.click();
+            });
   }
 
   @Then("I should see the success confirmation message")

@@ -23,7 +23,7 @@ public class WebElementHelper {
   }
 
   public void clickButton(By locator) {
-    driver.findElement(locator).click();
+    driver.findElements(locator).forEach(WebElement::click);
   }
 
   public void waitForGivenNumberOfElements(By locator, int numberOfElements) {
@@ -73,5 +73,26 @@ public class WebElementHelper {
 
   public void selectOptionFromAllDropDownsByValue(By locator, String value) {
     driver.findElements(locator).forEach(element -> new Select(element).selectByValue(value));
+  }
+
+  public String getValueOfAnAttribute(By locator, String attribute) {
+    return driver.findElement(locator).getDomAttribute(attribute);
+  }
+
+  public String getFirstNotDefaultValueOfAnSelectOption(By locator) {
+    return new Select(driver.findElement(locator))
+        .getOptions().stream()
+            .filter(webElement -> !webElement.getDomAttribute("value").isEmpty())
+            .findFirst()
+            .get()
+            .getDomAttribute("value");
+  }
+
+  public List<WebElement> getElementsByLocator(By locator) {
+    return driver.findElements(locator);
+  }
+
+  public void checkCheckbox(By locator) {
+    driver.findElement(locator).click();
   }
 }
