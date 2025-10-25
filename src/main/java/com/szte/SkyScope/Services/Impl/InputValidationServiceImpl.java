@@ -72,6 +72,10 @@ public class InputValidationServiceImpl implements InputValidationService {
     if (userCreationDTO.rePassword().length() < 8) {
       return TOO_SHORT_PASSWORD;
     }
+
+    if (!userCreationDTO.password().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$")) {
+      return WEAK_PASSWORD;
+    }
     return "";
   }
 
