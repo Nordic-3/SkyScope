@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -67,6 +68,7 @@ public class SessionHandleController {
   @GetMapping("/profile")
   public String profile(Model model, Principal principal) {
     model.addAttribute("user", new UserCreationDTO(principal.getName(), "", "", ""));
+    model.addAttribute("confirmPassword", "");
     return "profile";
   }
 
@@ -91,9 +93,21 @@ public class SessionHandleController {
     return "redirect:/profile";
   }
 
-  @GetMapping("/profile/delete")
+  @PostMapping("/profile/delete")
   public String deleteProfile(
-      Principal principal, HttpServletRequest request, HttpServletResponse response) {
+      @RequestParam("confirmPassword") String password,
+      Principal principal,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      RedirectAttributes redirectAttributes) {
+    String errors =
+        inputValidationService.validateOldPassword(
+            new UserCreationDTO("", "", "", password),
+            userService.getUserByEmail(principal.getName()).get().getPassword());
+    if (!errors.isEmpty()) {
+      redirectAttributes.addFlashAttribute("validationError", errors);
+      return "redirect:/profile";
+    }
     userService.deleteByEmail(principal.getName());
     logout(request, response);
     return "index";

@@ -64,14 +64,26 @@
                             <h1 class="modal-title fs-5 card-name" id="deleteConfirmLabel">Megerősítés</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            A kért művelet nem vonható vissza. A fiók törlésével a lefoglalt járatok nem törlödnek.
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary rounded-btn" data-bs-dismiss="modal">Mégsem
-                            </button>
-                            <a class="btn btn-danger rounded-btn" href="/profile/delete">Fiók törlése</a>
-                        </div>
+                        <form method="POST" th:action="@{/profile/delete}">
+                            <div class="modal-body">
+                                <p>A kért művelet nem vonható vissza. A fiók törlésével a lefoglalt járatok nem
+                                    törlödnek.</p>
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="confirmPassword"
+                                           placeholder="jelszó"
+                                           name="confirmPassword"
+                                           required>
+                                    <label for="confirmPassword" class="ms-1">jelszó</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary rounded-btn" data-bs-dismiss="modal">
+                                    Mégsem
+                                </button>
+                                <button type="submit" class="btn btn-danger rounded-btn" id="deleteBtn">Fiók törlése
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
