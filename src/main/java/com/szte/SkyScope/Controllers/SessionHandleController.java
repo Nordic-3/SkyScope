@@ -38,7 +38,7 @@ public class SessionHandleController {
 
   @GetMapping("/login")
   public String login(Model model) {
-    model.addAttribute("registerUser", new UserCreationDTO("", "", ""));
+    model.addAttribute("registerUser", new UserCreationDTO("", "", "", ""));
     return "login";
   }
 
@@ -66,7 +66,7 @@ public class SessionHandleController {
 
   @GetMapping("/profile")
   public String profile(Model model, Principal principal) {
-    model.addAttribute("user", new UserCreationDTO(principal.getName(), "", ""));
+    model.addAttribute("user", new UserCreationDTO(principal.getName(), "", "", ""));
     return "profile";
   }
 
@@ -76,8 +76,12 @@ public class SessionHandleController {
       RedirectAttributes redirectAttributes,
       Principal principal) {
     UserCreationDTO updateUser =
-        new UserCreationDTO(principal.getName(), user.password(), user.rePassword());
-    String errors = inputValidationService.validatePasswordAndEmail(updateUser);
+        new UserCreationDTO(
+            principal.getName(), user.password(), user.rePassword(), user.oldPassword());
+    String errors =
+        inputValidationService.validatePasswordAndEmail(updateUser)
+            + inputValidationService.validateOldPassword(
+                user, userService.getUserByEmail(principal.getName()).get().getPassword());
     if (!errors.isEmpty()) {
       redirectAttributes.addFlashAttribute("validationError", errors);
       return "redirect:/profile";

@@ -26,16 +26,22 @@
                   method="POST" th:action="@{/profile/passwordChange}" th:object="${user}">
                 <div class="row text-info">Jelszó változtatás</div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="signupPassword" placeholder="jelszó"
-                           th:field="*{password}"
+                    <input type="password" class="form-control" id="currentPassword" placeholder="jelenlegi jelszó"
+                           th:field="*{oldPassword}"
                            required>
-                    <label for="signupPassword" class="ms-1">Jelszó</label>
+                    <label for="currentPassword" class="ms-1">jelenlegi jelszó</label>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="signupRePassword"
-                           placeholder="jelszó újra" th:field="*{rePassword}"
+                    <input type="password" class="form-control" id="newPassword" placeholder="új jelszó"
+                           th:field="*{password}"
                            required>
-                    <label for="signupRePassword" class="ms-1">Jelszó újra</label>
+                    <label for="newPassword" class="ms-1">új jelszó</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="rePassword"
+                           placeholder="új jelszó újra" th:field="*{rePassword}"
+                           required>
+                    <label for="rePassword" class="ms-1">új jelszó újra</label>
                 </div>
                 <hr class="mb-0 mt-3">
                 <div class="d-flex gap-2 mt-3">

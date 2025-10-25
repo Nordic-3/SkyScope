@@ -1,5 +1,6 @@
 package com.szte.SkyScope.Services.Impl;
 
+import com.szte.SkyScope.Config.SecurityConfig;
 import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.DTOs.UserCreationDTO;
 import com.szte.SkyScope.Models.*;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +27,16 @@ public class InputValidationServiceImpl implements InputValidationService {
   private static final String TOO_SHORT_PASSWORD =
       "A jelszónak legalább 8 karakter hosszúnak kell lennie!";
   private static final String ALL_FIELD_IS_COMPULSORY = "Minden mező kitöltése kötelező!";
+  private static final String BAD_OLD_PASSWORD = "A jelenlegi jelszó nem megfelelő!";
+  private static final String WEAK_PASSWORD =
+      "A jelszónak tartalmaznia kell legalább egy nagybetűt, egy kisbetűt és egy számot!";
+
+  private final SecurityConfig securityConfig;
+
+  @Autowired
+  public InputValidationServiceImpl(SecurityConfig securityConfig) {
+    this.securityConfig = securityConfig;
+  }
 
   @Override
   public String validateInputFields(FlightSearch flightSearch) {
@@ -71,6 +83,17 @@ public class InputValidationServiceImpl implements InputValidationService {
         + validPassportAtTravelDate(travellers, flightOffer)
         + passportExpireBeforeIssueDate(travellers)
         + validDates(travellers);
+  }
+
+  @Override
+  public String validateOldPassword(UserCreationDTO userCreationDTO, String oldPassword) {
+    if (isNullOrEmpty(userCreationDTO.oldPassword())) {
+      return "Jelenelgi jelszó " + EMPTY_INPUT_ERROR;
+    }
+    if (!securityConfig.passwordEncoder().matches(userCreationDTO.oldPassword(), oldPassword)) {
+      return BAD_OLD_PASSWORD;
+    }
+    return "";
   }
 
   private String checkEmptySearchFields(FlightSearch flightSearch) {

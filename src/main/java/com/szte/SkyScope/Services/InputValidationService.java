@@ -13,4 +13,6 @@ public interface InputValidationService {
   String validatePasswordAndEmail(UserCreationDTO userCreationDTO);
 
   String validateTravellers(TravellerWrapper travellers, FlightOfferDTO flightOffer);
+
+  String validateOldPassword(UserCreationDTO userCreationDTO, String oldPassword);
 }
