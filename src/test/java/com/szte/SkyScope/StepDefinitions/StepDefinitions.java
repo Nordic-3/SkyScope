@@ -55,6 +55,29 @@ public class StepDefinitions {
     webElementHelper.clickButton(By.id("payBtn"));
   }
 
+  @Given("I am on profile page after successful login")
+  public void onProfilePageAfterSuccessfulLogin() {
+    driver.get("http://localhost:8080/profile");
+    webElementHelper.waitForElementToBeVisible(By.id("reg"));
+    onLoginPageClickRegistrationButton();
+    submitTheRegistrationForm();
+    webElementHelper.waitForElementToBeVisible(By.cssSelector(".card-title"));
+  }
+
+  @When("I click on delete account button")
+  public void clickOnDeleteAccountButton() {
+    webElementHelper.clickButton(By.id("deleteBtn"));
+  }
+
+  @When("I fill password update form with {string}, {string} and {string}")
+  public void fillPasswordUpdateForm(
+      String currentPassword, String newPassword, String rePassword) {
+    webElementHelper.fillInputField(By.id("currentPassword"), currentPassword);
+    webElementHelper.fillInputField(By.id("newPassword"), newPassword);
+    webElementHelper.fillInputField(By.id("rePassword"), rePassword);
+    webElementHelper.clickButton(By.id("pswChange"));
+  }
+
   @When("I filter results by max price option")
   public void filterResultsByMaxPriceOption() {
     int maxPrice =
@@ -389,6 +412,25 @@ public class StepDefinitions {
   public void loginIsNotSuccessful() {
     webElementHelper.waitForElementToBeVisible(By.cssSelector("div[id='error']"));
     assertTrue(webElementHelper.isElementDisplayed(By.cssSelector("div[id='error']")));
+  }
+
+  @Then("my account should be deleted")
+  public void myAccountShouldBeDeleted() {
+    webElementHelper.waitForTextInElement(By.cssSelector("a[href='/flighttracker']"), "Explore");
+    assertTrue(webElementHelper.isElementDisplayed(By.cssSelector("a[href='/flighttracker']")));
+  }
+
+  @Then("my password should be updated successfully")
+  public void myPasswordShouldBeUpdatedSuccessfully() {
+    webElementHelper.waitForElementToBeVisible(By.cssSelector(".text-success"));
+    assertTrue(webElementHelper.isElementDisplayed(By.cssSelector(".text-success")));
+  }
+
+  @And("I confirm the deletion in the popup")
+  public void confirmTheDeletionInThePopup() {
+    webElementHelper.waitForElementToBeVisible(By.id("confirmPassword"));
+    webElementHelper.fillInputField(By.id("confirmPassword"), "Ab01234567");
+    webElementHelper.clickButton(By.id("confirmBtn"));
   }
 
   @And("I submit the registration form")

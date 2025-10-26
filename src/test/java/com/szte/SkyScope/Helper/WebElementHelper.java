@@ -23,6 +23,8 @@ public class WebElementHelper {
   }
 
   public void clickButton(By locator) {
+    new WebDriverWait(driver, Duration.ofSeconds(90))
+        .until(ExpectedConditions.elementToBeClickable(locator));
     driver.findElement(locator).click();
   }
 
