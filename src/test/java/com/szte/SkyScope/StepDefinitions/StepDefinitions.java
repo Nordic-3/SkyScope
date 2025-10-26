@@ -261,7 +261,7 @@ public class StepDefinitions {
 
   @Then("I should see offers with layover duration less or equals than the specified duration")
   public void shouldSeeOffersWithLayoverDurationLessThanTheSpecifiedDuration() {
-    webElementHelper.clickButton(By.name("details"));
+    webElementHelper.clickAllButton(By.name("details"));
     webElementHelper
         .getElementsTextInList(By.name("layoverTime"))
         .forEach(
@@ -348,7 +348,7 @@ public class StepDefinitions {
   @Then("I see offers for 1 adult, 1 child and 1 infant")
   public void seeOffersForAllTypeOfPassengers() {
     webElementHelper.waitForGivenNumberOfElements(By.name("details"), 100);
-    webElementHelper.clickButton(By.name("details"));
+    webElementHelper.clickAllButton(By.name("details"));
     webElementHelper.waitForTextInElement(By.cssSelector("div[class='collapse show']"), "Felnőtt");
     webElementHelper.waitForTextInElement(By.cssSelector("div[class='collapse show']"), "Gyerek");
     webElementHelper.waitForTextInElement(
@@ -394,7 +394,7 @@ public class StepDefinitions {
   @And("I submit the registration form")
   public void submitTheRegistrationForm() {
     fillRegistrationForm(
-        RandomGenerator.getDefault().nextInt(0, 1000) + "@gmail.com", "01234567", "01234567");
+        RandomGenerator.getDefault().nextInt(0, 1000) + "@gmail.com", "Ab01234567", "Ab01234567");
   }
 
   @And("I submit the registration form with too short password")
@@ -405,6 +405,11 @@ public class StepDefinitions {
   @And("I submit the registration form with not matching passwords")
   public void submitTheRegistrationFormWithNotMatchingPasswords() {
     fillRegistrationForm("test@test", "01234567", "12345678");
+  }
+
+  @And("I submit the registration form with weak password")
+  public void submitTheRegistrationFormWithWeakPassword() {
+    fillRegistrationForm("test@test", "01234567", "01234567");
   }
 
   @After

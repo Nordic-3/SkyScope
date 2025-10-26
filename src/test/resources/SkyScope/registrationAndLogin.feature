@@ -22,6 +22,8 @@ Feature: Registration and login
     Then the registration is not successful
     And I submit the registration form with not matching passwords
     Then the registration is not successful
+    And I submit the registration form with weak password
+    Then the registration is not successful
 
   @invalid-login
   Scenario: user login with invalid data

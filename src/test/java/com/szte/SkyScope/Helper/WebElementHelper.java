@@ -23,6 +23,10 @@ public class WebElementHelper {
   }
 
   public void clickButton(By locator) {
+    driver.findElement(locator).click();
+  }
+
+  public void clickAllButton(By locator) {
     driver.findElements(locator).forEach(WebElement::click);
   }
 
