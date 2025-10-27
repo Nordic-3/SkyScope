@@ -45,6 +45,7 @@ public class CreateOrderController {
             FlightOfferFormatter.formatPrice(
                 validatedOffer.getData().getFlightOffers().getFirst().getPrice().getTotal()));
     FlightOfferFormatter.formatAndSetSingleOfferDuration(selectedOffer);
+    createFlightOrderService.setTravellersName(selectedOffer, searchStore.getSearchDatas(searchId).getTravelers());
     model.addAttribute("offer", selectedOffer);
     model.addAttribute("searchId", searchId);
     searchStore

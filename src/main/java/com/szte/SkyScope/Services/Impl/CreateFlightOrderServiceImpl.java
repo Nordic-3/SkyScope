@@ -106,6 +106,20 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
     return cachedApiCalls.getTestAmadeusApiCred().getAccess_token();
   }
 
+  @Override
+  public void setTravellersName(FlightOfferDTO selectedOffer, List<Traveller> travelers) {
+    selectedOffer
+        .getTravelerPricings()
+        .forEach(
+            travelerPricing -> {
+              Traveller traveller =
+                  travelers.stream()
+                      .filter(t -> t.getId().equals(travelerPricing.getTravelerId()))
+                          .toList().getFirst();
+             travelerPricing.setTraveller(traveller.getName().getLastName() + " " + traveller.getName().getFirstName());
+            });
+  }
+
   private FinalPriceResponse getFinalPriceFromApi(FlightPriceRequest request, String token) {
     FinalPriceResponse finalPrice = null;
     try {

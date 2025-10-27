@@ -3,6 +3,7 @@ package com.szte.SkyScope.Services;
 import com.szte.SkyScope.DTOs.FlightOfferDTO;
 import com.szte.SkyScope.Models.CreateOrder;
 import com.szte.SkyScope.Models.FinalPriceResponse;
+import com.szte.SkyScope.Models.Traveller;
 import com.szte.SkyScope.Models.TravellerWrapper;
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface CreateFlightOrderService {
   void createOrder(CreateOrder createOrderBody, String token);
 
   String getTestApiToken();
+
+    void setTravellersName(FlightOfferDTO selectedOffer, List<Traveller> travelers);
 }
