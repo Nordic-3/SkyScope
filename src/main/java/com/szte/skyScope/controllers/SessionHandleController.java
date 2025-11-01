@@ -39,7 +39,7 @@ public class SessionHandleController {
 
   @GetMapping("/login")
   public String login(Model model) {
-    model.addAttribute("registerUser", new UserCreationDTO("", "", "", ""));
+    model.addAttribute("registerUser", new UserCreationDTO("", "", "", "", false));
     return "login";
   }
 
@@ -67,7 +67,7 @@ public class SessionHandleController {
 
   @GetMapping("/profile")
   public String profile(Model model, Principal principal) {
-    model.addAttribute("user", new UserCreationDTO(principal.getName(), "", "", ""));
+    model.addAttribute("user", new UserCreationDTO(principal.getName(), "", "", "", false));
     model.addAttribute("confirmPassword", "");
     return "profile";
   }
@@ -79,7 +79,7 @@ public class SessionHandleController {
       Principal principal) {
     UserCreationDTO updateUser =
         new UserCreationDTO(
-            principal.getName(), user.password(), user.rePassword(), user.oldPassword());
+            principal.getName(), user.password(), user.rePassword(), user.oldPassword(), true);
     String errors =
         inputValidationService.validatePasswordAndEmail(updateUser)
             + inputValidationService.validateOldPassword(
@@ -102,7 +102,7 @@ public class SessionHandleController {
       RedirectAttributes redirectAttributes) {
     String errors =
         inputValidationService.validateOldPassword(
-            new UserCreationDTO("", "", "", password),
+            new UserCreationDTO("", "", "", password, true),
             userService.getUserByEmail(principal.getName()).get().getPassword());
     if (!errors.isEmpty()) {
       redirectAttributes.addFlashAttribute("validationError", errors);
@@ -118,6 +118,11 @@ public class SessionHandleController {
     new SecurityContextLogoutHandler()
         .logout(request, response, SecurityContextHolder.getContext().getAuthentication());
     return "index";
+  }
+
+  @GetMapping("/gdpr")
+  public String gdpr() {
+    return "gdpr";
   }
 
   public void authWithHttpServletRequest(

@@ -69,6 +69,13 @@
                                        required>
                                 <label for="signupRePassword" class="ms-1">Jelszó újra</label>
                             </div>
+                            <div class="form-check form-switch ms-4">
+                                <input class="form-check-input" type="checkbox" role="switch" id="gdpr"
+                                       th:field="*{gdprAccepted}" required>
+                                <label class="form-check-label" for="gdpr">Az <a href="/gdpr"
+                                                                                 class="badge text-bg-info text-wrap">adatvédelmi
+                                    tájékoztatót </a>elfogadom</label>
+                            </div>
                             <hr class="mb-0 mt-3">
                             <div class="d-flex gap-2 mt-3">
                                 <button type="submit" class="btn btn-outline-info rounded-btn flex-fill" id="signup">

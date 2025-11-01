@@ -30,6 +30,7 @@ public class InputValidationServiceImpl implements InputValidationService {
   private static final String BAD_OLD_PASSWORD = "A jelenlegi jelszó nem megfelelő!";
   private static final String WEAK_PASSWORD =
       "A jelszónak tartalmaznia kell legalább egy nagybetűt, egy kisbetűt és egy számot!";
+  private static final String GDPR_COMPULSORY = "Az adatvédelmi tájékoztató elfogadása kötelező!";
 
   private final SecurityConfig securityConfig;
 
@@ -75,6 +76,9 @@ public class InputValidationServiceImpl implements InputValidationService {
 
     if (!userCreationDTO.password().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$")) {
       return WEAK_PASSWORD;
+    }
+    if (!userCreationDTO.gdprAccepted()) {
+      return GDPR_COMPULSORY;
     }
     return "";
   }

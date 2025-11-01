@@ -497,6 +497,7 @@ public class StepDefinitions {
     webElementHelper.fillInputField(By.id("signupEmail"), email);
     webElementHelper.fillInputField(By.id("signupPassword"), password);
     webElementHelper.fillInputField(By.id("signupRePassword"), rePassword);
+    webElementHelper.checkCheckbox(By.id("gdpr"));
     webElementHelper.clickButton(By.id("signup"));
   }
 }
