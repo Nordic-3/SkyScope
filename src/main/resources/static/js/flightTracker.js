@@ -91,13 +91,13 @@ function calculateAndUpdatePlanPosition() {
         lat: convertDegreeToRadian(plane.lat),
         heading: convertDegreeToRadian(plane.heading)
     }
-    let squareDistance = distance / averageRadiusOfEarth;
+    let angularDistance = distance / averageRadiusOfEarth;
 
     let newLat = Math.asin(
-        Math.sin(planeInRadian.lat) * Math.cos(squareDistance) + Math.cos(planeInRadian.lat) * Math.sin(squareDistance) * Math.cos(planeInRadian.heading));
+        Math.sin(planeInRadian.lat) * Math.cos(angularDistance) + Math.cos(planeInRadian.lat) * Math.sin(angularDistance) * Math.cos(planeInRadian.heading));
     let newLng = planeInRadian.lng + Math.atan2(
-        Math.sin(planeInRadian.heading) * Math.sin(squareDistance) * Math.cos(planeInRadian.lat),
-        Math.cos(squareDistance) - Math.sin(planeInRadian.lat) * Math.sin(newLat));
+        Math.sin(planeInRadian.heading) * Math.sin(angularDistance) * Math.cos(planeInRadian.lat),
+        Math.cos(angularDistance) - Math.sin(planeInRadian.lat) * Math.sin(newLat));
     plane.lat = convertRadianToDegree(newLat);
     plane.lng = convertRadianToDegree(newLng);
     marker.setLatLng([plane.lat, plane.lng]);
