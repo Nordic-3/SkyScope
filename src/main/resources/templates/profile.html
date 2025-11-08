@@ -24,6 +24,7 @@
             </div>
             <form class="row align-items-center m-auto justify-content-center gap-2"
                   method="POST" th:action="@{/profile/passwordChange}" th:object="${user}">
+                <input type="hidden" th:value="${user.gdprAccepted()}" th:field="*{gdprAccepted}">
                 <div class="row text-info">Jelszó változtatás</div>
                 <div class="form-floating">
                     <input type="password" class="form-control" id="currentPassword" placeholder="jelenlegi jelszó"
