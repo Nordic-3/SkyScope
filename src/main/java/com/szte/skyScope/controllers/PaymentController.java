@@ -22,7 +22,7 @@ public class PaymentController {
   @PostMapping("/createOrder/payment/{searchId}")
   public void payment(@PathVariable String searchId, HttpServletResponse response) {
     try {
-      Session session = Session.create(paymentService.createStriePaymentSession(searchId));
+      Session session = Session.create(paymentService.createStripePaymentSession(searchId));
       response.setStatus(303);
       response.setHeader("Location", session.getUrl());
     } catch (Exception exception) {

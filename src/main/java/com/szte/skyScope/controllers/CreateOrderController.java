@@ -100,7 +100,7 @@ public class CreateOrderController {
   }
 
   @GetMapping("/createOrder/create/{searchId}")
-  public String createOrer(@PathVariable String searchId) {
+  public String createOrder(@PathVariable String searchId) {
     CreateOrder createOrder = new CreateOrder();
     createOrder.getData().setTravelers(searchStore.getSearchDatas(searchId).getTravelers());
     createOrder

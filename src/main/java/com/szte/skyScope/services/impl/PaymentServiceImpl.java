@@ -21,7 +21,7 @@ public class PaymentServiceImpl implements PaymentService {
   }
 
   @Override
-  public SessionCreateParams createStriePaymentSession(String searchId) {
+  public SessionCreateParams createStripePaymentSession(String searchId) {
     Stripe.apiKey = applicationConfig.getStripeSecret();
     return SessionCreateParams.builder()
         .setMode(SessionCreateParams.Mode.PAYMENT)
