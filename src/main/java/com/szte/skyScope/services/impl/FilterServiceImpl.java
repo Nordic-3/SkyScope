@@ -124,7 +124,7 @@ public class FilterServiceImpl implements FilterService {
   private boolean filterPrice(FlightOfferDTO offer, ChosenFilters filter) {
     return filter.getMaxPrice().isEmpty()
         || Integer.parseInt(offer.getPrice().getTotal().split("\\.")[0])
-            <= Integer.parseInt(filter.getMaxPrice());
+            <= Integer.parseInt(filter.getMaxPrice().split("\\.")[0]);
   }
 
   private boolean filterAirline(FlightOfferDTO offer, ChosenFilters filter) {
