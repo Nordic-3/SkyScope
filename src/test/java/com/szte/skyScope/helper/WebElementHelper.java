@@ -82,6 +82,7 @@ public class WebElementHelper {
   }
 
   public String getValueOfAnAttribute(By locator, String attribute) {
+    waitForElementToBeVisible(locator);
     return driver.findElement(locator).getDomAttribute(attribute);
   }
 

@@ -88,7 +88,7 @@ public class StepDefinitions {
                     .getValueOfAnAttribute(By.cssSelector("input[aria-label='Max']"), "placeholder")
                     .split("Ft")[0]
                     .split(" ")));
-    dataStore.putData("filteredPrice", Integer.toString(maxPrice / 2));
+    dataStore.putData("filteredPrice", Double.toString(maxPrice / 1.5));
     webElementHelper.fillInputField(
         By.cssSelector("input[aria-label='Max']"),
         dataStore.getValue("filteredPrice", String.class));
@@ -271,7 +271,8 @@ public class StepDefinitions {
 
   @Then("I should see cheaper or equals offers than the specified max price")
   public void shouldSeeCheaperOrEqualsOffersThanTheSpecifiedMaxPrice() {
-    int filteredPrice = Integer.parseInt(dataStore.getValue("filteredPrice", String.class));
+    int filteredPrice =
+        Integer.parseInt(dataStore.getValue("filteredPrice", String.class).split("\\.")[0]);
     getPrices().forEach(price -> assertTrue(price <= filteredPrice));
   }
 
