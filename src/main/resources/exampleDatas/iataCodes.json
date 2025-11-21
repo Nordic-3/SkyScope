@@ -35,5 +35,13 @@
       "detailedName": "BARCELONA/ES",
       "iataCode": "BCN"
     }
+  ],
+  "Dubai": [
+    {
+      "type": "location",
+      "subType": "CITY",
+      "name": "DUBAI",
+      "iataCode": "DXB"
+    }
   ]
 }
