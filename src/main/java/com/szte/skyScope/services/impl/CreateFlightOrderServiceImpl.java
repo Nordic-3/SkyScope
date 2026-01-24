@@ -4,10 +4,9 @@ import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.dtos.FlightOfferDTO;
 import com.szte.skyScope.enums.TravellerTypes;
 import com.szte.skyScope.models.*;
-import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.CachedApiCalls;
+import com.szte.skyScope.services.CreateFlightOrderProvider;
 import com.szte.skyScope.services.CreateFlightOrderService;
-import com.szte.skyScope.services.JsonReaderService;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,27 +19,24 @@ import org.springframework.web.client.RestClient;
 public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
-  private final JsonReaderService jsonReaderService;
   private final Logger logger = Logger.getLogger(CreateFlightOrderServiceImpl.class.getName());
   private final CachedApiCalls cachedApiCalls;
+  private final CreateFlightOrderProvider createFlightOrderProvider;
 
   @Autowired
   public CreateFlightOrderServiceImpl(
       ApplicationConfig applicationConfig,
-      JsonReaderService jsonReaderService,
-      CachedApiCalls cachedApiCalls) {
+      CachedApiCalls cachedApiCalls,
+      CreateFlightOrderProvider createFlightOrderProvider) {
     this.applicationConfig = applicationConfig;
-    this.jsonReaderService = jsonReaderService;
     this.cachedApiCalls = cachedApiCalls;
+    this.createFlightOrderProvider = createFlightOrderProvider;
   }
 
   @Override
   public FinalPriceResponse getFinalPrice(FlightOfferDTO flightOffer, String token) {
-    if (applicationConfig.useApis() && !applicationConfig.getAmadeusFinalPrice().equals("noApi")) {
-      return getFinalPriceFromApi(
-          new FlightPriceRequest(new FlightPriceRequest.Data(flightOffer)), token);
-    }
-    return getFinalPriceFromJson();
+    return createFlightOrderProvider.getFinalPrice(
+        new FlightPriceRequest(new FlightPriceRequest.Data(flightOffer)), token);
   }
 
   @Override
@@ -120,34 +116,5 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
               travelerPricing.setTraveller(
                   traveller.getName().getLastName() + " " + traveller.getName().getFirstName());
             });
-  }
-
-  private FinalPriceResponse getFinalPriceFromApi(FlightPriceRequest request, String token) {
-    FinalPriceResponse finalPrice = null;
-    try {
-      finalPrice =
-          restClient
-              .post()
-              .uri(applicationConfig.getAmadeusFinalPrice())
-              .header("Authorization", "Bearer " + token)
-              .contentType(MediaType.APPLICATION_JSON)
-              .body(request)
-              .retrieve()
-              .body(FinalPriceResponse.class);
-
-    } catch (Exception exception) {
-      logger.log(Level.SEVERE, exception.getMessage(), exception);
-    }
-    return finalPrice != null ? finalPrice : new FinalPriceResponse();
-  }
-
-  private FinalPriceResponse getFinalPriceFromJson() {
-    FinalPriceResponse finalPrice =
-        Parser.parseFlightPriceRequest(
-            jsonReaderService.readJsonFromResources("exampleDatas/finalPrice.json"));
-    if (finalPrice == null) {
-      return new FinalPriceResponse();
-    }
-    return finalPrice;
   }
 }

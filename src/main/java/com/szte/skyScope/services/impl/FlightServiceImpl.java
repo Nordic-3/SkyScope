@@ -1,7 +1,6 @@
 package com.szte.skyScope.services.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.dtos.FlightOfferDTO;
 import com.szte.skyScope.enums.TravellerTypes;
 import com.szte.skyScope.models.FlightSearch;
@@ -14,38 +13,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class FlightServiceImpl implements FlightService {
 
-  private final RestClient restClient = RestClient.create();
-  private final ApplicationConfig applicationConfig;
-  private final JsonReaderService jsonReaderService;
   private final SearchStore searchStore;
   private final CityService cityService;
   private final CachedApiCalls cachedApiCalls;
+  private final FlightServiceProvider flightServiceProvider;
 
   @Autowired
   public FlightServiceImpl(
-      ApplicationConfig applicationConfig,
-      JsonReaderService jsonReaderService,
       SearchStore searchStore,
       CityService cityService,
-      CachedApiCalls cachedApiCalls) {
-    this.applicationConfig = applicationConfig;
-    this.jsonReaderService = jsonReaderService;
+      CachedApiCalls cachedApiCalls,
+      FlightServiceProvider flightServiceProvider) {
     this.searchStore = searchStore;
     this.cityService = cityService;
     this.cachedApiCalls = cachedApiCalls;
+    this.flightServiceProvider = flightServiceProvider;
   }
 
   @Override
@@ -66,38 +57,9 @@ public class FlightServiceImpl implements FlightService {
   @Override
   public CompletableFuture<List<FlightOfferDTO>> getFlightOffers(
       FlightSearch flightSearch, String token, String searchId) {
-    if (applicationConfig.getAmadeusCitySearchApi().equals("noApi")
-        || !applicationConfig.useApis()) {
-      return CompletableFuture.completedFuture(
-          getFlightOffersFromLocalJson(flightSearch, searchId));
-    }
-    UriComponentsBuilder uriBulder =
-        UriComponentsBuilder.fromUriString(applicationConfig.getAmadeusFlightOfferSearchApi());
-    uriBulder.queryParam("originLocationCode", flightSearch.getOriginCityIata());
-    uriBulder.queryParam("destinationLocationCode", flightSearch.getDestinationCityIata());
-    uriBulder.queryParam("departureDate", flightSearch.getDepartureDate());
-    uriBulder.queryParam("adults", flightSearch.getNumberOfAdults());
-    uriBulder.queryParam("currencyCode", "HUF");
-    uriBulder.queryParam("max", 100);
-    bindOptionalParameters(uriBulder, flightSearch);
-    String response =
-        restClient
-            .get()
-            .uri(uriBulder.build(true).toUri())
-            .header("Authorization", "Bearer " + token)
-            .header("Accept", "application/json")
-            .retrieve()
-            .body(String.class);
+    String response = flightServiceProvider.getFlightOffers(flightSearch, token);
     saveDictionaries(response, searchId);
     return CompletableFuture.completedFuture(Parser.parseFlightOffersFromJson(response));
-  }
-
-  @Override
-  public List<FlightOfferDTO> getFlightOffersFromLocalJson(
-      FlightSearch flightSearch, String searchId) {
-    String response = jsonReaderService.readJsonFromResources("exampleDatas/FlightOffers.json");
-    saveDictionaries(response, searchId);
-    return Parser.parseFlightOffersFromJson(response);
   }
 
   @Override
@@ -137,8 +99,7 @@ public class FlightServiceImpl implements FlightService {
       Map<String, Location> locations, String token) {
     Map<String, String> airportNamesByIataCode = new HashMap<>();
     locations.forEach(
-        (key, value) ->
-            airportNamesByIataCode.put(key, cachedApiCalls.getAirportNameFromApi(key, token)));
+        (key, value) -> airportNamesByIataCode.put(key, cachedApiCalls.getAirportName(key, token)));
     return airportNamesByIataCode;
   }
 
@@ -178,10 +139,7 @@ public class FlightServiceImpl implements FlightService {
 
   @Override
   public Map<String, String> getIcaoCodes(Map<String, String> carrierDictionary, String token) {
-    if (!applicationConfig.useApis() || applicationConfig.getAmadeusAirlineCode().equals("noApi")) {
-      return getIcaoCodesFromLocalFile();
-    }
-    return getIcaoCodesFromApi(String.join(",", carrierDictionary.keySet()), token);
+    return flightServiceProvider.getIcaoCodes(carrierDictionary, token);
   }
 
   @Override
@@ -205,9 +163,9 @@ public class FlightServiceImpl implements FlightService {
   }
 
   private void setEnglishNameOfTheCities(FlightSearch flightSearch) {
-    flightSearch.setOriginCity(cityService.getCityFromApi(flightSearch.getOriginCity()).getName());
+    flightSearch.setOriginCity(cityService.getCity(flightSearch.getOriginCity()).getName());
     flightSearch.setDestinationCity(
-        cityService.getCityFromApi(flightSearch.getDestinationCity()).getName());
+        cityService.getCity(flightSearch.getDestinationCity()).getName());
   }
 
   private String normalizeCityNames(String name) {
@@ -240,25 +198,6 @@ public class FlightServiceImpl implements FlightService {
             Parser.parseFlightDictionary(json, "carriers", new TypeReference<>() {}));
   }
 
-  private void bindOptionalParameters(UriComponentsBuilder uriBulder, FlightSearch flightSearch) {
-    if (isNotNullAndNotEmpty(flightSearch.getReturnDate())) {
-      uriBulder.queryParam("returnDate", flightSearch.getReturnDate());
-    }
-    if (isNotNullAndNotEmpty(flightSearch.getNumberOfChildren())) {
-      uriBulder.queryParam("children", flightSearch.getNumberOfChildren());
-    }
-    if (isNotNullAndNotEmpty(flightSearch.getNumberOfInfants())) {
-      uriBulder.queryParam("infants", flightSearch.getNumberOfInfants());
-    }
-    if (flightSearch.getTravelClass() != null && !flightSearch.getTravelClass().equals("ALL")) {
-      uriBulder.queryParam("travelClass", flightSearch.getTravelClass());
-    }
-  }
-
-  private boolean isNotNullAndNotEmpty(String dataToCheck) {
-    return dataToCheck != null && !dataToCheck.isEmpty();
-  }
-
   private void setHungarianNameOfTravellerTypes(List<FlightOfferDTO> flightOffers) {
     flightOffers.stream()
         .flatMap(flightOffer -> flightOffer.getTravelerPricings().stream())
@@ -266,28 +205,5 @@ public class FlightServiceImpl implements FlightService {
             travelerPricing ->
                 travelerPricing.setTraveller(
                     TravellerTypes.getValueFromType(travelerPricing.getTravelerType())));
-  }
-
-  private Map<String, String> getIcaoCodesFromApi(String iataCodes, String token) {
-    String response;
-    try {
-      response =
-          restClient
-              .get()
-              .uri(applicationConfig.getAmadeusAirlineCode(), iataCodes)
-              .header("Authorization", "Bearer " + token)
-              .retrieve()
-              .body(String.class);
-      return Parser.getIcaoCodesFromJson(response);
-    } catch (Exception exception) {
-      Logger.getLogger(FlightServiceImpl.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
-      return new HashMap<>();
-    }
-  }
-
-  private Map<String, String> getIcaoCodesFromLocalFile() {
-    return Parser.getIcaoCodesFromJson(
-        jsonReaderService.readJsonFromResources("exampleDatas/icaoCodes.json"));
   }
 }

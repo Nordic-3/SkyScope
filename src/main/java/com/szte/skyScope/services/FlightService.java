@@ -16,8 +16,6 @@ public interface FlightService {
   CompletableFuture<List<FlightOfferDTO>> getFlightOffers(
       FlightSearch flightSearch, String token, String searchId);
 
-  List<FlightOfferDTO> getFlightOffersFromLocalJson(FlightSearch flightSearch, String searchId);
-
   void setAircraftType(List<FlightOfferDTO> flightOffers, Map<String, String> aircrafts);
 
   void setCarrierNames(List<FlightOfferDTO> flightOffers, Map<String, String> carriers);
