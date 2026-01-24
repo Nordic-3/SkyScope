@@ -5,9 +5,7 @@ import com.szte.skyScope.models.AmadeusApiCred;
 import com.szte.skyScope.services.CachedApiCalls;
 import com.szte.skyScope.services.CachedApiCallsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,14 +50,6 @@ public class CachedApiCallsImpl implements CachedApiCalls {
         applicationConfig.getAmadeusTestClientSecret(),
         applicationConfig.getAmadeusTestAuthUrl());
   }
-
-  @CacheEvict(value = "amadeusApiToken", allEntries = true)
-  @Scheduled(fixedRateString = "${amadeus_token_expiry}")
-  public void emptyAmadeusApiToken() {}
-
-  @CacheEvict(value = "amadeusTestApiToken", allEntries = true)
-  @Scheduled(fixedRateString = "${amadeus_token_expiry}")
-  public void emptyTestToken() {}
 
   private AmadeusApiCred getApiCred(String clientId, String clientSecret, String authUrl) {
     return cachedApiCallsProvider.getApiCred(clientId, clientSecret, authUrl);

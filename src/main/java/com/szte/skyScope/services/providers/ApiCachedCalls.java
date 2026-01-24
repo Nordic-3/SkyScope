@@ -7,6 +7,8 @@ import com.szte.skyScope.services.CachedApiCallsProvider;
 import com.szte.skyScope.services.impl.CachedApiCallsImpl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestClient;
 
 public class ApiCachedCalls implements CachedApiCallsProvider {
@@ -52,6 +54,14 @@ public class ApiCachedCalls implements CachedApiCallsProvider {
         .retrieve()
         .body(AmadeusApiCred.class);
   }
+
+  @CacheEvict(value = "amadeusApiToken", allEntries = true)
+  @Scheduled(fixedRateString = "${amadeus_token_expiry}")
+  public void emptyAmadeusApiToken() {}
+
+  @CacheEvict(value = "amadeusTestApiToken", allEntries = true)
+  @Scheduled(fixedRateString = "${amadeus_token_expiry}")
+  public void emptyTestToken() {}
 
   private String getCityAirportSearchResponse(String keyword, String subType, String token) {
     return restClient
