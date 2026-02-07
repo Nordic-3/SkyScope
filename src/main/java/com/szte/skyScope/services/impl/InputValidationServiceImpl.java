@@ -137,7 +137,7 @@ public class InputValidationServiceImpl implements InputValidationService {
       if (!flightSearch.isOneWay()) {
         returnDate = LocalDate.parse(flightSearch.getReturnDate());
       }
-    } catch (DateTimeParseException exception) {
+    } catch (Exception exception) {
       return INVALID_DATE_FORMAT;
     }
     if (departureDate.isBefore(LocalDate.now())) {
@@ -230,12 +230,14 @@ public class InputValidationServiceImpl implements InputValidationService {
 
   private String validEmailAddress(TravellerWrapper travellers) {
     if (travellers.getTravellers().stream()
-        .noneMatch(
-            traveller ->
-                traveller
-                    .getContact()
-                    .getEmailAddress()
-                    .matches("^[\\w\\-.]+@([\\w-]+\\.)+[\\w-]{2,}$"))) {
+            .anyMatch(traveller -> traveller.getContact().getEmailAddress() == null)
+        || travellers.getTravellers().stream()
+            .noneMatch(
+                traveller ->
+                    traveller
+                        .getContact()
+                        .getEmailAddress()
+                        .matches("^[\\w\\-.]+@([\\w-]+\\.)+[\\w-]{2,}$"))) {
       return " Az email formátuma nem megfelelő!";
     }
     return "";
@@ -286,7 +288,7 @@ public class InputValidationServiceImpl implements InputValidationService {
                 LocalDate.parse(traveller.getDocuments().getFirst().getIssuanceDate());
                 LocalDate.parse(traveller.getDocuments().getFirst().getExpiryDate());
                 return false;
-              } catch (DateTimeParseException exception) {
+              } catch (Exception exception) {
                 return true;
               }
             })) {
