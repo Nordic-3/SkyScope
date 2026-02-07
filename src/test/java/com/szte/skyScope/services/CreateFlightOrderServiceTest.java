@@ -137,6 +137,7 @@ class CreateFlightOrderServiceTest {
 
     createFlightOrderService.setTravellersName(selectedOffer, List.of(traveller));
 
-    assertThat(selectedOffer.getTravelerPricings().getFirst().getTraveller()).isEqualTo("Test John");
+    assertThat(selectedOffer.getTravelerPricings().getFirst().getTraveller())
+        .isEqualTo("Test John");
   }
 }

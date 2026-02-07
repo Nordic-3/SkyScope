@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.szte.skyScope.dtos.FlightOfferDTO;
+import com.szte.skyScope.factories.FlightOfferDTOFactory;
 import com.szte.skyScope.models.CheapestDateOffer;
 import com.szte.skyScope.models.FlightSearch;
 import com.szte.skyScope.models.SearchData;
@@ -39,7 +40,8 @@ class CheapestFlightDateServiveTest {
 
   @Test
   void shouldReturnNullWhenNoCheaperOffersFound() {
-    List<FlightOfferDTO> currentOffers = List.of(createMockOffer("100.00"));
+    List<FlightOfferDTO> currentOffers =
+        List.of(FlightOfferDTOFactory.createFlightOfferWithTravelerPricing("150000.0"));
     CheapestDateOffer expensiveOffer = new CheapestDateOffer();
     expensiveOffer.setPrice(40000);
 
@@ -56,9 +58,10 @@ class CheapestFlightDateServiveTest {
 
   @Test
   void shouldReturnNewOffersWhenCheaperOfferExists() {
-    List<FlightOfferDTO> currentOffers = List.of(createMockOffer("100.00"));
+    List<FlightOfferDTO> currentOffers =
+        List.of(FlightOfferDTOFactory.createFlightOfferWithTravelerPricing("150000.0"));
     CheapestDateOffer cheapOffer = new CheapestDateOffer();
-    cheapOffer.setPrice(30000);
+    cheapOffer.setPrice(300);
     cheapOffer.setDepartureDate("2026-05-10");
 
     when(cheapestFlightDataProvider.getCheapestDateOffers(any(), any()))
@@ -76,16 +79,5 @@ class CheapestFlightDateServiveTest {
     assertThat(result.join()).isEqualTo(newOffers);
     verify(mockSearchData).setCheaperSearch(any(FlightSearch.class));
     verify(flightService).getFlightOffers(any(), any(), any());
-  }
-
-  private FlightOfferDTO createMockOffer(String priceTotal) {
-    FlightOfferDTO offer = new FlightOfferDTO();
-    FlightOfferDTO.TravelerPricing pricing = new FlightOfferDTO.TravelerPricing();
-    pricing.setTravelerType("ADULT");
-    FlightOfferDTO.Price price = new FlightOfferDTO.Price();
-    price.setTotal(priceTotal);
-    pricing.setPrice(price);
-    offer.setTravelerPricings(List.of(pricing));
-    return offer;
   }
 }
