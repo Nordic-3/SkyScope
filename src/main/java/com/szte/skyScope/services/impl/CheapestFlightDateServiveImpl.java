@@ -52,8 +52,8 @@ public class CheapestFlightDateServiveImpl implements CheapestFlightDateService 
               String total = travelerPricing.getPrice().getTotal();
               if (!total.isEmpty()) {
                 int price = Integer.parseInt(total.split("\\.")[0]);
-                return cheapestDateOffer.getPrice() < (price * 380)
-                    && cheapestDateOffer.getPrice() != price * 380;
+                return cheapestDateOffer.getPrice() < (price / 380)
+                    && cheapestDateOffer.getPrice() != price / 380;
               }
               return false;
             });
