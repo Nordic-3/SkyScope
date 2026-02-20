@@ -42,7 +42,7 @@ public class FlightOfferDTOFactory {
     return offer;
   }
 
-  public static FlightOfferDTO createFlightOfferWithDurations() {
+  public static FlightOfferDTO createFlightOfferWithDepartureAndArrival() {
     FlightOfferDTO flightOffer = new FlightOfferDTO();
     FlightOfferDTO.Itinerary itinerary = new FlightOfferDTO.Itinerary();
     FlightOfferDTO.Segment segment = new FlightOfferDTO.Segment();

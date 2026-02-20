@@ -167,7 +167,7 @@ class InputValidationServiceTest {
     TravellerWrapper validWrapper = new TravellerWrapper();
     validWrapper.setTravellers(java.util.List.of(validTraveller));
 
-    FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDurations();
+    FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDepartureAndArrival();
 
     TravellerWrapper wrapper = new TravellerWrapper();
     Traveller traveller = new Traveller();
@@ -188,7 +188,7 @@ class InputValidationServiceTest {
     TravellerWrapper wrapper = new TravellerWrapper();
     wrapper.setTravellers(java.util.List.of(traveller));
 
-    FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDurations();
+    FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDepartureAndArrival();
 
     String response = validationService.validateTravellers(wrapper, flightOffer);
     assertThat(response)
@@ -203,7 +203,7 @@ class InputValidationServiceTest {
     TravellerWrapper wrapper = new TravellerWrapper();
     wrapper.setTravellers(java.util.List.of(traveller));
 
-    FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDurations();
+    FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDepartureAndArrival();
 
     String response = validationService.validateTravellers(wrapper, flightOffer);
     assertThat(response).contains("Az úti okmány nem érvényes az utazás idején!");
@@ -226,7 +226,7 @@ class InputValidationServiceTest {
     TravellerWrapper wrapper = new TravellerWrapper();
     wrapper.setTravellers(java.util.List.of(traveller));
 
-    FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDurations();
+    FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDepartureAndArrival();
 
     traveller.getDocuments().getFirst().setExpiryDate(LocalDate.now().minusYears(10).toString());
     String response = validationService.validateTravellers(wrapper, flightOffer);
