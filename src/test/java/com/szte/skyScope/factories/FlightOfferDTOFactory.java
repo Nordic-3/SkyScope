@@ -14,6 +14,7 @@ public class FlightOfferDTOFactory {
     segment.getAircraft().setName("Boeing");
     segment.setCurrentlyFlying(true);
     itinerary.setSegments(List.of(segment));
+    itinerary.setDuration("PT1H30M");
     offer.setItineraries(List.of(itinerary));
     offer.getPrice().setTotal("150000.0");
     return offer;
@@ -26,6 +27,7 @@ public class FlightOfferDTOFactory {
     segment.getOperating().setCarrierName("Lufthansa");
     segment.getAircraft().setName("Airbus");
     itinerary.setSegments(List.of(segment));
+    itinerary.setDuration("PT2H30M");
     offer.setItineraries(List.of(itinerary));
     offer.getPrice().setTotal("300000");
     return offer;
@@ -50,6 +52,7 @@ public class FlightOfferDTOFactory {
     segment.getAircraft().setName("Boeing");
     segment.setCurrentlyFlying(true);
     itinerary.setSegments(List.of(segment));
+    itinerary.setDuration("PT1H30M");
     flightOffer.setItineraries(List.of(itinerary));
     flightOffer.getPrice().setTotal("150000.0");
     FlightOfferDTO.FlightSchedule departure = new FlightOfferDTO.FlightSchedule();
