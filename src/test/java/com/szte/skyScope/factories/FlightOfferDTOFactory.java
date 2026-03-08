@@ -49,7 +49,9 @@ public class FlightOfferDTOFactory {
     FlightOfferDTO.Itinerary itinerary = new FlightOfferDTO.Itinerary();
     FlightOfferDTO.Segment segment = new FlightOfferDTO.Segment();
     segment.getOperating().setCarrierName("United Airlines");
+    segment.getOperating().setCarrierCode("UA");
     segment.getAircraft().setName("Boeing");
+    segment.getAircraft().setCode("B747");
     segment.setCurrentlyFlying(true);
     itinerary.setSegments(List.of(segment));
     itinerary.setDuration("PT1H30M");
@@ -63,6 +65,9 @@ public class FlightOfferDTOFactory {
     segment.setArrival(arrival);
     itinerary.setSegments(java.util.List.of(segment));
     flightOffer.setItineraries(java.util.List.of(itinerary));
+    FlightOfferDTO.TravelerPricing pricing = new FlightOfferDTO.TravelerPricing();
+    pricing.setTravelerType("ADULT");
+    flightOffer.setTravelerPricings(List.of(pricing));
     return flightOffer;
   }
 
@@ -90,5 +95,19 @@ public class FlightOfferDTOFactory {
     flightOffer.setItineraries(List.of(itinerary));
     flightOffer.getPrice().setTotal("100000");
     return flightOffer;
+  }
+
+  public static FlightOfferDTO createOfferWithCallsign() {
+    FlightOfferDTO offer = new FlightOfferDTO();
+    FlightOfferDTO.Itinerary itinerary = new FlightOfferDTO.Itinerary();
+    FlightOfferDTO.Segment segment = new FlightOfferDTO.Segment();
+    segment.getOperating().setCarrierName("Lufthansa");
+    segment.getAircraft().setName("Airbus");
+    segment.setCallSign("LH123");
+    itinerary.setSegments(List.of(segment));
+    itinerary.setDuration("PT2H30M");
+    offer.setItineraries(List.of(itinerary));
+    offer.getPrice().setTotal("300000");
+    return offer;
   }
 }
