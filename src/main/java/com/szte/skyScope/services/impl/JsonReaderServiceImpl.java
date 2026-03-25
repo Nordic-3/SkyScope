@@ -13,12 +13,21 @@ public class JsonReaderServiceImpl implements JsonReaderService {
   @Override
   public String readJsonFromResources(String file) {
     String json = "";
-    try (InputStream jsonFile = getClass().getClassLoader().getResourceAsStream(file)) {
+    try (InputStream jsonFile = getResourceStream(file)) {
+      if (jsonFile == null) {
+        Logger.getLogger(JsonReaderServiceImpl.class.getName())
+            .log(Level.SEVERE, "File not found: " + file);
+        return "";
+      }
       json = new String(jsonFile.readAllBytes());
     } catch (IOException exception) {
       Logger.getLogger(JsonReaderServiceImpl.class.getName())
           .log(Level.SEVERE, exception.getMessage(), exception);
     }
     return json;
+  }
+
+  public InputStream getResourceStream(String file) {
+    return getClass().getClassLoader().getResourceAsStream(file);
   }
 }
