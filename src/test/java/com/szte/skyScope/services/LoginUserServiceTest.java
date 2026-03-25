@@ -44,8 +44,6 @@ class LoginUserServiceTest {
     String email = "notfound@example.com";
     when(userService.getUserByEmail(email)).thenReturn(Optional.empty());
 
-    assertThrows(
-        UsernameNotFoundException.class,
-        () -> loginUserService.loadUserByUsername(email));
+    assertThrows(UsernameNotFoundException.class, () -> loginUserService.loadUserByUsername(email));
   }
 }
