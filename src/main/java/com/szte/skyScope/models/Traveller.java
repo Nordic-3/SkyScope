@@ -2,7 +2,13 @@ package com.szte.skyScope.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
+@Getter
+@NoArgsConstructor
 public class Traveller {
   private String id;
   private String type;
@@ -17,133 +23,25 @@ public class Traveller {
     this.type = type;
   }
 
-  public Traveller() {}
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getDateOfBirth() {
-    return dateOfBirth;
-  }
-
-  public void setDateOfBirth(String dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
-  }
-
-  public Name getName() {
-    return name;
-  }
-
-  public void setName(Name name) {
-    this.name = name;
-  }
-
-  public String getGender() {
-    return gender;
-  }
-
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-  public Contact getContact() {
-    return contact;
-  }
-
-  public void setContact(Contact contact) {
-    this.contact = contact;
-  }
-
-  public List<Passport> getDocuments() {
-    return documents;
-  }
-
-  public void setDocuments(List<Passport> documents) {
-    this.documents = documents;
-  }
-
+  @Setter
+  @Getter
   public static class Name {
     private String firstName;
     private String lastName;
-
-    public String getFirstName() {
-      return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-      this.firstName = firstName;
-    }
-
-    public String getLastName() {
-      return lastName;
-    }
-
-    public void setLastName(String lastName) {
-      this.lastName = lastName;
-    }
   }
 
+  @Setter
+  @Getter
   public static class Contact {
     private String emailAddress;
     private List<Phone> phones = new ArrayList<>();
-
-    public String getEmailAddress() {
-      return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-      this.emailAddress = emailAddress;
-    }
-
-    public List<Phone> getPhones() {
-      return phones;
-    }
-
-    public void setPhones(List<Phone> phones) {
-      this.phones = phones;
-    }
   }
 
+  @Setter
+  @Getter
   public static class Phone {
     private String deviceType = "MOBILE";
     private String countryCallingCode;
     private String number;
-
-    public String getDeviceType() {
-      return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-      this.deviceType = deviceType;
-    }
-
-    public String getCountryCallingCode() {
-      return countryCallingCode;
-    }
-
-    public void setCountryCallingCode(String countryCallingCode) {
-      this.countryCallingCode = countryCallingCode;
-    }
-
-    public String getNumber() {
-      return number;
-    }
-
-    public void setNumber(String number) {
-      this.number = number;
-    }
   }
 }

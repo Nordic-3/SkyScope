@@ -1,18 +1,22 @@
 package com.szte.skyScope.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@NoArgsConstructor
 public class Passport {
-  private String documentType;
-  private String birthPlace;
-  private String issuanceLocation;
-  private String issuanceDate;
-  private String number;
-  private String expiryDate;
+  @Setter private String documentType;
+  @Setter private String birthPlace;
+  @Setter private String issuanceLocation;
+  @Setter private String issuanceDate;
+  @Setter private String number;
+  @Setter private String expiryDate;
   private String issuanceCountry;
   private String validityCountry;
   private String nationality;
-  private boolean holder = true;
-
-  public Passport() {}
+  @Setter private boolean holder = true;
 
   public Passport(
       String documentType,
@@ -37,83 +41,15 @@ public class Passport {
     this.holder = holder;
   }
 
-  public String getDocumentType() {
-    return documentType;
-  }
-
-  public void setDocumentType(String documentType) {
-    this.documentType = documentType;
-  }
-
-  public String getBirthPlace() {
-    return birthPlace;
-  }
-
-  public void setBirthPlace(String birthPlace) {
-    this.birthPlace = birthPlace;
-  }
-
-  public String getIssuanceLocation() {
-    return issuanceLocation;
-  }
-
-  public void setIssuanceLocation(String issuanceLocation) {
-    this.issuanceLocation = issuanceLocation;
-  }
-
-  public String getIssuanceDate() {
-    return issuanceDate;
-  }
-
-  public void setIssuanceDate(String issuanceDate) {
-    this.issuanceDate = issuanceDate;
-  }
-
-  public String getNumber() {
-    return number;
-  }
-
-  public void setNumber(String number) {
-    this.number = number;
-  }
-
-  public String getExpiryDate() {
-    return expiryDate;
-  }
-
-  public void setExpiryDate(String expiryDate) {
-    this.expiryDate = expiryDate;
-  }
-
-  public String getIssuanceCountry() {
-    return issuanceCountry;
-  }
-
   public void setIssuanceCountry(String issuanceCountry) {
     this.issuanceCountry = issuanceCountry.toUpperCase();
-  }
-
-  public String getValidityCountry() {
-    return validityCountry;
   }
 
   public void setValidityCountry(String validityCountry) {
     this.validityCountry = validityCountry.toUpperCase();
   }
 
-  public String getNationality() {
-    return nationality;
-  }
-
   public void setNationality(String nationality) {
     this.nationality = nationality.toUpperCase();
-  }
-
-  public boolean isHolder() {
-    return holder;
-  }
-
-  public void setHolder(boolean holder) {
-    this.holder = holder;
   }
 }
