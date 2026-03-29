@@ -5,7 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class FirefoxWebDriver {
-  @Getter private static final WebDriver driver = new FirefoxDriver();
+  @Getter private static WebDriver driver;
+
+  public static void initDriver() {
+    driver = new FirefoxDriver();
+  }
 
   public static void navigateTo(String url) {
     driver.get(url);

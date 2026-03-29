@@ -6,7 +6,6 @@ import com.szte.skyScope.dataStore.DataStore;
 import com.szte.skyScope.enums.FlightOffersSortOptions;
 import com.szte.skyScope.helper.WebElementHelper;
 import com.szte.skyScope.webDriver.FirefoxWebDriver;
-import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -452,11 +451,6 @@ public class StepDefinitions {
   @And("I submit the registration form with weak password")
   public void submitTheRegistrationFormWithWeakPassword() {
     fillRegistrationForm("test@test", "01234567", "01234567");
-  }
-
-  @After
-  public void closeBrowser() {
-    FirefoxWebDriver.closeBrowser();
   }
 
   private void fillSearchBar(
