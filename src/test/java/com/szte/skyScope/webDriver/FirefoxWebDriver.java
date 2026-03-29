@@ -18,4 +18,8 @@ public class FirefoxWebDriver {
   public static void closeBrowser() {
     driver.quit();
   }
+
+  public static void deleteCookies() {
+    driver.manage().deleteAllCookies();
+  }
 }
