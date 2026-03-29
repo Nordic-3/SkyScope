@@ -9,16 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@RequiredArgsConstructor
 public class ApiFlightService implements FlightServiceProvider {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
-
-  public ApiFlightService(ApplicationConfig applicationConfig) {
-    this.applicationConfig = applicationConfig;
-  }
 
   @Override
   public String getFlightOffers(FlightSearch flightSearch, String token) {

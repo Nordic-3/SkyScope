@@ -5,13 +5,11 @@ import com.szte.skyScope.models.FlightPriceRequest;
 import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.CreateFlightOrderProvider;
 import com.szte.skyScope.services.JsonReaderService;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class JsonCreateFlightOrder implements CreateFlightOrderProvider {
   private final JsonReaderService jsonReaderService;
-
-  public JsonCreateFlightOrder(JsonReaderService jsonReaderService) {
-    this.jsonReaderService = jsonReaderService;
-  }
 
   @Override
   public FinalPriceResponse getFinalPrice(FlightPriceRequest request, String token) {

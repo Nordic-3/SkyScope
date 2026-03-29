@@ -4,14 +4,12 @@ import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.models.City;
 import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.CityProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
+@RequiredArgsConstructor
 public class ApiCity implements CityProvider {
   private final ApplicationConfig applicationConfig;
-
-  public ApiCity(ApplicationConfig applicationConfig) {
-    this.applicationConfig = applicationConfig;
-  }
 
   @Override
   public City getCity(String name) {

@@ -14,30 +14,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FlightServiceImpl implements FlightService {
 
   private final SearchStore searchStore;
   private final CityService cityService;
   private final CachedApiCalls cachedApiCalls;
   private final FlightServiceProvider flightServiceProvider;
-
-  @Autowired
-  public FlightServiceImpl(
-      SearchStore searchStore,
-      CityService cityService,
-      CachedApiCalls cachedApiCalls,
-      FlightServiceProvider flightServiceProvider) {
-    this.searchStore = searchStore;
-    this.cityService = cityService;
-    this.cachedApiCalls = cachedApiCalls;
-    this.flightServiceProvider = flightServiceProvider;
-  }
 
   @Override
   public String getToken() {

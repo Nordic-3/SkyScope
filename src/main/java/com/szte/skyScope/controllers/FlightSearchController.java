@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 public class FlightSearchController {
   private final InputValidationService inputValidationService;
   private final FlightService flightService;
@@ -27,24 +28,6 @@ public class FlightSearchController {
   private final CheapestFlightDateService cheapestFlightDateService;
   private final Logger logger = Logger.getLogger(FlightSearchController.class.getName());
   private final PlanePositionService planePositionService;
-
-  @Autowired
-  public FlightSearchController(
-      InputValidationService inputValidationService,
-      FlightService flightService,
-      SearchStore searchStore,
-      SortResultService sortResultService,
-      FilterService filterService,
-      CheapestFlightDateService cheapestFlightDateService,
-      PlanePositionService planePositionService) {
-    this.inputValidationService = inputValidationService;
-    this.flightService = flightService;
-    this.searchStore = searchStore;
-    this.sortResultService = sortResultService;
-    this.filterService = filterService;
-    this.cheapestFlightDateService = cheapestFlightDateService;
-    this.planePositionService = planePositionService;
-  }
 
   @PostMapping("/flightsearch")
   public String flightSubmit(@ModelAttribute FlightSearch flightSearch, Model model) {

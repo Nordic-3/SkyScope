@@ -5,19 +5,15 @@ import com.szte.skyScope.services.PaymentService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class PaymentController {
   private final PaymentService paymentService;
-
-  @Autowired
-  public PaymentController(PaymentService paymentService) {
-    this.paymentService = paymentService;
-  }
 
   @PostMapping("/createOrder/payment/{searchId}")
   public void payment(@PathVariable String searchId, HttpServletResponse response) {

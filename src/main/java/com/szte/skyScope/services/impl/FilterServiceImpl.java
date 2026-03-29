@@ -8,18 +8,14 @@ import com.szte.skyScope.services.SortResultService;
 import com.szte.skyScope.utils.FlightOfferFormatter;
 import java.time.Duration;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FilterServiceImpl implements FilterService {
 
   private final SortResultService sortResultService;
-
-  @Autowired
-  public FilterServiceImpl(SortResultService sortResultService) {
-    this.sortResultService = sortResultService;
-  }
 
   @Override
   public List<FlightOfferDTO> filterOffers(

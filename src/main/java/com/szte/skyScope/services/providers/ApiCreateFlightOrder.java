@@ -7,15 +7,13 @@ import com.szte.skyScope.services.CreateFlightOrderProvider;
 import com.szte.skyScope.services.impl.CreateFlightOrderServiceImpl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
+@RequiredArgsConstructor
 public class ApiCreateFlightOrder implements CreateFlightOrderProvider {
   private final ApplicationConfig applicationConfig;
-
-  public ApiCreateFlightOrder(ApplicationConfig applicationConfig) {
-    this.applicationConfig = applicationConfig;
-  }
 
   @Override
   public FinalPriceResponse getFinalPrice(FlightPriceRequest request, String token) {

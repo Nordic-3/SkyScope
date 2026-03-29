@@ -3,7 +3,7 @@ package com.szte.skyScope.controllers;
 import com.szte.skyScope.enums.FlightOffersSortOptions;
 import com.szte.skyScope.services.SearchStore;
 import com.szte.skyScope.services.SortResultService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,15 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class SortFlightOfferController {
   private final SortResultService sortResultService;
   private final SearchStore searchStore;
-
-  @Autowired
-  public SortFlightOfferController(SortResultService sortResultService, SearchStore searchStore) {
-    this.sortResultService = sortResultService;
-    this.searchStore = searchStore;
-  }
 
   @GetMapping("/sort/{searchId}")
   public String sort(@PathVariable String searchId, @RequestParam String by, Model model) {

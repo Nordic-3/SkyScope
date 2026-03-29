@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -22,20 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 public class SessionHandleController {
   private final InputValidationService inputValidationService;
   private final UserService userService;
   private final RequestCache requestCache;
-
-  @Autowired
-  public SessionHandleController(
-      InputValidationService inputValidationService,
-      UserService userService,
-      RequestCache requestCache) {
-    this.inputValidationService = inputValidationService;
-    this.userService = userService;
-    this.requestCache = requestCache;
-  }
 
   @GetMapping("/login")
   public String login(Model model) {

@@ -5,20 +5,15 @@ import com.stripe.param.checkout.SessionCreateParams;
 import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.services.PaymentService;
 import com.szte.skyScope.services.SearchStore;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
   private final SearchStore searchStore;
   private final ApplicationConfig applicationConfig;
-
-  @Autowired
-  public PaymentServiceImpl(SearchStore searchStore, ApplicationConfig applicationConfig) {
-    this.searchStore = searchStore;
-    this.applicationConfig = applicationConfig;
-  }
 
   @Override
   public SessionCreateParams createStripePaymentSession(String searchId) {

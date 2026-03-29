@@ -5,14 +5,12 @@ import com.szte.skyScope.services.PlanePositionProvider;
 import com.szte.skyScope.services.impl.PlanePositionServiceImpl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
+@RequiredArgsConstructor
 public class ApiPlanePosition implements PlanePositionProvider {
   private final ApplicationConfig applicationConfig;
-
-  public ApiPlanePosition(ApplicationConfig applicationConfig) {
-    this.applicationConfig = applicationConfig;
-  }
 
   @Override
   public String getAllPLanePositions() {

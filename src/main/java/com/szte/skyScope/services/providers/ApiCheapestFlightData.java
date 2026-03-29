@@ -9,16 +9,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@RequiredArgsConstructor
 public class ApiCheapestFlightData implements CheapestFlightDataProvider {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
-
-  public ApiCheapestFlightData(ApplicationConfig applicationConfig) {
-    this.applicationConfig = applicationConfig;
-  }
 
   @Override
   public List<CheapestDateOffer> getCheapestDateOffers(FlightSearch flightSearch, String token) {

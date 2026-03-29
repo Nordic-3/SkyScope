@@ -5,13 +5,11 @@ import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.FlightServiceProvider;
 import com.szte.skyScope.services.JsonReaderService;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class JsonFlightService implements FlightServiceProvider {
   private final JsonReaderService jsonReaderService;
-
-  public JsonFlightService(JsonReaderService jsonReaderService) {
-    this.jsonReaderService = jsonReaderService;
-  }
 
   @Override
   public String getFlightOffers(FlightSearch flightSearch, String token) {

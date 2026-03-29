@@ -4,22 +4,16 @@ import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.models.AmadeusApiCred;
 import com.szte.skyScope.services.CachedApiCalls;
 import com.szte.skyScope.services.CachedApiCallsProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CachedApiCallsImpl implements CachedApiCalls {
 
   private final ApplicationConfig applicationConfig;
   private final CachedApiCallsProvider cachedApiCallsProvider;
-
-  @Autowired
-  public CachedApiCallsImpl(
-      ApplicationConfig applicationConfig, CachedApiCallsProvider cachedApiCallsProvider) {
-    this.applicationConfig = applicationConfig;
-    this.cachedApiCallsProvider = cachedApiCallsProvider;
-  }
 
   @Override
   @Cacheable("amadeusApiToken")

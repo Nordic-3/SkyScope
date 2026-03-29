@@ -4,13 +4,11 @@ import com.szte.skyScope.models.AmadeusApiCred;
 import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.CachedApiCallsProvider;
 import com.szte.skyScope.services.JsonReaderService;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class JsonCachedCalls implements CachedApiCallsProvider {
   private final JsonReaderService jsonReaderService;
-
-  public JsonCachedCalls(JsonReaderService jsonReaderService) {
-    this.jsonReaderService = jsonReaderService;
-  }
 
   @Override
   public String getIataCode(String city, String token) {

@@ -3,20 +3,15 @@ package com.szte.skyScope.controllers;
 import com.szte.skyScope.models.ChosenFilters;
 import com.szte.skyScope.services.FilterService;
 import com.szte.skyScope.services.SearchStore;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 public class FilterFlightOfferController {
   private final SearchStore searchStore;
   private final FilterService filterService;
-
-  @Autowired
-  public FilterFlightOfferController(SearchStore searchStore, FilterService filterService) {
-    this.searchStore = searchStore;
-    this.filterService = filterService;
-  }
 
   @PostMapping("/filter/{searchId}")
   public String filterOffers(

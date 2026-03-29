@@ -5,17 +5,13 @@ import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.PlanePositionProvider;
 import com.szte.skyScope.services.PlanePositionService;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PlanePositionServiceImpl implements PlanePositionService {
   private final PlanePositionProvider planePositionProvider;
-
-  @Autowired
-  public PlanePositionServiceImpl(PlanePositionProvider planePositionProvider) {
-    this.planePositionProvider = planePositionProvider;
-  }
 
   @Override
   public Plane getPlanePosition(String callsign) {

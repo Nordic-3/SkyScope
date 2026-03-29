@@ -7,24 +7,15 @@ import com.szte.skyScope.services.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CheapestFlightDateServiveImpl implements CheapestFlightDateService {
   private final FlightService flightService;
   private final SearchStore searchStore;
   private final CheapestFlightDataProvider cheapestFlightDataProvider;
-
-  @Autowired
-  public CheapestFlightDateServiveImpl(
-      FlightService flightService,
-      SearchStore searchStore,
-      CheapestFlightDataProvider cheapestFlightDataProvider) {
-    this.flightService = flightService;
-    this.searchStore = searchStore;
-    this.cheapestFlightDataProvider = cheapestFlightDataProvider;
-  }
 
   @Override
   public CompletableFuture<List<FlightOfferDTO>> checkForCheaperOfferAndGetIt(

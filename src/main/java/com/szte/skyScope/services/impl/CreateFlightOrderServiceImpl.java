@@ -10,28 +10,19 @@ import com.szte.skyScope.services.CreateFlightOrderService;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 @Service
+@RequiredArgsConstructor
 public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
   private final Logger logger = Logger.getLogger(CreateFlightOrderServiceImpl.class.getName());
   private final CachedApiCalls cachedApiCalls;
   private final CreateFlightOrderProvider createFlightOrderProvider;
-
-  @Autowired
-  public CreateFlightOrderServiceImpl(
-      ApplicationConfig applicationConfig,
-      CachedApiCalls cachedApiCalls,
-      CreateFlightOrderProvider createFlightOrderProvider) {
-    this.applicationConfig = applicationConfig;
-    this.cachedApiCalls = cachedApiCalls;
-    this.createFlightOrderProvider = createFlightOrderProvider;
-  }
 
   @Override
   public FinalPriceResponse getFinalPrice(FlightOfferDTO flightOffer, String token) {

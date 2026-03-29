@@ -9,10 +9,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class InputValidationServiceImpl implements InputValidationService {
   private static final String EMPTY_INPUT_ERROR = " mező kitöltése kötelező! ";
   private static final String INVALID_DATE_FORMAT = "A dátum formátuma nem megfelelő!";
@@ -33,11 +34,6 @@ public class InputValidationServiceImpl implements InputValidationService {
   private static final String GDPR_COMPULSORY = "Az adatvédelmi tájékoztató elfogadása kötelező!";
 
   private final SecurityConfig securityConfig;
-
-  @Autowired
-  public InputValidationServiceImpl(SecurityConfig securityConfig) {
-    this.securityConfig = securityConfig;
-  }
 
   @Override
   public String validateInputFields(FlightSearch flightSearch) {

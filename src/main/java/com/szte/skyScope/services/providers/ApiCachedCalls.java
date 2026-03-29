@@ -7,17 +7,15 @@ import com.szte.skyScope.services.CachedApiCallsProvider;
 import com.szte.skyScope.services.impl.CachedApiCallsImpl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestClient;
 
+@RequiredArgsConstructor
 public class ApiCachedCalls implements CachedApiCallsProvider {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
-
-  public ApiCachedCalls(ApplicationConfig applicationConfig) {
-    this.applicationConfig = applicationConfig;
-  }
 
   @Override
   public String getIataCode(String city, String token) {
