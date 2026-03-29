@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.szte.skyScope.dataStore.DataStore;
 import com.szte.skyScope.enums.FlightOffersSortOptions;
 import com.szte.skyScope.helper.WebElementHelper;
+import com.szte.skyScope.webDriver.FirefoxWebDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -14,17 +15,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.random.RandomGenerator;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class StepDefinitions {
-  private final WebDriver driver = new FirefoxDriver();
-  private final WebElementHelper webElementHelper = new WebElementHelper(driver);
+  private final WebElementHelper webElementHelper =
+      new WebElementHelper(FirefoxWebDriver.getDriver());
   private final DataStore dataStore = new DataStore();
 
   @Given("I am on the search page")
   public void onTheSearchPage() {
-    driver.get("http://localhost:8080/search");
+    FirefoxWebDriver.navigateTo("http://localhost:8080/search");
   }
 
   @Given("I have searched for a return flight from {string} to {string} with valid dates")
@@ -57,7 +56,7 @@ public class StepDefinitions {
 
   @Given("I am on profile page after successful login")
   public void onProfilePageAfterSuccessfulLogin() {
-    driver.get("http://localhost:8080/profile");
+    FirefoxWebDriver.navigateTo("http://localhost:8080/profile");
     webElementHelper.waitForElementToBeVisible(By.id("reg"));
     onLoginPageClickRegistrationButton();
     submitTheRegistrationForm();
@@ -457,7 +456,7 @@ public class StepDefinitions {
 
   @After
   public void closeBrowser() {
-    driver.quit();
+    FirefoxWebDriver.closeBrowser();
   }
 
   private void fillSearchBar(
