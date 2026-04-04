@@ -7,13 +7,13 @@ import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.CheapestFlightDataProvider;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RequiredArgsConstructor
+@Slf4j
 public class ApiCheapestFlightData implements CheapestFlightDataProvider {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
@@ -39,8 +39,10 @@ public class ApiCheapestFlightData implements CheapestFlightDataProvider {
               .body(String.class);
       return Parser.parseCheapestFlightApi(response);
     } catch (Exception exception) {
-      Logger.getLogger(CheapestDateOffer.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
+      log.error(
+          "Error while calling Amadeus API for cheapest date search: {}",
+          exception.getMessage(),
+          exception);
       return null;
     }
   }

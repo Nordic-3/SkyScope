@@ -8,19 +8,18 @@ import com.szte.skyScope.services.CachedApiCalls;
 import com.szte.skyScope.services.CreateFlightOrderProvider;
 import com.szte.skyScope.services.CreateFlightOrderService;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
-  private final Logger logger = Logger.getLogger(CreateFlightOrderServiceImpl.class.getName());
   private final CachedApiCalls cachedApiCalls;
   private final CreateFlightOrderProvider createFlightOrderProvider;
 
@@ -84,7 +83,7 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
           .retrieve()
           .body(String.class);
     } catch (Exception exception) {
-      logger.log(Level.SEVERE, exception.getMessage(), exception);
+      log.error("Error while creating flight order: {}", exception.getMessage(), exception);
     }
   }
 

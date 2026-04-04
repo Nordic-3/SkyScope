@@ -2,13 +2,12 @@ package com.szte.skyScope.services.providers;
 
 import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.services.PlanePositionProvider;
-import com.szte.skyScope.services.impl.PlanePositionServiceImpl;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
+@Slf4j
 public class ApiPlanePosition implements PlanePositionProvider {
   private final ApplicationConfig applicationConfig;
 
@@ -21,8 +20,10 @@ public class ApiPlanePosition implements PlanePositionProvider {
           .retrieve()
           .body(String.class);
     } catch (Exception exception) {
-      Logger.getLogger(PlanePositionServiceImpl.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
+      log.error(
+          "Error while calling OpenSky API for plane positions: {}",
+          exception.getMessage(),
+          exception);
       return "";
     }
   }

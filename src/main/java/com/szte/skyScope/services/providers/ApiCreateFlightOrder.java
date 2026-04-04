@@ -4,14 +4,13 @@ import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.models.FinalPriceResponse;
 import com.szte.skyScope.models.FlightPriceRequest;
 import com.szte.skyScope.services.CreateFlightOrderProvider;
-import com.szte.skyScope.services.impl.CreateFlightOrderServiceImpl;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
+@Slf4j
 public class ApiCreateFlightOrder implements CreateFlightOrderProvider {
   private final ApplicationConfig applicationConfig;
 
@@ -30,8 +29,10 @@ public class ApiCreateFlightOrder implements CreateFlightOrderProvider {
               .body(FinalPriceResponse.class);
 
     } catch (Exception exception) {
-      Logger.getLogger(CreateFlightOrderServiceImpl.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
+      log.error(
+          "Error while calling Amadeus API for final price calculation: {}",
+          exception.getMessage(),
+          exception);
     }
     return finalPrice != null ? finalPrice : new FinalPriceResponse();
   }

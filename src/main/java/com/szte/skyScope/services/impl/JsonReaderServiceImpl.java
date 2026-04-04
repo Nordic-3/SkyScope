@@ -3,11 +3,12 @@ package com.szte.skyScope.services.impl;
 import com.szte.skyScope.services.JsonReaderService;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class JsonReaderServiceImpl implements JsonReaderService {
 
   @Override
@@ -15,14 +16,12 @@ public class JsonReaderServiceImpl implements JsonReaderService {
     String json = "";
     try (InputStream jsonFile = getResourceStream(file)) {
       if (jsonFile == null) {
-        Logger.getLogger(JsonReaderServiceImpl.class.getName())
-            .log(Level.SEVERE, "File not found: " + file);
+        log.error("Could not find the file {} in resources", file);
         return "";
       }
       json = new String(jsonFile.readAllBytes());
     } catch (IOException exception) {
-      Logger.getLogger(JsonReaderServiceImpl.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
+      log.error("Error while reading the file {} from resources: {}", file, exception.getMessage(), exception);
     }
     return json;
   }

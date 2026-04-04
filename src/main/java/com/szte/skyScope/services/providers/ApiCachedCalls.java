@@ -4,15 +4,14 @@ import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.models.AmadeusApiCred;
 import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.CachedApiCallsProvider;
-import com.szte.skyScope.services.impl.CachedApiCallsImpl;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
+@Slf4j
 public class ApiCachedCalls implements CachedApiCallsProvider {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
@@ -22,8 +21,7 @@ public class ApiCachedCalls implements CachedApiCallsProvider {
     try {
       return Parser.getIataFromJson(getCityAirportSearchResponse(city, "CITY", token), "data");
     } catch (Exception exception) {
-      Logger.getLogger(CachedApiCallsImpl.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
+      log.error(exception.getMessage(), exception);
       return null;
     }
   }

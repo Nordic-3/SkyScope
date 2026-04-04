@@ -3,15 +3,15 @@ package com.szte.skyScope.controllers;
 import com.stripe.model.checkout.Session;
 import com.szte.skyScope.services.PaymentService;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentController {
   private final PaymentService paymentService;
 
@@ -22,8 +22,7 @@ public class PaymentController {
       response.setStatus(303);
       response.setHeader("Location", session.getUrl());
     } catch (Exception exception) {
-      Logger.getLogger(PaymentController.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
+      log.error("Error while creating Stripe payment session {}",  exception.getMessage(), exception);
       response.setStatus(303);
       response.setHeader(
           "Location", "http://localhost:8080/createOrder/create/" + searchId + "?success");

@@ -7,9 +7,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -23,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class SessionHandleController {
   private final InputValidationService inputValidationService;
   private final UserService userService;
@@ -46,8 +46,7 @@ public class SessionHandleController {
       try {
         authWithHttpServletRequest(request, userCreationDTO.email(), userCreationDTO.password());
       } catch (ServletException exception) {
-        Logger.getLogger(SessionHandleController.class.getName())
-            .log(Level.SEVERE, exception.toString(), exception);
+       log.error("Error while authenticating user after registration {}",  exception.getMessage(), exception);
         return "login";
       }
       return "redirect:" + requestCache.getRequest(request, response).getRedirectUrl();

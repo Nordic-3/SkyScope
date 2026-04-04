@@ -8,9 +8,8 @@ import com.szte.skyScope.utils.FlightOfferFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class FlightSearchController {
   private final InputValidationService inputValidationService;
   private final FlightService flightService;
@@ -26,7 +26,6 @@ public class FlightSearchController {
   private final SortResultService sortResultService;
   private final FilterService filterService;
   private final CheapestFlightDateService cheapestFlightDateService;
-  private final Logger logger = Logger.getLogger(FlightSearchController.class.getName());
   private final PlanePositionService planePositionService;
 
   @PostMapping("/flightsearch")
@@ -67,7 +66,7 @@ public class FlightSearchController {
             })
         .exceptionally(
             throwable -> {
-              logger.log(Level.SEVERE, throwable.getMessage(), throwable);
+              log.error("Error while fetching flight offers: {}", throwable.getMessage(), throwable);
               searchStore.getSearchDatas(searchId).setSearchResult(new ArrayList<>());
               return null;
             });

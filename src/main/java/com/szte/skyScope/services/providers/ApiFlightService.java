@@ -4,16 +4,15 @@ import com.szte.skyScope.config.ApplicationConfig;
 import com.szte.skyScope.models.FlightSearch;
 import com.szte.skyScope.parsers.Parser;
 import com.szte.skyScope.services.FlightServiceProvider;
-import com.szte.skyScope.services.impl.FlightServiceImpl;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RequiredArgsConstructor
+@Slf4j
 public class ApiFlightService implements FlightServiceProvider {
   private final ApplicationConfig applicationConfig;
   private final RestClient restClient = RestClient.create();
@@ -53,8 +52,7 @@ public class ApiFlightService implements FlightServiceProvider {
               .body(String.class);
       return Parser.getIcaoCodesFromJson(response);
     } catch (Exception exception) {
-      Logger.getLogger(FlightServiceImpl.class.getName())
-          .log(Level.SEVERE, exception.getMessage(), exception);
+      log.error("Error while fetching ICAO codes from Amadeus API: {}", exception.getMessage());
       return new HashMap<>();
     }
   }
