@@ -16,41 +16,18 @@
     <div class="card card-main">
         <div class="card-header">
             <p class="fs-2 card-title badge text-bg-info text-wrap">Fiókom</p>
-            <p class="text-info card-name ms-1" th:text="${user.email()}"></p>
+            <p class="text-info card-name ms-1" th:text="${username}"></p>
         </div>
         <div class="card-body">
-            <div th:if="${validationError != null}">
-                <div th:text="${validationError}" class="text-danger"></div>
-            </div>
-            <div th:if="${success != null}">
+            <div th:if="${param.success != null}">
                 <div class="text-success">Sikeres módosítás</div>
             </div>
             <form class="row align-items-center m-auto justify-content-center gap-2"
-                  method="POST" th:action="@{/profile/passwordChange}" th:object="${user}">
-                <input type="hidden" th:value="${user.gdprAccepted()}" th:field="*{gdprAccepted}">
-                <div class="row text-info">Jelszó változtatás</div>
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="currentPassword" placeholder="jelenlegi jelszó"
-                           th:field="*{oldPassword}"
-                           required>
-                    <label for="currentPassword" class="ms-1">jelenlegi jelszó</label>
-                </div>
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="newPassword" placeholder="új jelszó"
-                           th:field="*{password}"
-                           required>
-                    <label for="newPassword" class="ms-1">új jelszó</label>
-                </div>
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="rePassword"
-                           placeholder="új jelszó újra" th:field="*{rePassword}"
-                           required>
-                    <label for="rePassword" class="ms-1">új jelszó újra</label>
-                </div>
+                  method="POST" th:action="@{/profile/passwordChange}">
                 <hr class="mb-0 mt-3">
                 <div class="d-flex gap-2 mt-3">
                     <button type="submit" class="btn btn-outline-info rounded-btn col" id="pswChange">
-                        Jelszó változtatás <i class="bi bi-floppy2-fill"></i></button>
+                        Jelszó változtatás <i class="bi bi-arrow-left-right"></i></button>
                     <a class="btn btn-outline-light rounded-btn" href="/logout">kijelentkezés <i
                             class="bi bi-box-arrow-right"></i></a>
                     <a href="/gdpr" class="btn btn-outline-light rounded-btn">Adatvédelmi tájékoztató <i
@@ -74,13 +51,6 @@
                             <div class="modal-body">
                                 <p>A kért művelet nem vonható vissza. A fiók törlésével a lefoglalt járatok nem
                                     törlödnek.</p>
-                                <div class="form-floating">
-                                    <input type="password" class="form-control" id="confirmPassword"
-                                           placeholder="jelszó"
-                                           name="confirmPassword"
-                                           required>
-                                    <label for="confirmPassword" class="ms-1">jelszó</label>
-                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary rounded-btn" data-bs-dismiss="modal">

@@ -6,12 +6,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.szte.skyScope.dtos.FlightOfferDTO;
 import com.szte.skyScope.models.*;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Parser {
@@ -24,7 +23,7 @@ public class Parser {
       JsonNode cityDetails = root.get(rootElement).get(0);
       return objectMapper.treeToValue(cityDetails, City.class);
     } catch (Exception exception) {
-      log.error("Error while parsing Json to City {}",  exception.getMessage(), exception);
+      log.error("Error while parsing Json to City {}", exception.getMessage(), exception);
       return null;
     }
   }
@@ -46,7 +45,7 @@ public class Parser {
                           onePlaneDetails.get(9).asDouble(),
                           onePlaneDetails.get(10).asDouble())));
     } catch (Exception exception) {
-      log.error("Error while parsing Json to Map of Planes {}",  exception.getMessage(), exception);
+      log.error("Error while parsing Json to Map of Planes {}", exception.getMessage(), exception);
       return null;
     }
     return planes;
@@ -59,7 +58,7 @@ public class Parser {
       root = objectMapper.readTree(json);
       iata = root.get(rootElement).get(0).get("iataCode").asText();
     } catch (Exception exception) {
-      log.error("Error while parsing Json to Iata code {}",  exception.getMessage(), exception);
+      log.error("Error while parsing Json to Iata code {}", exception.getMessage(), exception);
       return null;
     }
     return iata;
@@ -76,11 +75,14 @@ public class Parser {
             try {
               flightOffers.add(objectMapper.treeToValue(jsonNode, FlightOfferDTO.class));
             } catch (JsonProcessingException exception) {
-              log.error("Error while parsing Json to FlightOfferDTO {}",  exception.getMessage(), exception);
+              log.error(
+                  "Error while parsing Json to FlightOfferDTO {}",
+                  exception.getMessage(),
+                  exception);
             }
           });
     } catch (Exception exception) {
-      log.error("Error while parsing Json to FlightOfferDTO {}",  exception.getMessage(), exception);
+      log.error("Error while parsing Json to FlightOfferDTO {}", exception.getMessage(), exception);
       return null;
     }
     return flightOffers;
@@ -94,7 +96,8 @@ public class Parser {
       JsonNode dictNode = root.path("dictionaries").path(dictionary);
       flightDictionary = objectMapper.convertValue(dictNode, typeRef);
     } catch (Exception exception) {
-      log.error("Error while parsing Json to Flight Dictionary {}",  exception.getMessage(), exception);
+      log.error(
+          "Error while parsing Json to Flight Dictionary {}", exception.getMessage(), exception);
     }
     return flightDictionary;
   }
@@ -104,7 +107,7 @@ public class Parser {
       return objectMapper.readTree(json).get(root).get(0).get("name").asText();
 
     } catch (Exception exception) {
-      log.error("Error while parsing Json to Airport Name {}",  exception.getMessage(), exception);
+      log.error("Error while parsing Json to Airport Name {}", exception.getMessage(), exception);
     }
     return "";
   }
@@ -113,7 +116,7 @@ public class Parser {
     try {
       return objectMapper.readTree(json).get(root).get(0).get("address").get("cityName").asText();
     } catch (Exception exception) {
-      log.error("Error while parsing Json to City Name {}",  exception.getMessage(), exception);
+      log.error("Error while parsing Json to City Name {}", exception.getMessage(), exception);
     }
     return "";
   }
@@ -135,7 +138,8 @@ public class Parser {
                           data.get("price").get("total").asInt(),
                           data.get("links").get("flightOffers").asText())));
     } catch (Exception exception) {
-      log.error("Error while parsing Json to CheapestDateOffer {}",  exception.getMessage(), exception);
+      log.error(
+          "Error while parsing Json to CheapestDateOffer {}", exception.getMessage(), exception);
     }
     return cheapestDateOffers;
   }
@@ -146,7 +150,8 @@ public class Parser {
       root = objectMapper.readTree(json);
       return objectMapper.treeToValue(root, FinalPriceResponse.class);
     } catch (Exception exception) {
-      log.error("Error while parsing Json to FinalPriceResponse {}",  exception.getMessage(), exception);
+      log.error(
+          "Error while parsing Json to FinalPriceResponse {}", exception.getMessage(), exception);
       return null;
     }
   }
@@ -161,7 +166,7 @@ public class Parser {
                   icaoCodes.put(
                       jsonNode.get("iataCode").asText(), jsonNode.get("icaoCode").asText()));
     } catch (Exception exception) {
-      log.error("Error while parsing Json to Icao codes {}",  exception.getMessage(), exception);
+      log.error("Error while parsing Json to Icao codes {}", exception.getMessage(), exception);
     }
     return icaoCodes;
   }

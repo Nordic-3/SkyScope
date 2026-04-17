@@ -1,11 +1,8 @@
 package com.szte.skyScope.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
-import com.szte.skyScope.config.SecurityConfig;
 import com.szte.skyScope.dtos.FlightOfferDTO;
-import com.szte.skyScope.dtos.UserCreationDTO;
 import com.szte.skyScope.factories.FlightOfferDTOFactory;
 import com.szte.skyScope.factories.FlightSearchFactory;
 import com.szte.skyScope.factories.TravellerFactory;
@@ -17,22 +14,16 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 class InputValidationServiceTest {
-
-  @Mock private SecurityConfig securityConfig;
-
-  @Mock private PasswordEncoder passwordEncoder;
 
   private InputValidationServiceImpl validationService;
 
   @BeforeEach
   void setUp() {
-    validationService = new InputValidationServiceImpl(securityConfig);
+    validationService = new InputValidationServiceImpl();
   }
 
   @Test
@@ -111,56 +102,6 @@ class InputValidationServiceTest {
   }
 
   @Test
-  void validatePasswordAndEmail() {
-    UserCreationDTO missingEmail = new UserCreationDTO("", "p", "p", "", true);
-    String response1 = validationService.validatePasswordAndEmail(missingEmail);
-    assertThat(response1).contains("Email cím");
-
-    UserCreationDTO valid = new UserCreationDTO("a@b.com", "Abcd1234", "Abcd1234", "", true);
-    String response2 = validationService.validatePasswordAndEmail(valid);
-    assertThat(response2).isEmpty();
-  }
-
-  @Test
-  void validateUserCreation_emptyPassword() {
-    UserCreationDTO missingPassword = new UserCreationDTO("test@test.hu", "", "", "", true);
-    String response = validationService.validatePasswordAndEmail(missingPassword);
-    assertThat(response).contains("Jelszó mező kitöltése kötelező!");
-  }
-
-  @Test
-  void validateUserCreation_notMatchingPassword() {
-    UserCreationDTO missingPassword = new UserCreationDTO("test@test.hu", "test", "tset", "", true);
-    String response = validationService.validatePasswordAndEmail(missingPassword);
-    assertThat(response).contains("A jelszavak nem egyeznek meg!");
-  }
-
-  @Test
-  void validateUserCreation_tooShortPassword() {
-    UserCreationDTO missingPassword = new UserCreationDTO("test@test.hu", "test", "test", "", true);
-    String response = validationService.validatePasswordAndEmail(missingPassword);
-    assertThat(response).contains("A jelszónak legalább 8 karakter hosszúnak kell lennie!");
-  }
-
-  @Test
-  void validateUserCreation_weakPassword() {
-    UserCreationDTO missingPassword =
-        new UserCreationDTO("test@test.hu", "aaaaaaaa", "aaaaaaaa", "", true);
-    String response = validationService.validatePasswordAndEmail(missingPassword);
-    assertThat(response)
-        .contains(
-            "A jelszónak tartalmaznia kell legalább egy nagybetűt, egy kisbetűt és egy számot!");
-  }
-
-  @Test
-  void validateUserCreation_gdprNotAccepted() {
-    UserCreationDTO missingPassword =
-        new UserCreationDTO("test@test.hu", "Alma1234", "Alma1234", "", false);
-    String response = validationService.validatePasswordAndEmail(missingPassword);
-    assertThat(response).contains("Az adatvédelmi tájékoztató elfogadása kötelező!");
-  }
-
-  @Test
   void validateTravellers() {
     Traveller validTraveller = TravellerFactory.createTraveller();
 
@@ -235,22 +176,5 @@ class InputValidationServiceTest {
     traveller.getDocuments().getFirst().setExpiryDate("invalid");
     String response1 = validationService.validateTravellers(wrapper, flightOffer);
     assertThat(response1).contains("Nem érvényes dátum formátum!");
-  }
-
-  @Test
-  void validateOldPassword() {
-    when(securityConfig.passwordEncoder()).thenReturn(passwordEncoder);
-    UserCreationDTO missingOld = new UserCreationDTO("a@a.com", "p1", "p1", "", true);
-    String response = validationService.validateOldPassword(missingOld, "stored");
-    assertThat(response).contains("Jelenelgi jelszó");
-
-    UserCreationDTO dto = new UserCreationDTO("u@u.com", "p1", "p1", "oldRaw", true);
-    when(passwordEncoder.matches("oldRaw", "encodedStored")).thenReturn(true);
-    String response1 = validationService.validateOldPassword(dto, "encodedStored");
-    assertThat(response1).isEmpty();
-
-    when(passwordEncoder.matches("oldRaw", "encodedStored")).thenReturn(false);
-    String response2 = validationService.validateOldPassword(dto, "encodedStored");
-    assertThat(response2).contains("A jelenlegi jelszó nem megfelelő");
   }
 }

@@ -66,7 +66,8 @@ public class FlightSearchController {
             })
         .exceptionally(
             throwable -> {
-              log.error("Error while fetching flight offers: {}", throwable.getMessage(), throwable);
+              log.error(
+                  "Error while fetching flight offers: {}", throwable.getMessage(), throwable);
               searchStore.getSearchDatas(searchId).setSearchResult(new ArrayList<>());
               return null;
             });

@@ -1,69 +1,37 @@
 package com.szte.skyScope.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+  private final ClientRegistrationRepository clientRegistrationRepository;
 
   @Bean
-  public RequestCache requestCache() {
-    return new HttpSessionRequestCache();
-  }
-
-  @Bean
-  public SavedRequestAwareAuthenticationSuccessHandler successHandler() {
-    SavedRequestAwareAuthenticationSuccessHandler handler =
-        new SavedRequestAwareAuthenticationSuccessHandler();
-    handler.setDefaultTargetUrl("/search");
-    return handler;
-  }
-
-  @Bean
-  @Order(1)
-  public SecurityFilterChain createOrderSecurity(HttpSecurity http) throws Exception {
-    http.securityMatcher("/createOrder/**", "/profile")
-        .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-        .formLogin(
-            form ->
-                form.loginPage("/login")
-                    .loginProcessingUrl("/login")
-                    .failureForwardUrl("/login?error")
-                    .successHandler(successHandler())
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    OidcClientInitiatedLogoutSuccessHandler handler =
+        new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+    handler.setPostLogoutRedirectUri("{baseUrl}");
+    httpSecurity
+        .authorizeHttpRequests(
+            auth ->
+                auth.requestMatchers("/createOrder/**", "/profile")
+                    .authenticated()
+                    .anyRequest()
                     .permitAll())
-        .requestCache(cache -> cache.requestCache(requestCache()))
-        .exceptionHandling(
-            ex -> ex.authenticationEntryPoint((req, res, e) -> res.sendRedirect("/login")));
-    return http.build();
-  }
-
-  @Bean
-  public SecurityFilterChain defaultSecurity(HttpSecurity http) throws Exception {
-    http.authorizeHttpRequests(
-            auth -> auth.requestMatchers("/**").permitAll().anyRequest().denyAll())
-        .formLogin(
-            form ->
-                form.loginPage("/login")
-                    .loginProcessingUrl("/login")
-                    .successHandler(successHandler())
-                    .failureUrl("/login?error")
-                    .permitAll())
-        .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
-    return http.build();
+        .oauth2Login(
+            oauth2 -> oauth2.successHandler(new SavedRequestAwareAuthenticationSuccessHandler()))
+        .logout(logout -> logout.logoutSuccessHandler(handler));
+    return httpSecurity.build();
   }
 }

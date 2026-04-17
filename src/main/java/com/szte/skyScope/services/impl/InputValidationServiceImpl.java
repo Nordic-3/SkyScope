@@ -1,8 +1,6 @@
 package com.szte.skyScope.services.impl;
 
-import com.szte.skyScope.config.SecurityConfig;
 import com.szte.skyScope.dtos.FlightOfferDTO;
-import com.szte.skyScope.dtos.UserCreationDTO;
 import com.szte.skyScope.models.*;
 import com.szte.skyScope.services.InputValidationService;
 import java.time.LocalDate;
@@ -24,16 +22,7 @@ public class InputValidationServiceImpl implements InputValidationService {
   private static final String INVALID_CITY_NAME = "Helyeten város név!";
   private static final String INVALID_NUMBER = "Csak pozitív egész számot használjon!";
   private static final String INVALID_TRAVEL_CLASS = "Kérjük a listából válasszon osztályt!";
-  private static final String NOT_MATCHING_PASSWORD = "A jelszavak nem egyeznek meg!";
-  private static final String TOO_SHORT_PASSWORD =
-      "A jelszónak legalább 8 karakter hosszúnak kell lennie!";
   private static final String ALL_FIELD_IS_COMPULSORY = "Minden mező kitöltése kötelező!";
-  private static final String BAD_OLD_PASSWORD = "A jelenlegi jelszó nem megfelelő!";
-  private static final String WEAK_PASSWORD =
-      "A jelszónak tartalmaznia kell legalább egy nagybetűt, egy kisbetűt és egy számot!";
-  private static final String GDPR_COMPULSORY = "Az adatvédelmi tájékoztató elfogadása kötelező!";
-
-  private final SecurityConfig securityConfig;
 
   @Override
   public String validateInputFields(FlightSearch flightSearch) {
@@ -56,30 +45,6 @@ public class InputValidationServiceImpl implements InputValidationService {
   }
 
   @Override
-  public String validatePasswordAndEmail(UserCreationDTO userCreationDTO) {
-    if (isNullOrEmpty(userCreationDTO.email())) {
-      return "Email cím" + EMPTY_INPUT_ERROR;
-    }
-    if (isNullOrEmpty(userCreationDTO.password()) || isNullOrEmpty(userCreationDTO.rePassword())) {
-      return "Jelszó" + EMPTY_INPUT_ERROR;
-    }
-    if (!userCreationDTO.password().equals(userCreationDTO.rePassword())) {
-      return NOT_MATCHING_PASSWORD;
-    }
-    if (userCreationDTO.rePassword().length() < 8) {
-      return TOO_SHORT_PASSWORD;
-    }
-
-    if (!userCreationDTO.password().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$")) {
-      return WEAK_PASSWORD;
-    }
-    if (!userCreationDTO.gdprAccepted()) {
-      return GDPR_COMPULSORY;
-    }
-    return "";
-  }
-
-  @Override
   public String validateTravellers(TravellerWrapper travellers, FlightOfferDTO flightOffer) {
     return allFieldIsCompulsory(travellers)
         + validEmailAddress(travellers)
@@ -87,17 +52,6 @@ public class InputValidationServiceImpl implements InputValidationService {
         + validPassportAtTravelDate(travellers, flightOffer)
         + passportExpireBeforeIssueDate(travellers)
         + validDates(travellers);
-  }
-
-  @Override
-  public String validateOldPassword(UserCreationDTO userCreationDTO, String oldPassword) {
-    if (isNullOrEmpty(userCreationDTO.oldPassword())) {
-      return "Jelenelgi jelszó " + EMPTY_INPUT_ERROR;
-    }
-    if (!securityConfig.passwordEncoder().matches(userCreationDTO.oldPassword(), oldPassword)) {
-      return BAD_OLD_PASSWORD;
-    }
-    return "";
   }
 
   private String checkEmptySearchFields(FlightSearch flightSearch) {

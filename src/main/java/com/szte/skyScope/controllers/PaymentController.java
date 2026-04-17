@@ -22,7 +22,8 @@ public class PaymentController {
       response.setStatus(303);
       response.setHeader("Location", session.getUrl());
     } catch (Exception exception) {
-      log.error("Error while creating Stripe payment session {}",  exception.getMessage(), exception);
+      log.error(
+          "Error while creating Stripe payment session {}", exception.getMessage(), exception);
       response.setStatus(303);
       response.setHeader(
           "Location", "http://localhost:8080/createOrder/create/" + searchId + "?success");
