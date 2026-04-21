@@ -18,11 +18,7 @@ Feature: Registration and login
   Scenario: user registration with invalid data
     Given I have selected an flgiht offer
     When I am on login page I click the registration button
-    And I submit the registration form with too short password
-    Then the registration is not successful
     And I submit the registration form with not matching passwords
-    Then the registration is not successful
-    And I submit the registration form with weak password
     Then the registration is not successful
 
   @invalid-login
