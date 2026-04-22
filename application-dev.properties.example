@@ -1,0 +1,37 @@
+# Sample application-dev.properties file for SkyScope project
+# This file shows the structure and required properties for the application.
+# Copy this file to application-dev.properties and fill in the actual values.
+
+# API Keys - Optional: These properties can be completely removed.
+# If missing, the app will use JSON data from files instead.
+# If you want to use real APIs, fill in the actual values (not placeholders).
+
+geo_names_key=http://api.geonames.org/searchJSON?q={city_name}&maxRows=1&username=YOUR_GEONAMES_USERNAME
+opensky_baseurl=https://opensky-network.org/api/states/all
+amadeus_client_id=YOUR_AMADEUS_CLIENT_ID
+amadeus_client_secret=YOUR_AMADEUS_CLIENT_SECRET
+amadeus_auth_url=https://test.api.amadeus.com/v1/security/oauth2/token
+amadeus_token_expiry=1700000
+amadeus_city_search_api=https://test.api.amadeus.com/v1/reference-data/locations?keyword={keyword}&subType={subType}
+amadeus_flight_offer_search_api=https://test.api.amadeus.com/v2/shopping/flight-offers
+amadeus_cheapest_date_search=https://test.api.amadeus.com/v1/shopping/flight-dates
+amadeus_final_price=https://test.api.amadeus.com/v1/shopping/flight-offers/pricing
+amadeus_test_client_id=YOUR_AMADEUS_TEST_CLIENT_ID
+amadeus_test_client_secret=YOUR_AMADEUS_TEST_CLIENT_SECRET
+amadeus_test_auth_url=https://test.api.amadeus.com/v1/security/oauth2/token
+amadeus_create_order=https://test.api.amadeus.com/v1/booking/flight-orders
+amadeus_airline_code=https://test.api.amadeus.com/v1/reference-data/airlines?airlineCodes={airlineCodes}
+stripe_secret=YOUR_STRIPE_SECRET_KEY
+
+# Keycloak Configuration - Required: The app will not work without these settings.
+spring.security.oauth2.client.registration.keycloak.client-id=YOUR_KEYCLOAK_CLIENT_ID
+spring.security.oauth2.client.registration.keycloak.client-secret=YOUR_KEYCLOAK_CLIENT_SECRET
+spring.security.oauth2.client.registration.keycloak.scope=openid,profile,email
+spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
+spring.security.oauth2.client.registration.keycloak.redirect-uri=http://localhost:8080/login/oauth2/code/keycloak
+spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8081/realms/YOUR_REALM
+spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
+keycloak.auth-server-url=http://localhost:8081
+keycloak.realm=YOUR_REALM
+keycloak.auth-password-change-url=http://localhost:8081/realms/YOUR_REALM/protocol/openid-connect/auth
+keycloack.kc_action=%s?client_id=%s&response_type=code&scope=openid&kc_action=UPDATE_PASSWORD&redirect_uri=%s

@@ -6,7 +6,7 @@ Track commercial planes in real time and find cheap flights. A Spring Boot based
 ## :hammer_and_wrench: Technologies
 - Spring Boot 3.5.6. with Java 22
 - Thymeleaf
-- PostgreSQL
+- Keykloack
 - JavaScript with Globe.gl, leaflet and openStreetMap
 - Bootstrap
 
@@ -35,10 +35,14 @@ Track commercial planes in real time and find cheap flights. A Spring Boot based
 
 ## :rocket: Setup Instructions
 1. Clone the repository: `git clone https://github.com/Nordic-3/SkyScope.git`
-2. Setup PostgreSQL database and configure connection in `application.properties`.
-3. Navigate to root folder of the project and run: `mvn clean install` to install dependencies.
-4. Run the application: `mvn spring-boot:run`.
-5. Note on API Keys: The application uses pre-loaded JSON responses for demonstration. Try these routes for the animated Earth: Budapest, Barcelona, London, New York, Dubai. Real-time demo available for Dubai – London.
+2. Navigate to root folder of the project and run: `docker-compose up` to start the Keycloak server.
+3. Open localhost:8081 in your browser and log in with the following credentials: <br>
+   **Username:** admin <br>
+   **Password:** admin
+4. Switch to sky-scope realm and copy the auto-generated skyscope-client secret. Paste it in the `application-dev.properties` file. See the sample file `application-dev.properties.sample` for reference.
+5. Navigate to root folder of the project and run: `mvn clean install` to install dependencies.
+6. Run the application: `mvn spring-boot:run`.
+7. Note on API Keys: The application uses pre-loaded JSON responses for demonstration. Try these routes for the animated Earth: Budapest, Barcelona, London, New York, Dubai. Real-time demo available for Dubai – London.
 
 ## :test_tube: Testing
 - **Unit tests:** JUnit 5 and Mockito for service layer testing.
