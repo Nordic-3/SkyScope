@@ -70,7 +70,8 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
 
   @Override
   public void createOrder(CreateOrder createOrderBody, String token) {
-    if (!applicationConfig.useApis() || applicationConfig.getAmadeusCreateOrder().equals("noApi")) {
+    if (!applicationConfig.isUseApis()
+        || applicationConfig.getAmadeusCreateOrder().equals("noApi")) {
       return;
     }
     try {
