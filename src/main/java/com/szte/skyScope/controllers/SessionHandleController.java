@@ -1,122 +1,61 @@
 package com.szte.skyScope.controllers;
 
-import com.szte.skyScope.dtos.UserCreationDTO;
-import com.szte.skyScope.services.InputValidationService;
+import com.szte.skyScope.config.KeykloackConfig;
 import com.szte.skyScope.services.UserService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
 public class SessionHandleController {
-  private final InputValidationService inputValidationService;
   private final UserService userService;
-  private final RequestCache requestCache;
+  private final KeykloackConfig keykloackConfig;
 
   @GetMapping("/login")
-  public String login(Model model) {
-    model.addAttribute("registerUser", new UserCreationDTO("", "", "", "", false));
+  public String login() {
     return "login";
-  }
-
-  @PostMapping("/signup")
-  public String signup(
-      @ModelAttribute("registerUser") UserCreationDTO userCreationDTO,
-      RedirectAttributes redirectAttributes,
-      HttpServletRequest request,
-      HttpServletResponse response) {
-    String validationError = inputValidationService.validatePasswordAndEmail(userCreationDTO);
-    if (validationError.isEmpty()) {
-      userService.saveUser(userCreationDTO);
-      try {
-        authWithHttpServletRequest(request, userCreationDTO.email(), userCreationDTO.password());
-      } catch (ServletException exception) {
-       log.error("Error while authenticating user after registration {}",  exception.getMessage(), exception);
-        return "login";
-      }
-      return "redirect:" + requestCache.getRequest(request, response).getRedirectUrl();
-    }
-    redirectAttributes.addFlashAttribute("validationError", validationError);
-    return "redirect:/login?invalidPassword";
   }
 
   @GetMapping("/profile")
   public String profile(Model model, Principal principal) {
-    model.addAttribute("user", new UserCreationDTO(principal.getName(), "", "", "", false));
-    model.addAttribute("confirmPassword", "");
+    model.addAttribute("username", principal.getName());
     return "profile";
   }
 
   @PostMapping("/profile/passwordChange")
-  public String passwordChange(
-      @ModelAttribute UserCreationDTO user,
-      RedirectAttributes redirectAttributes,
-      Principal principal) {
-    UserCreationDTO updateUser =
-        new UserCreationDTO(
-            principal.getName(), user.password(), user.rePassword(), user.oldPassword(), true);
-    String errors =
-        inputValidationService.validatePasswordAndEmail(updateUser)
-            + inputValidationService.validateOldPassword(
-                user, userService.getUserByEmail(principal.getName()).get().getPassword());
-    if (!errors.isEmpty()) {
-      redirectAttributes.addFlashAttribute("validationError", errors);
-      return "redirect:/profile";
-    }
-    userService.updateUser(updateUser);
-    redirectAttributes.addFlashAttribute("success", true);
-    return "redirect:/profile";
+  public String passwordChange() {
+    String redirectUrl =
+        String.format(
+            keykloackConfig.getKcAction(),
+            keykloackConfig.getAuthPasswordChangeUrl(),
+            keykloackConfig.getClientId(),
+            "http://localhost:8080/profile");
+    return "redirect:" + redirectUrl;
   }
 
   @PostMapping("/profile/delete")
   public String deleteProfile(
-      @RequestParam("confirmPassword") String password,
-      Principal principal,
-      HttpServletRequest request,
-      HttpServletResponse response,
-      RedirectAttributes redirectAttributes) {
-    String errors =
-        inputValidationService.validateOldPassword(
-            new UserCreationDTO("", "", "", password, true),
-            userService.getUserByEmail(principal.getName()).get().getPassword());
-    if (!errors.isEmpty()) {
-      redirectAttributes.addFlashAttribute("validationError", errors);
-      return "redirect:/profile";
+      HttpServletRequest httpServletRequest, @AuthenticationPrincipal OidcUser oidcUser) {
+    userService.deleteById(oidcUser.getSubject());
+    try {
+      httpServletRequest.logout();
+    } catch (Exception exception) {
+      log.error(exception.getMessage(), exception);
     }
-    userService.deleteByEmail(principal.getName());
-    logout(request, response);
-    return "index";
-  }
-
-  @GetMapping("/logout")
-  public String logout(HttpServletRequest request, HttpServletResponse response) {
-    new SecurityContextLogoutHandler()
-        .logout(request, response, SecurityContextHolder.getContext().getAuthentication());
     return "index";
   }
 
   @GetMapping("/gdpr")
   public String gdpr() {
     return "gdpr";
-  }
-
-  public void authWithHttpServletRequest(
-      HttpServletRequest request, String username, String password) throws ServletException {
-    request.login(username, password);
   }
 }

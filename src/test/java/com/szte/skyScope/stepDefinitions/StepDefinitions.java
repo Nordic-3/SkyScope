@@ -56,10 +56,10 @@ public class StepDefinitions {
   @Given("I am on profile page after successful login")
   public void onProfilePageAfterSuccessfulLogin() {
     FirefoxWebDriver.navigateTo("http://localhost:8080/profile");
-    webElementHelper.waitForElementToBeVisible(By.id("reg"));
+    webElementHelper.waitForElementToBeVisible(
+        By.cssSelector("a[href^='/realms/sky-scope/login-actions/registration']"));
     onLoginPageClickRegistrationButton();
     submitTheRegistrationForm();
-    webElementHelper.waitForElementToBeVisible(By.cssSelector(".card-title"));
   }
 
   @When("I click on delete account button")
@@ -67,13 +67,12 @@ public class StepDefinitions {
     webElementHelper.clickButton(By.id("deleteBtn"));
   }
 
-  @When("I fill password update form with {string}, {string} and {string}")
-  public void fillPasswordUpdateForm(
-      String currentPassword, String newPassword, String rePassword) {
-    webElementHelper.fillInputField(By.id("currentPassword"), currentPassword);
-    webElementHelper.fillInputField(By.id("newPassword"), newPassword);
-    webElementHelper.fillInputField(By.id("rePassword"), rePassword);
+  @When("I fill password update form with {string} and {string}")
+  public void fillPasswordUpdateForm(String newPassword, String rePassword) {
     webElementHelper.clickButton(By.id("pswChange"));
+    webElementHelper.fillInputField(By.id("password-new"), newPassword);
+    webElementHelper.fillInputField(By.id("password-confirm"), rePassword);
+    webElementHelper.clickButton(By.name("login"));
   }
 
   @When("I filter results by max price option")
@@ -198,7 +197,8 @@ public class StepDefinitions {
 
   @When("I am on login page I click the registration button")
   public void onLoginPageClickRegistrationButton() {
-    webElementHelper.clickButton(By.id("reg"));
+    webElementHelper.clickButton(
+        By.cssSelector("a[href^='/realms/sky-scope/login-actions/registration']"));
   }
 
   @When("I search for a return flight from {string} to {string} with valid dates")
@@ -255,16 +255,16 @@ public class StepDefinitions {
 
   @When("I am on login page I enter valid credentials")
   public void enterValidCredentials() {
-    webElementHelper.fillInputField(By.id("email"), "automataTest@test.hu");
+    webElementHelper.fillInputField(By.id("username"), "automataTest@test.hu");
     webElementHelper.fillInputField(By.id("password"), "automatatest");
-    webElementHelper.clickButton(By.id("login"));
+    webElementHelper.clickButton(By.name("login"));
   }
 
   @When("I am on login page I enter invalid credentials")
   public void enterInvalidCredentials() {
-    webElementHelper.fillInputField(By.id("email"), "invalid@invalid");
+    webElementHelper.fillInputField(By.id("username"), "invalid@invalid");
     webElementHelper.fillInputField(By.id("password"), "invalid");
-    webElementHelper.clickButton(By.id("login"));
+    webElementHelper.clickButton(By.name("login"));
   }
 
   @Then("I should see cheaper or equals offers than the specified max price")
@@ -397,20 +397,20 @@ public class StepDefinitions {
   @Then("the registration is successful")
   @Then("the login is successful")
   public void registrationIsSuccessful() {
-    assertFalse(webElementHelper.isElementDisplayed(By.className("text-danger")));
+    assertFalse(webElementHelper.isElementDisplayed(By.className("pf-m-error")));
   }
 
   @Then("the registration is not successful")
   public void theRegistrationIsNotSuccessful() {
-    webElementHelper.waitForElementToBeVisible(By.cssSelector("div#registration .text-danger"));
-    assertTrue(
-        webElementHelper.isElementDisplayed(By.cssSelector("div#registration .text-danger")));
+    webElementHelper.waitForElementToBeVisible(By.className("pf-m-error"));
+    assertTrue(webElementHelper.isElementDisplayed(By.className("pf-m-error")));
   }
 
   @Then("the login is not successful")
+  @Then("the password update is not successful")
   public void loginIsNotSuccessful() {
-    webElementHelper.waitForElementToBeVisible(By.cssSelector("div[id='error']"));
-    assertTrue(webElementHelper.isElementDisplayed(By.cssSelector("div[id='error']")));
+    webElementHelper.waitForElementToBeVisible(By.className("pf-m-error"));
+    assertTrue(webElementHelper.isElementDisplayed(By.className("pf-m-error")));
   }
 
   @Then("my account should be deleted")
@@ -421,14 +421,13 @@ public class StepDefinitions {
 
   @Then("my password should be updated successfully")
   public void myPasswordShouldBeUpdatedSuccessfully() {
-    webElementHelper.waitForElementToBeVisible(By.cssSelector(".text-success"));
-    assertTrue(webElementHelper.isElementDisplayed(By.cssSelector(".text-success")));
+    webElementHelper.waitForElementToBeVisible(By.xpath("//p[text()='Fiókom']"));
+    assertTrue(webElementHelper.isElementDisplayed(By.xpath("//p[text()='Fiókom']")));
   }
 
   @And("I confirm the deletion in the popup")
   public void confirmTheDeletionInThePopup() {
-    webElementHelper.waitForElementToBeVisible(By.id("confirmPassword"));
-    webElementHelper.fillInputField(By.id("confirmPassword"), "Ab01234567");
+    webElementHelper.waitForElementToBeVisible(By.id("confirmBtn"));
     webElementHelper.clickButton(By.id("confirmBtn"));
   }
 
@@ -438,19 +437,9 @@ public class StepDefinitions {
         RandomGenerator.getDefault().nextInt(0, 1000) + "@gmail.com", "Ab01234567", "Ab01234567");
   }
 
-  @And("I submit the registration form with too short password")
-  public void submitTheRegistrationFormWithInvalidData() {
-    fillRegistrationForm("invalid@invalid", "0123", "0123");
-  }
-
   @And("I submit the registration form with not matching passwords")
   public void submitTheRegistrationFormWithNotMatchingPasswords() {
     fillRegistrationForm("test@test", "01234567", "12345678");
-  }
-
-  @And("I submit the registration form with weak password")
-  public void submitTheRegistrationFormWithWeakPassword() {
-    fillRegistrationForm("test@test", "01234567", "01234567");
   }
 
   private void fillSearchBar(
@@ -488,10 +477,12 @@ public class StepDefinitions {
   }
 
   private void fillRegistrationForm(String email, String password, String rePassword) {
-    webElementHelper.fillInputField(By.id("signupEmail"), email);
-    webElementHelper.fillInputField(By.id("signupPassword"), password);
-    webElementHelper.fillInputField(By.id("signupRePassword"), rePassword);
-    webElementHelper.checkCheckbox(By.id("gdpr"));
-    webElementHelper.clickButton(By.id("signup"));
+    webElementHelper.fillInputField(By.id("username"), email);
+    webElementHelper.fillInputField(By.id("password"), password);
+    webElementHelper.fillInputField(By.id("password-confirm"), rePassword);
+    webElementHelper.fillInputField(By.id("email"), email);
+    webElementHelper.fillInputField(By.id("firstName"), email);
+    webElementHelper.fillInputField(By.id("lastName"), email);
+    webElementHelper.clickButton(By.cssSelector("input[value='Register']"));
   }
 }

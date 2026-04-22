@@ -1,14 +1,13 @@
 package com.szte.skyScope.utils;
 
 import com.szte.skyScope.dtos.FlightOfferDTO;
-import lombok.extern.slf4j.Slf4j;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FlightOfferFormatter {
@@ -50,7 +49,7 @@ public class FlightOfferFormatter {
       long minutes = Duration.parse(duration).minusHours(hours).toMinutes();
       return hours + " óra " + minutes + " perc";
     } catch (Exception exception) {
-      log.error("Error while formatting duration {}",  exception.getMessage(), exception);
+      log.error("Error while formatting duration {}", exception.getMessage(), exception);
       return duration;
     }
   }
@@ -62,7 +61,7 @@ public class FlightOfferFormatter {
       return new DecimalFormat("###,###,###", decimalFormatSymbol)
           .format(Integer.parseInt(price.split("\\.")[0]));
     } catch (Exception exception) {
-      log.error("Error while formatting price {}",  exception.getMessage(), exception);
+      log.error("Error while formatting price {}", exception.getMessage(), exception);
     }
     return price;
   }
@@ -109,7 +108,7 @@ public class FlightOfferFormatter {
     try {
       return time.split("T")[0].replace("-", ". ") + ". " + time.split("T")[1];
     } catch (Exception exception) {
-      log.error("Error while formatting time {}",  exception.getMessage(), exception);
+      log.error("Error while formatting time {}", exception.getMessage(), exception);
       return time;
     }
   }
