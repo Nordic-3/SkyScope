@@ -46,4 +46,4 @@ Track commercial planes in real time and find cheap flights. A Spring Boot based
 
 ## :test_tube: Testing
 - **Unit tests:** JUnit 5 and Mockito for service layer testing.
-- **Automation tests:** Selenium WebDriver for end-to-end testing of user flows. To run the automation tests, first start the application and then execute: `mvn verify -Pautomata-tests`.
+- **Automation tests:** Playwright for end-to-end testing of user flows. To run the automation tests, first start the application and then execute: `mvn verify -Pautomata-tests`.
