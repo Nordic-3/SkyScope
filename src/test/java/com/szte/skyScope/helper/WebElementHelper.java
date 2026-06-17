@@ -1,105 +1,88 @@
 package com.szte.skyScope.helper;
 
-import java.time.Duration;
+import com.microsoft.playwright.ElementHandle;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.LoadState;
 import java.util.List;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebElementHelper {
-  private final WebDriver driver;
+  private final Page page;
 
-  public WebElementHelper(WebDriver driver) {
-    this.driver = driver;
+  public WebElementHelper(Page page) {
+    this.page = page;
   }
 
-  public void fillInputField(By locator, String value) {
-    waitForElementToBeVisible(locator);
-    WebElement element = driver.findElement(locator);
-    element.sendKeys(value);
+  public void fillInputField(String selector, String value) {
+    waitForElementToBeVisible(selector);
+    page.fill(selector, value);
   }
 
-  public void clickButton(By locator) {
-    new WebDriverWait(driver, Duration.ofSeconds(90))
-        .until(ExpectedConditions.elementToBeClickable(locator));
-    driver.findElement(locator).click();
+  public void clickButton(String selector) {
+    page.waitForLoadState(LoadState.DOMCONTENTLOADED);
+    page.click(selector);
   }
 
-  public void clickAllButton(By locator) {
-    driver.findElements(locator).forEach(WebElement::click);
+  public void clickAllButton(String selector) {
+    waitForElementToBeVisible(selector);
+    page.querySelectorAll(selector).forEach(ElementHandle::click);
   }
 
-  public void waitForGivenNumberOfElements(By locator, int numberOfElements) {
-    new WebDriverWait(driver, Duration.ofSeconds(90))
-        .until(ExpectedConditions.numberOfElementsToBe(locator, numberOfElements));
+  public void waitForGivenNumberOfElements(String selector, int numberOfElements) {
+    page.waitForCondition(() -> page.querySelectorAll(selector).size() < numberOfElements);
   }
 
-  public void checkCheckboxById(String id) {
-    driver.findElement(By.id(id)).click();
+  public void checkCheckboxById(String selector) {
+    page.check(selector);
   }
 
-  public boolean isElementDisplayed(By locator) {
-    try {
-      WebElement element = driver.findElement(locator);
-      return element.isDisplayed();
-    } catch (Exception e) {
-      return false;
-    }
+  public boolean isElementDisplayed(String selector) {
+    page.waitForLoadState(LoadState.NETWORKIDLE);
+    return page.isVisible(selector);
   }
 
-  public void waitForTextInElement(By locator, String text) {
-    new WebDriverWait(driver, Duration.ofSeconds(90))
-        .until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
+  public void waitForTextInElement(String selector, String text) {
+    page.waitForCondition(() -> page.isVisible(selector + ":has-text('" + text + "')"));
   }
 
-  public List<String> getElementsTextInList(By locator) {
-    return driver.findElements(locator).stream().map(WebElement::getText).toList();
+  public List<String> getElementsTextInList(String selector) {
+    return page.querySelectorAll(selector).stream().map(ElementHandle::innerText).toList();
   }
 
-  public void waitForElementToBeVisible(By locator) {
-    new WebDriverWait(driver, Duration.ofSeconds(90))
-        .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+  public void waitForElementToBeVisible(String selector) {
+    page.waitForCondition(() -> page.isVisible(selector));
   }
 
-  public void fillAllinputFieldsByLocator(By locator, String value) {
-    driver.findElements(locator).forEach(element -> element.sendKeys(value));
+  public void fillAllinputFieldsByLocator(String selector, String value) {
+    page.waitForLoadState(LoadState.DOMCONTENTLOADED);
+    page.querySelectorAll(selector).forEach(e -> e.fill(value));
   }
 
-  public boolean isTextVisibleInElement(By locator, String text) {
-    try {
-      WebElement element = driver.findElement(locator);
-      return element.getText().contains(text);
-    } catch (Exception e) {
-      return false;
-    }
+  public boolean isTextVisibleInElement(String selector, String text) {
+    page.waitForLoadState(LoadState.NETWORKIDLE);
+    return page.querySelector(selector).innerText().contains(text);
   }
 
-  public void selectOptionFromAllDropDownsByValue(By locator, String value) {
-    driver.findElements(locator).forEach(element -> new Select(element).selectByValue(value));
+  public void selectOptionFromAllDropDownsByValue(String selector, String value) {
+    page.querySelectorAll(selector).forEach(e -> e.selectOption(value));
   }
 
-  public String getValueOfAnAttribute(By locator, String attribute) {
-    waitForElementToBeVisible(locator);
-    return driver.findElement(locator).getDomAttribute(attribute);
+  public String getValueOfAnAttribute(String selector, String attribute) {
+    waitForElementToBeVisible(selector);
+    return page.getAttribute(selector, attribute);
   }
 
-  public String getFirstNotDefaultValueOfAnSelectOption(By locator) {
-    return new Select(driver.findElement(locator))
-        .getOptions().stream()
-            .filter(webElement -> !webElement.getDomAttribute("value").isEmpty())
-            .findFirst()
-            .get()
-            .getDomAttribute("value");
+  public String getFirstNotDefaultValueOfAnSelectOption(String selector) {
+    return page.locator(selector)
+        .locator("option[value]:not([value=''])")
+        .first()
+        .getAttribute("value");
   }
 
-  public List<WebElement> getElementsByLocator(By locator) {
-    return driver.findElements(locator);
+  public List<ElementHandle> getElementsBySelector(String selector) {
+    return page.querySelectorAll(selector);
   }
 
-  public void checkCheckbox(By locator) {
-    driver.findElement(locator).click();
+  public void checkCheckbox(String selector) {
+    page.check(selector);
   }
 }

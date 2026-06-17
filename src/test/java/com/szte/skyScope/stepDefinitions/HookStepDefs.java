@@ -13,14 +13,13 @@ import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.openqa.selenium.By;
 
 @RequiredArgsConstructor
 public class HookStepDefs {
   private final KeykloackConfig keykloackConfig;
   private final TestSettings testSettings;
   private final WebElementHelper webElementHelper =
-      new WebElementHelper(FirefoxWebDriver.getDriver());
+      new WebElementHelper(FirefoxWebDriver.getPage());
 
   @BeforeAll
   public static void startBrowser() {
@@ -34,19 +33,17 @@ public class HookStepDefs {
 
   @Before(value = "@fill-payment-page or @profile-page-tests or @login or @traveller-detail-form")
   public void setupTestUser() {
-    System.out.println(testSettings.getEmail());
     var usersResource =
         keykloackConfig.keycloakAdminClient().realm(keykloackConfig.getRealm()).users();
     if (usersResource.search(testSettings.getEmail()).isEmpty()) {
       createUser(usersResource);
-      System.out.println("fut");
     }
   }
 
   @After
   public void deleteCookeies() {
-    FirefoxWebDriver.getDriver().get("http://localhost:8080/logout");
-    webElementHelper.clickButton(By.cssSelector("button[type='submit']"));
+    FirefoxWebDriver.navigateTo("http://localhost:8080/logout");
+    webElementHelper.clickButton("button[type='submit']");
     FirefoxWebDriver.deleteCookies();
   }
 

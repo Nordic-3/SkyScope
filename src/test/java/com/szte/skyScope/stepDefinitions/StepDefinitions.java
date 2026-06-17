@@ -13,11 +13,10 @@ import io.cucumber.java.en.When;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.random.RandomGenerator;
-import org.openqa.selenium.By;
 
 public class StepDefinitions {
   private final WebElementHelper webElementHelper =
-      new WebElementHelper(FirefoxWebDriver.getDriver());
+      new WebElementHelper(FirefoxWebDriver.getPage());
   private final DataStore dataStore = new DataStore();
 
   @Given("I am on the search page")
@@ -35,13 +34,13 @@ public class StepDefinitions {
   @Given("I have selected an flgiht offer")
   public void selectedAFlightOffer() {
     haveSearchedForReturnFlightWithValidDates("Budapest", "London");
-    webElementHelper.clickButton(By.id("book"));
+    webElementHelper.clickButton("a#book");
   }
 
   @Given("I have selected a flight from {string} to {string} and logged in")
   public void selectFlightAndLogin(String origin, String destination) {
     haveSearchedForReturnFlightWithValidDates(origin, destination);
-    webElementHelper.clickButton(By.id("book"));
+    webElementHelper.clickButton("a#book");
     enterValidCredentials();
   }
 
@@ -49,30 +48,30 @@ public class StepDefinitions {
   public void onThePaymentPage() {
     selectFlightAndLogin("Budapest", "London");
     fillTheTravellerDetails();
-    webElementHelper.waitForElementToBeVisible(By.id("payBtn"));
-    webElementHelper.clickButton(By.id("payBtn"));
+    webElementHelper.waitForElementToBeVisible("button#payBtn");
+    webElementHelper.clickButton("button#payBtn");
   }
 
   @Given("I am on profile page after successful login")
   public void onProfilePageAfterSuccessfulLogin() {
     FirefoxWebDriver.navigateTo("http://localhost:8080/profile");
     webElementHelper.waitForElementToBeVisible(
-        By.cssSelector("a[href^='/realms/sky-scope/login-actions/registration']"));
+        "a[href^='/realms/sky-scope/login-actions/registration']");
     onLoginPageClickRegistrationButton();
     submitTheRegistrationForm();
   }
 
   @When("I click on delete account button")
   public void clickOnDeleteAccountButton() {
-    webElementHelper.clickButton(By.id("deleteBtn"));
+    webElementHelper.clickButton("button#deleteBtn");
   }
 
   @When("I fill password update form with {string} and {string}")
   public void fillPasswordUpdateForm(String newPassword, String rePassword) {
-    webElementHelper.clickButton(By.id("pswChange"));
-    webElementHelper.fillInputField(By.id("password-new"), newPassword);
-    webElementHelper.fillInputField(By.id("password-confirm"), rePassword);
-    webElementHelper.clickButton(By.name("login"));
+    webElementHelper.clickButton("button#pswChange");
+    webElementHelper.fillInputField("input#password-new", newPassword);
+    webElementHelper.fillInputField("input#password-confirm", rePassword);
+    webElementHelper.clickButton("button[name='login']");
   }
 
   @When("I filter results by max price option")
@@ -82,123 +81,112 @@ public class StepDefinitions {
             String.join(
                 "",
                 webElementHelper
-                    .getValueOfAnAttribute(By.cssSelector("input[aria-label='Max']"), "placeholder")
+                    .getValueOfAnAttribute("input[aria-label='Max']", "placeholder")
                     .split("Ft")[0]
                     .split(" ")));
     dataStore.putData("filteredPrice", Double.toString(maxPrice / 1.5));
     webElementHelper.fillInputField(
-        By.cssSelector("input[aria-label='Max']"),
-        dataStore.getValue("filteredPrice", String.class));
-    webElementHelper.clickButton(By.id("filterBtn"));
+        "input[aria-label='Max']", dataStore.getValue("filteredPrice", String.class));
+    webElementHelper.clickButton("button#filterBtn");
   }
 
   @When("I filter results by number of transfers")
   public void filterResultsByNumberOfTransfers() {
     dataStore.putData(
         "transferNumber",
-        webElementHelper.getFirstNotDefaultValueOfAnSelectOption(By.id("transferNumber")));
+        webElementHelper.getFirstNotDefaultValueOfAnSelectOption("select#transferNumber"));
     webElementHelper.selectOptionFromAllDropDownsByValue(
-        By.id("transferNumber"), dataStore.getValue("transferNumber", String.class));
-    webElementHelper.clickButton(By.id("filterBtn"));
+        "select#transferNumber", dataStore.getValue("transferNumber", String.class));
+    webElementHelper.clickButton("button#filterBtn");
   }
 
   @When("I filter results by layover duration")
   public void filterResultsByLayoverDuration() {
     webElementHelper.selectOptionFromAllDropDownsByValue(
-        By.id("transferDuration"),
-        webElementHelper.getFirstNotDefaultValueOfAnSelectOption(By.id("transferDuration")));
+        "select#transferDuration",
+        webElementHelper.getFirstNotDefaultValueOfAnSelectOption("select#transferDuration"));
     dataStore.putData(
         "transferDuration",
-        webElementHelper
-            .getElementsTextInList(By.cssSelector("#transferDuration > option:checked"))
-            .getFirst());
-    webElementHelper.clickButton(By.id("filterBtn"));
+        webElementHelper.getElementsTextInList("#transferDuration > option:checked").getFirst());
+    webElementHelper.clickButton("button#filterBtn");
   }
 
   @When("I filter results by airlines")
   public void filterResultsByAirlines() {
-    webElementHelper.clickButton(By.cssSelector("div[aria-controls='airlineFilter']"));
-    webElementHelper.checkCheckbox(By.name("airlines"));
+    webElementHelper.clickButton("div[aria-controls='airlineFilter']");
+    webElementHelper.checkCheckbox("input[name='airlines']");
     dataStore.putData(
         "filteredAirline",
         webElementHelper
-            .getElementsTextInList(By.cssSelector("input[name='airlines']:checked ~ label"))
+            .getElementsTextInList("input[name='airlines']:checked ~ label")
             .getFirst());
-    webElementHelper.clickButton(By.id("filterBtn"));
+    webElementHelper.clickButton("button#filterBtn");
   }
 
   @When("I filter results by airplane")
   public void filterResultsByAirplane() {
-    webElementHelper.clickButton(By.cssSelector("div[aria-controls='airplaneFilter']"));
-    webElementHelper.checkCheckbox(By.name("airplanes"));
+    webElementHelper.clickButton("div[aria-controls='airplaneFilter']");
+    webElementHelper.checkCheckbox("input[name='airplanes']");
     dataStore.putData(
         "filteredAirplane",
         webElementHelper
-            .getElementsTextInList(By.cssSelector("input[name='airplanes']:checked ~ label"))
+            .getElementsTextInList("input[name='airplanes']:checked ~ label")
             .getFirst());
-    webElementHelper.clickButton(By.id("filterBtn"));
+    webElementHelper.clickButton("button#filterBtn");
   }
 
   @When("I delete applied filters")
   public void deleteAppliedFilters() {
-    webElementHelper.clickButton(By.id("deleteFilterBtn"));
+    webElementHelper.clickButton("button#deleteFilterBtn");
   }
 
   @When("I fill in the payment details with valid information")
   public void fillThePaymentDetails() {
-    webElementHelper.fillInputField(By.id("email"), "automataTest@test.hu");
-    webElementHelper.fillInputField(By.id("cardNumber"), "4242 424242424242");
-    webElementHelper.fillInputField(By.id("cardExpiry"), "09/30");
-    webElementHelper.fillInputField(By.id("cardCvc"), "999");
-    webElementHelper.fillInputField(By.id("billingName"), "Test Elek");
-    webElementHelper.clickButton(By.cssSelector("button[type='submit']"));
+    webElementHelper.fillInputField("input#email", "automataTest@test.hu");
+    webElementHelper.fillInputField("input#cardNumber", "4242 424242424242");
+    webElementHelper.fillInputField("input#cardExpiry", "09/30");
+    webElementHelper.fillInputField("input#cardCvc", "999");
+    webElementHelper.fillInputField("input#billingName", "Test Elek");
+    webElementHelper.clickButton("button[type='submit']");
   }
 
   @When("I fill in the traveller details with valid information")
   public void fillTheTravellerDetails() {
+    webElementHelper.fillAllinputFieldsByLocator("input[placeholder='Vezetéknév']", "Test");
+    webElementHelper.fillAllinputFieldsByLocator("input[placeholder='Keresztnév']", "Elek");
     webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Vezetéknév']"), "Test");
+        "input[placeholder='születési dátum']", "1990-01-01");
+    webElementHelper.selectOptionFromAllDropDownsByValue("#gender > select", "MALE");
+    webElementHelper.fillInputField("input#countryCode", "36");
+    webElementHelper.fillInputField("input#phoneNumber", "123456789");
+    webElementHelper.selectOptionFromAllDropDownsByValue("#docType > select", "PASSPORT");
     webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Keresztnév']"), "Elek");
-    webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='születési dátum']"), "1990-01-01");
-    webElementHelper.selectOptionFromAllDropDownsByValue(
-        By.cssSelector("#gender > select"), "MALE");
-    webElementHelper.fillInputField(By.id("countryCode"), "36");
-    webElementHelper.fillInputField(By.id("phoneNumber"), "123456789");
-    webElementHelper.selectOptionFromAllDropDownsByValue(
-        By.cssSelector("#docType > select"), "PASSPORT");
-    webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Okmány száma']"),
+        "input[placeholder='Okmány száma']",
         Integer.toString(RandomGenerator.getDefault().nextInt(100000, 999999)));
     webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='kiállítás dátuma']"), "2020-01-01");
+        "input[placeholder='kiállítás dátuma']", "2020-01-01");
     webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='lejárat dátuma']"), "2030-01-01");
+        "input[placeholder='lejárat dátuma']", "2030-01-01");
     webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Kiállító ország kódja (pl. HU)']"), "hu");
+        "input[placeholder='Kiállító ország kódja (pl. HU)']", "hu");
     webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Kiállítás helye']"), "Budapest");
+        "input[placeholder='Kiállítás helye']", "Budapest");
+    webElementHelper.fillAllinputFieldsByLocator("input[placeholder='Születési hely']", "Budapest");
     webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Születési hely']"), "Budapest");
-    webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Állampolgárság (pl. HU)']"), "hu");
-    webElementHelper.clickButton(By.id("next"));
+        "input[placeholder='Állampolgárság (pl. HU)']", "hu");
+    webElementHelper.clickButton("button#next");
   }
 
   @When("I fill in the traveller details with missing information")
   public void fillTheTravellerDetailsWithMissingInformation() {
-    webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Vezetéknév']"), "Test");
-    webElementHelper.fillAllinputFieldsByLocator(
-        By.cssSelector("input[placeholder='Keresztnév']"), "Elek");
-    webElementHelper.clickButton(By.id("next"));
+    webElementHelper.fillAllinputFieldsByLocator("input[placeholder='Vezetéknév']", "Test");
+    webElementHelper.fillAllinputFieldsByLocator("input[placeholder='Keresztnév']", "Elek");
+    webElementHelper.clickButton("button#next");
   }
 
   @When("I am on login page I click the registration button")
   public void onLoginPageClickRegistrationButton() {
-    webElementHelper.clickButton(
-        By.cssSelector("a[href^='/realms/sky-scope/login-actions/registration']"));
+    webElementHelper.clickButton("a[href^='/realms/sky-scope/login-actions/registration']");
   }
 
   @When("I search for a return flight from {string} to {string} with valid dates")
@@ -208,23 +196,23 @@ public class StepDefinitions {
         destination,
         LocalDate.now().plusDays(15).toString(),
         LocalDate.now().plusDays(25).toString());
-    webElementHelper.clickButton(By.id("searchFlightsButton"));
+    webElementHelper.clickButton("button#searchFlightsButton");
   }
 
   @When("I search for a one way flight from {string} to {string} with valid date")
   public void searchForOneWayFlightWithValidDate(String origin, String destination) {
-    webElementHelper.fillInputField(By.id("originCity"), origin);
-    webElementHelper.fillInputField(By.id("destinationCity"), destination);
-    webElementHelper.checkCheckboxById("onlyOneWay");
-    webElementHelper.fillInputField(By.id("outGoingDate"), LocalDate.now().plusDays(15).toString());
-    webElementHelper.clickButton(By.id("searchFlightsButton"));
+    webElementHelper.fillInputField("input#originCity", origin);
+    webElementHelper.fillInputField("input#destinationCity", destination);
+    webElementHelper.checkCheckboxById("input#onlyOneWay");
+    webElementHelper.fillInputField("input#outGoingDate", LocalDate.now().plusDays(15).toString());
+    webElementHelper.clickButton("button#searchFlightsButton");
   }
 
   @When("I search for a return flight from {string} to {string} from {string} until {string}")
   public void searchForReturnFlightWithGivenInputs(
       String origin, String destination, String departureDate, String returnDate) {
     fillSearchBar(origin, destination, departureDate, returnDate);
-    webElementHelper.clickButton(By.id("searchFlightsButton"));
+    webElementHelper.clickButton("button#searchFlightsButton");
   }
 
   @When("I use advanced search for a return flight from {string} to {string} with valid dates")
@@ -234,37 +222,37 @@ public class StepDefinitions {
         destination,
         LocalDate.now().plusDays(15).toString(),
         LocalDate.now().plusDays(25).toString());
-    webElementHelper.clickButton(By.id("advancedSearchButton"));
-    webElementHelper.fillInputField(By.id("numberOfChildren"), "1");
-    webElementHelper.fillInputField(By.id("numberOfInfants"), "1");
-    webElementHelper.clickButton(By.id("searchFlightsButton"));
+    webElementHelper.clickButton("button#advancedSearchButton");
+    webElementHelper.fillInputField("input#numberOfChildren", "1");
+    webElementHelper.fillInputField("input#numberOfInfants", "1");
+    webElementHelper.clickButton("button#searchFlightsButton");
   }
 
   @When("I sort the results by {string}")
   public void sortTheResultsBy(String sortBy) {
     switch (FlightOffersSortOptions.getOptionFromValue(sortBy)) {
-      case PRICE_ASC -> webElementHelper.clickButton(By.id("priceAsc"));
-      case PRICE_DSC -> webElementHelper.clickButton(By.id("priceDsc"));
-      case FLYTIME_ASC -> webElementHelper.clickButton(By.id("flyTimeAsc"));
-      case FLYTIME_DSC -> webElementHelper.clickButton(By.id("flyTimeDsc"));
-      case TRANSFERTIME_ASC -> webElementHelper.clickButton(By.id("transferTimeAsc"));
-      case TRANSFERTIME_DSC -> webElementHelper.clickButton(By.id("transferTimeDsc"));
+      case PRICE_ASC -> webElementHelper.clickButton("a#priceAsc");
+      case PRICE_DSC -> webElementHelper.clickButton("a#priceDsc");
+      case FLYTIME_ASC -> webElementHelper.clickButton("a#flyTimeAsc");
+      case FLYTIME_DSC -> webElementHelper.clickButton("a#flyTimeDsc");
+      case TRANSFERTIME_ASC -> webElementHelper.clickButton("a#transferTimeAsc");
+      case TRANSFERTIME_DSC -> webElementHelper.clickButton("a#transferTimeDsc");
     }
     flightsShouldBeDisplayed(100);
   }
 
   @When("I am on login page I enter valid credentials")
   public void enterValidCredentials() {
-    webElementHelper.fillInputField(By.id("username"), "automataTest@test.hu");
-    webElementHelper.fillInputField(By.id("password"), "automatatest");
-    webElementHelper.clickButton(By.name("login"));
+    webElementHelper.fillInputField("input#username", "automataTest@test.hu");
+    webElementHelper.fillInputField("input#password", "automatatest");
+    webElementHelper.clickButton("button[name='login']");
   }
 
   @When("I am on login page I enter invalid credentials")
   public void enterInvalidCredentials() {
-    webElementHelper.fillInputField(By.id("username"), "invalid@invalid");
-    webElementHelper.fillInputField(By.id("password"), "invalid");
-    webElementHelper.clickButton(By.name("login"));
+    webElementHelper.fillInputField("input#username", "invalid@invalid");
+    webElementHelper.fillInputField("input#password", "invalid");
+    webElementHelper.clickButton("button[name='login']");
   }
 
   @Then("I should see cheaper or equals offers than the specified max price")
@@ -283,9 +271,9 @@ public class StepDefinitions {
 
   @Then("I should see offers with layover duration less or equals than the specified duration")
   public void shouldSeeOffersWithLayoverDurationLessThanTheSpecifiedDuration() {
-    webElementHelper.clickAllButton(By.name("details"));
+    webElementHelper.clickAllButton("button[name='details']");
     webElementHelper
-        .getElementsTextInList(By.name("layoverTime"))
+        .getElementsTextInList("p[name='layoverTime']")
         .forEach(
             layover -> {
               int totalMinutes =
@@ -304,12 +292,12 @@ public class StepDefinitions {
   @Then("I should see offers with at least one flight of the specified airlines")
   public void shouldSeeOffersWithAtLeastOneFlightOfTheSpecifiedAirlines() {
     webElementHelper
-        .getElementsByLocator(By.name("details"))
+        .getElementsBySelector("button[name='details']")
         .forEach(
             element -> {
               element.click();
               assertTrue(
-                  webElementHelper.getElementsTextInList(By.name("carrierAirline")).stream()
+                  webElementHelper.getElementsTextInList("p[name='carrierAirline']").stream()
                       .anyMatch(
                           s -> s.equals(dataStore.getValue("filteredAirline", String.class))));
               element.click();
@@ -319,12 +307,12 @@ public class StepDefinitions {
   @Then("I should see offers with at least one flight of the specified airplane type")
   public void shouldSeeOffersWithAtLeastOneFlightOfTheSpecifiedAirplaneType() {
     webElementHelper
-        .getElementsByLocator(By.name("details"))
+        .getElementsBySelector("button[name='details']")
         .forEach(
             element -> {
               element.click();
               assertTrue(
-                  webElementHelper.getElementsTextInList(By.name("aircraftType")).stream()
+                  webElementHelper.getElementsTextInList("p[name='aircraftType']").stream()
                       .anyMatch(
                           s -> s.equals(dataStore.getValue("filteredAirplane", String.class))));
               element.click();
@@ -333,48 +321,46 @@ public class StepDefinitions {
 
   @Then("I should see the success confirmation message")
   public void shouldSeeTheSuccessConfirmationMessage() {
-    webElementHelper.waitForTextInElement(By.id("successModel"), "Sikeres foglalás");
-    assertTrue(webElementHelper.isTextVisibleInElement(By.id("successModel"), "Sikeres foglalás"));
+    webElementHelper.waitForTextInElement("h1#successModel", "Sikeres foglalás");
+    assertTrue(webElementHelper.isTextVisibleInElement("h1#successModel", "Sikeres foglalás"));
   }
 
   @Then("I should see the sumumary page")
   public void shouldSeeTheSummaryPage() {
-    webElementHelper.waitForTextInElement(By.id("payBtn"), "Fizetés");
-    assertTrue(webElementHelper.isTextVisibleInElement(By.id("payBtn"), "Fizetés"));
+    webElementHelper.waitForTextInElement("button#payBtn", "Fizetés");
+    assertTrue(webElementHelper.isTextVisibleInElement("button#payBtn", "Fizetés"));
   }
 
   @Then("I should see the payment page")
   public void shouldSeeThePaymentPage() {
-    webElementHelper.waitForTextInElement(
-        By.cssSelector("div[class='PaymentHeader] > div'"), "Pay with card");
+    webElementHelper.waitForTextInElement("div[class='PaymentHeader] > div'", "Pay with card");
     assertTrue(
         webElementHelper.isTextVisibleInElement(
-            By.cssSelector("div[class='PaymentHeader] > div'"), "Pay with card"));
+            "div[class='PaymentHeader] > div'", "Pay with card"));
   }
 
   @Then("I should see error message for missing fields")
   public void shouldSeeErrorMessageForMissingFields() {
-    assertTrue(webElementHelper.isElementDisplayed(By.className("alert-danger")));
+    assertTrue(webElementHelper.isElementDisplayed("div.alert-danger"));
   }
 
   @Then("{int} flights should be displayed")
   public void flightsShouldBeDisplayed(int numberOfResults) {
-    webElementHelper.waitForGivenNumberOfElements(By.name("resultCard"), numberOfResults);
+    webElementHelper.waitForGivenNumberOfElements("div.resultCard", numberOfResults);
   }
 
   @Then("an error message should be displayed")
   public void errorMessageShouldBeDisplayed() {
-    assertTrue(webElementHelper.isElementDisplayed(By.className("text-danger")));
+    assertTrue(webElementHelper.isElementDisplayed("div.text-danger"));
   }
 
   @Then("I see offers for 1 adult, 1 child and 1 infant")
   public void seeOffersForAllTypeOfPassengers() {
-    webElementHelper.waitForGivenNumberOfElements(By.name("details"), 100);
-    webElementHelper.clickAllButton(By.name("details"));
-    webElementHelper.waitForTextInElement(By.cssSelector("div[class='collapse show']"), "Felnőtt");
-    webElementHelper.waitForTextInElement(By.cssSelector("div[class='collapse show']"), "Gyerek");
-    webElementHelper.waitForTextInElement(
-        By.cssSelector("div[class='collapse show']"), "Csecsemő, ölben");
+    webElementHelper.waitForGivenNumberOfElements("button[name='details']", 100);
+    webElementHelper.clickAllButton("button[name='details']");
+    webElementHelper.waitForTextInElement("div[class='collapse show']", "Felnőtt");
+    webElementHelper.waitForTextInElement("div[class='collapse show']", "Gyerek");
+    webElementHelper.waitForTextInElement("div[class='collapse show']", "Csecsemő, ölben");
   }
 
   @Then("the results should be sorted by {string}")
@@ -397,38 +383,38 @@ public class StepDefinitions {
   @Then("the registration is successful")
   @Then("the login is successful")
   public void registrationIsSuccessful() {
-    assertFalse(webElementHelper.isElementDisplayed(By.className("pf-m-error")));
+    assertFalse(webElementHelper.isElementDisplayed("div.pf-m-error"));
   }
 
   @Then("the registration is not successful")
   public void theRegistrationIsNotSuccessful() {
-    webElementHelper.waitForElementToBeVisible(By.className("pf-m-error"));
-    assertTrue(webElementHelper.isElementDisplayed(By.className("pf-m-error")));
+    webElementHelper.waitForElementToBeVisible("div.pf-m-error");
+    assertTrue(webElementHelper.isElementDisplayed("div.pf-m-error"));
   }
 
   @Then("the login is not successful")
   @Then("the password update is not successful")
   public void loginIsNotSuccessful() {
-    webElementHelper.waitForElementToBeVisible(By.className("pf-m-error"));
-    assertTrue(webElementHelper.isElementDisplayed(By.className("pf-m-error")));
+    webElementHelper.waitForElementToBeVisible("div.pf-m-error");
+    assertTrue(webElementHelper.isElementDisplayed("div.pf-m-error"));
   }
 
   @Then("my account should be deleted")
   public void myAccountShouldBeDeleted() {
-    webElementHelper.waitForTextInElement(By.cssSelector("a[href='/flighttracker']"), "Explore");
-    assertTrue(webElementHelper.isElementDisplayed(By.cssSelector("a[href='/flighttracker']")));
+    webElementHelper.waitForTextInElement("a[href='/flighttracker']", "Explore");
+    assertTrue(webElementHelper.isElementDisplayed("a[href='/flighttracker']"));
   }
 
   @Then("my password should be updated successfully")
   public void myPasswordShouldBeUpdatedSuccessfully() {
-    webElementHelper.waitForElementToBeVisible(By.xpath("//p[text()='Fiókom']"));
-    assertTrue(webElementHelper.isElementDisplayed(By.xpath("//p[text()='Fiókom']")));
+    webElementHelper.waitForElementToBeVisible("p:has-text('Fiókom')");
+    assertTrue(webElementHelper.isElementDisplayed("p:has-text('Fiókom')"));
   }
 
   @And("I confirm the deletion in the popup")
   public void confirmTheDeletionInThePopup() {
-    webElementHelper.waitForElementToBeVisible(By.id("confirmBtn"));
-    webElementHelper.clickButton(By.id("confirmBtn"));
+    webElementHelper.waitForElementToBeVisible("button#confirmBtn");
+    webElementHelper.clickButton("button#confirmBtn");
   }
 
   @And("I submit the registration form")
@@ -444,21 +430,21 @@ public class StepDefinitions {
 
   private void fillSearchBar(
       String origin, String destination, String departureDate, String returnDate) {
-    webElementHelper.fillInputField(By.id("originCity"), origin);
-    webElementHelper.fillInputField(By.id("destinationCity"), destination);
-    webElementHelper.fillInputField(By.id("outGoingDate"), departureDate);
-    webElementHelper.fillInputField(By.id("inGoingDate"), returnDate);
+    webElementHelper.fillInputField("input#originCity", origin);
+    webElementHelper.fillInputField("input#destinationCity", destination);
+    webElementHelper.fillInputField("input#outGoingDate", departureDate);
+    webElementHelper.fillInputField("input#inGoingDate", returnDate);
   }
 
   private List<Integer> getPrices() {
-    return webElementHelper.getElementsTextInList(By.name("price")).stream()
+    return webElementHelper.getElementsTextInList("span[name='price']").stream()
         .map(s -> s.replace(" ", ""))
         .map(Integer::valueOf)
         .toList();
   }
 
   private List<Integer> getDurations() {
-    return webElementHelper.getElementsTextInList(By.name("durationAndTransfers")).stream()
+    return webElementHelper.getElementsTextInList("h5[name='durationAndTransfers']").stream()
         .map(s -> s.split(" "))
         .map(
             s -> {
@@ -470,19 +456,19 @@ public class StepDefinitions {
   }
 
   private List<Integer> getTransferNumbers() {
-    return webElementHelper.getElementsTextInList(By.name("durationAndTransfers")).stream()
+    return webElementHelper.getElementsTextInList("h5[name='durationAndTransfers']").stream()
         .map(s -> s.split(" ")[4])
         .map(Integer::valueOf)
         .toList();
   }
 
   private void fillRegistrationForm(String email, String password, String rePassword) {
-    webElementHelper.fillInputField(By.id("username"), email);
-    webElementHelper.fillInputField(By.id("password"), password);
-    webElementHelper.fillInputField(By.id("password-confirm"), rePassword);
-    webElementHelper.fillInputField(By.id("email"), email);
-    webElementHelper.fillInputField(By.id("firstName"), email);
-    webElementHelper.fillInputField(By.id("lastName"), email);
-    webElementHelper.clickButton(By.cssSelector("input[value='Register']"));
+    webElementHelper.fillInputField("input#username", email);
+    webElementHelper.fillInputField("input#password", password);
+    webElementHelper.fillInputField("input#password-confirm", rePassword);
+    webElementHelper.fillInputField("input#email", email);
+    webElementHelper.fillInputField("input#firstName", email);
+    webElementHelper.fillInputField("input#lastName", email);
+    webElementHelper.clickButton("input[value='Register']");
   }
 }
