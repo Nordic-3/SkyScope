@@ -11,8 +11,8 @@ public class FirefoxWebDriver {
   @Getter private static Browser browser;
   @Getter private static Page page;
 
-  public static void initDriver() {
-    browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+  public static void initDriver(boolean isHeadless) {
+    browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless));
     page = browser.newPage();
   }
 
@@ -22,9 +22,5 @@ public class FirefoxWebDriver {
 
   public static void closeBrowser() {
     page.close();
-  }
-
-  public static void deleteCookies() {
-    page.context().clearCookies();
   }
 }

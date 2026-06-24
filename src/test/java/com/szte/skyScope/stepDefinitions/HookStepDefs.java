@@ -2,12 +2,9 @@ package com.szte.skyScope.stepDefinitions;
 
 import com.szte.skyScope.config.KeykloackConfig;
 import com.szte.skyScope.config.TestSettings;
-import com.szte.skyScope.helper.WebElementHelper;
 import com.szte.skyScope.webDriver.FirefoxWebDriver;
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -18,17 +15,10 @@ import org.keycloak.representations.idm.UserRepresentation;
 public class HookStepDefs {
   private final KeykloackConfig keykloackConfig;
   private final TestSettings testSettings;
-  private final WebElementHelper webElementHelper =
-      new WebElementHelper(FirefoxWebDriver.getPage());
 
-  @BeforeAll
-  public static void startBrowser() {
-    FirefoxWebDriver.initDriver();
-  }
-
-  @AfterAll
-  public static void closeBrowser() {
-    FirefoxWebDriver.closeBrowser();
+  @Before
+  public void startBrowser() {
+    FirefoxWebDriver.initDriver(testSettings.isHeadless());
   }
 
   @Before(value = "@fill-payment-page or @profile-page-tests or @login or @traveller-detail-form")
@@ -42,9 +32,7 @@ public class HookStepDefs {
 
   @After
   public void deleteCookeies() {
-    FirefoxWebDriver.navigateTo("http://localhost:8080/logout");
-    webElementHelper.clickButton("button[type='submit']");
-    FirefoxWebDriver.deleteCookies();
+    FirefoxWebDriver.closeBrowser();
   }
 
   private void createUser(UsersResource usersResource) {

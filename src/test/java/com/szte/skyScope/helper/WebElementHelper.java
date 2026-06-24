@@ -45,6 +45,7 @@ public class WebElementHelper {
   }
 
   public List<String> getElementsTextInList(String selector) {
+    page.waitForLoadState(LoadState.NETWORKIDLE);
     return page.querySelectorAll(selector).stream().map(ElementHandle::innerText).toList();
   }
 
