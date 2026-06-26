@@ -1,10 +1,13 @@
 package com.szte.skyScope.stepDefinitions;
 
+import com.microsoft.playwright.Page;
 import com.szte.skyScope.config.KeykloackConfig;
 import com.szte.skyScope.config.TestSettings;
 import com.szte.skyScope.webDriver.FirefoxWebDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import java.nio.file.Paths;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -31,7 +34,16 @@ public class HookStepDefs {
   }
 
   @After
-  public void deleteCookeies() {
+  public void tearDown(Scenario scenario) {
+    if (scenario.isFailed()) {
+      byte[] screenshot =
+          FirefoxWebDriver.getPage()
+              .screenshot(
+                  new Page.ScreenshotOptions()
+                      .setPath(Paths.get("target/screenshots/" + scenario.getName() + ".png"))
+                      .setFullPage(true));
+      scenario.attach(screenshot, "image/png", "fault");
+    }
     FirefoxWebDriver.closeBrowser();
   }
 
