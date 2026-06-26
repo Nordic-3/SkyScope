@@ -147,6 +147,7 @@ public class StepDefinitions {
     webElementHelper.fillInputField("input#cardExpiry", "09/30");
     webElementHelper.fillInputField("input#cardCvc", "999");
     webElementHelper.fillInputField("input#billingName", "Test Elek");
+    webElementHelper.selectOptionFromAllDropDownsByValue("select#billingCountry", "Hungary");
     webElementHelper.clickButton("button[type='submit']");
   }
 
