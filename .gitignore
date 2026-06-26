@@ -35,3 +35,5 @@ build/
 /testScriptForApiCall/
 /src/main/resources/application-prod.properties
 /keycloak_data/
+/.env
+/start_local.sh
