@@ -11,9 +11,10 @@ public class FirefoxWebDriver {
   @Getter private static Browser browser;
   @Getter private static Page page;
 
-  public static void initDriver(boolean isHeadless) {
+  public static void initDriver(boolean isHeadless, int defaultTimeout) {
     browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(isHeadless));
     page = browser.newPage();
+    page.setDefaultTimeout(defaultTimeout);
   }
 
   public static void navigateTo(String url) {

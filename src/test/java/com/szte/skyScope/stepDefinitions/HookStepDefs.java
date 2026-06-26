@@ -18,7 +18,7 @@ public class HookStepDefs {
 
   @Before
   public void startBrowser() {
-    FirefoxWebDriver.initDriver(testSettings.isHeadless());
+    FirefoxWebDriver.initDriver(testSettings.isHeadless(), testSettings.getDefaultTimeout());
   }
 
   @Before(value = "@fill-payment-page or @profile-page-tests or @login or @traveller-detail-form")

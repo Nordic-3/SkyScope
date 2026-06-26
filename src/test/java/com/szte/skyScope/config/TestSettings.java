@@ -16,4 +16,7 @@ public class TestSettings {
 
   @Value("${headless:true}")
   private boolean headless;
+
+  @Value("${default_timeout}")
+  private int defaultTimeout;
 }
