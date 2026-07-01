@@ -1,4 +1,4 @@
-@fill-payment-page
+@fill-payment-page @integration
 Feature: payment page
 
   Scenario: Fill in payment details with valid inputs

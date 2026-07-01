@@ -1,4 +1,4 @@
-@registration-and-login
+@registration-and-login @integration
 Feature: Registration and login
 
   @registration

@@ -1,4 +1,4 @@
-@profile-page-tests
+@profile-page-tests @integration
 Feature: profile page functionality
 
   @delete-account

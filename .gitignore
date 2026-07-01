@@ -37,3 +37,4 @@ build/
 /keycloak_data/
 /.env
 /start_local.sh
+/automata-test.sh
