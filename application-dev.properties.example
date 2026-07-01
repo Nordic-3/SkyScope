@@ -21,17 +21,3 @@ amadeus_test_client_secret=YOUR_AMADEUS_TEST_CLIENT_SECRET
 amadeus_test_auth_url=https://test.api.amadeus.com/v1/security/oauth2/token
 amadeus_create_order=https://test.api.amadeus.com/v1/booking/flight-orders
 amadeus_airline_code=https://test.api.amadeus.com/v1/reference-data/airlines?airlineCodes={airlineCodes}
-stripe_secret=YOUR_STRIPE_SECRET_KEY
-
-# Keycloak Configuration - Required: The app will not work without these settings.
-spring.security.oauth2.client.registration.keycloak.client-id=YOUR_KEYCLOAK_CLIENT_ID
-spring.security.oauth2.client.registration.keycloak.client-secret=YOUR_KEYCLOAK_CLIENT_SECRET
-spring.security.oauth2.client.registration.keycloak.scope=openid,profile,email
-spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
-spring.security.oauth2.client.registration.keycloak.redirect-uri=http://localhost:8080/login/oauth2/code/keycloak
-spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8081/realms/YOUR_REALM
-spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
-keycloak.auth-server-url=http://localhost:8081
-keycloak.realm=YOUR_REALM
-keycloak.auth-password-change-url=http://localhost:8081/realms/YOUR_REALM/protocol/openid-connect/auth
-keycloack.kc_action=%s?client_id=%s&response_type=code&scope=openid&kc_action=UPDATE_PASSWORD&redirect_uri=%s

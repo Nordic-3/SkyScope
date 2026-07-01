@@ -4,11 +4,12 @@
 Track commercial planes in real time and find cheap flights. A Spring Boot based web application with JavaScript and Bootstrap.
 
 ## :hammer_and_wrench: Technologies
-- Spring Boot 3.5.6. with Java 22
+- Spring Boot 3.5.6. with Java 21
 - Thymeleaf
-- Keykloack
+- Keycloak
 - JavaScript with Globe.gl, leaflet and openStreetMap
 - Bootstrap
+- Playwright
 
 ## :sparkles: Key features
 - **Advanced Dynamic Filtering:** Beyond basic price filters, I implemented: <br>
@@ -34,15 +35,16 @@ Track commercial planes in real time and find cheap flights. A Spring Boot based
   **Stripe Payment Europe:** Integrated for the checkout flow (payment and order creation are mocked for demo purposes).
 
 ## :rocket: Setup Instructions
-1. Clone the repository: `git clone https://github.com/Nordic-3/SkyScope.git`
-2. Navigate to root folder of the project and run: `docker-compose up` to start the Keycloak server.
-3. Open localhost:8081 in your browser and log in with the following credentials: <br>
-   **Username:** admin <br>
-   **Password:** admin
-4. Switch to sky-scope realm and copy the auto-generated skyscope-client secret. Paste it in the `application-dev.properties` file. See the sample file `application-dev.properties.sample` for reference.
-5. Navigate to root folder of the project and run: `mvn clean install` to install dependencies.
-6. Run the application: `mvn spring-boot:run`.
-7. Note on API Keys: The application uses pre-loaded JSON responses for demonstration. Try these routes for the animated Earth: Budapest, Barcelona, London, New York, Dubai. Real-time demo available for Dubai – London.
+1. **Clone the repository and navigate to the project folder:**
+   ```bash
+   git clone [https://github.com/Nordic-3/SkyScope.git](https://github.com/Nordic-3/SkyScope.git)
+   cd SkyScope
+2. Export `KEYCLOAK_SECRET` environment variable.
+3. Run: `mvn clean install` to install dependencies.
+4. To start the application execute: `docker compose up`
+5. Note on API Keys: The application uses pre-loaded JSON responses for demonstration. Try these routes for the animated 
+Earth: Budapest, Barcelona, London, New York, Dubai. Real-time demo available for Dubai – London. If you want to use 
+real API please fill `application-dev.properties.example` with real API keys and change `application.properties` `use_api` value to true.
 
 ## :test_tube: Testing
 - **Unit tests:** JUnit 5 and Mockito for service layer testing.
