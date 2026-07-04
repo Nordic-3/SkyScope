@@ -4,7 +4,7 @@
 Track commercial planes in real time and find cheap flights. A Spring Boot based web application with JavaScript and Bootstrap.
 
 ## :hammer_and_wrench: Technologies
-- Spring Boot 3.5.6. with Java 21
+- Spring Boot 4.1.0 with Java 21
 - Thymeleaf
 - Keycloak
 - JavaScript with Globe.gl, leaflet and openStreetMap
