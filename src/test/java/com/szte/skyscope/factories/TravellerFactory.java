@@ -2,7 +2,9 @@ package com.szte.skyscope.factories;
 
 import com.szte.skyscope.models.Passport;
 import com.szte.skyscope.models.Traveller;
+import com.szte.skyscope.utils.Constants;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class TravellerFactory {
 
@@ -26,8 +28,8 @@ public class TravellerFactory {
     passport.setNumber("P123");
     passport.setDocumentType("Passport");
     passport.setBirthPlace("Budapest");
-    passport.setIssuanceDate(LocalDate.now().minusYears(5).toString());
-    passport.setExpiryDate(LocalDate.now().plusYears(5).toString());
+    passport.setIssuanceDate(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).minusYears(5).toString());
+    passport.setExpiryDate(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusYears(5).toString());
     passport.setNationality("HU");
     passport.setValidityCountry("HU");
     traveller.setDocuments(java.util.List.of(passport));

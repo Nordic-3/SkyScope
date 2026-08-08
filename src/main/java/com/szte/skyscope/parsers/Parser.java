@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@UtilityClass
 public class Parser {
   public static ObjectMapper objectMapper = new ObjectMapper();
 
-  public static City parseJsonToCity(String json, String rootElement) {
+  public City parseJsonToCity(String json, String rootElement) {
     JsonNode root;
     try {
       root = objectMapper.readTree(json);
@@ -28,7 +30,7 @@ public class Parser {
     }
   }
 
-  public static Map<String, Plane> parseJsonToMapOfPlanes(String json) {
+  public Map<String, Plane> parseJsonToMapOfPlanes(String json) {
     Map<String, Plane> planes = new HashMap<>();
     JsonNode root;
     try {
@@ -46,12 +48,12 @@ public class Parser {
                           onePlaneDetails.get(10).asDouble())));
     } catch (Exception exception) {
       log.error("Error while parsing Json to Map of Planes {}", exception.getMessage(), exception);
-      return null;
+      return new HashMap<>();
     }
     return planes;
   }
 
-  public static String getIataFromJson(String json, String rootElement) {
+  public String getIataFromJson(String json, String rootElement) {
     JsonNode root;
     String iata;
     try {
@@ -64,7 +66,7 @@ public class Parser {
     return iata;
   }
 
-  public static List<FlightOfferDTO> parseFlightOffersFromJson(String json) {
+  public List<FlightOfferDTO> parseFlightOffersFromJson(String json) {
     JsonNode root;
     List<FlightOfferDTO> flightOffers = new ArrayList<>();
     try {
@@ -83,12 +85,12 @@ public class Parser {
           });
     } catch (Exception exception) {
       log.error("Error while parsing Json to FlightOfferDTO {}", exception.getMessage(), exception);
-      return null;
+      return new ArrayList<>();
     }
     return flightOffers;
   }
 
-  public static <T> Map<String, T> parseFlightDictionary(
+  public <T> Map<String, T> parseFlightDictionary(
       String json, String dictionary, TypeReference<Map<String, T>> typeRef) {
     Map<String, T> flightDictionary = null;
     try {
@@ -102,7 +104,7 @@ public class Parser {
     return flightDictionary;
   }
 
-  public static String getAirportNameFromJson(String json, String root) {
+  public String getAirportNameFromJson(String json, String root) {
     try {
       return objectMapper.readTree(json).get(root).get(0).get("name").asText();
 
@@ -112,7 +114,7 @@ public class Parser {
     return "";
   }
 
-  public static String getCityNameFromAirportAndCityApi(String json, String root) {
+  public String getCityNameFromAirportAndCityApi(String json, String root) {
     try {
       return objectMapper.readTree(json).get(root).get(0).get("address").get("cityName").asText();
     } catch (Exception exception) {
@@ -121,7 +123,7 @@ public class Parser {
     return "";
   }
 
-  public static List<CheapestDateOffer> parseCheapestFlightApi(String json) {
+  public List<CheapestDateOffer> parseCheapestFlightApi(String json) {
     List<CheapestDateOffer> cheapestDateOffers = new ArrayList<>();
     try {
       objectMapper
@@ -144,7 +146,7 @@ public class Parser {
     return cheapestDateOffers;
   }
 
-  public static FinalPriceResponse parseFlightPriceRequest(String json) {
+  public FinalPriceResponse parseFlightPriceRequest(String json) {
     JsonNode root;
     try {
       root = objectMapper.readTree(json);
@@ -156,7 +158,7 @@ public class Parser {
     }
   }
 
-  public static Map<String, String> getIcaoCodesFromJson(String response) {
+  public Map<String, String> getIcaoCodesFromJson(String response) {
     Map<String, String> icaoCodes = new HashMap<>();
     try {
       JsonNode root = objectMapper.readTree(response);

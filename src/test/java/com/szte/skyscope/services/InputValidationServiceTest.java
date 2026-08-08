@@ -10,7 +10,9 @@ import com.szte.skyscope.models.FlightSearch;
 import com.szte.skyscope.models.Traveller;
 import com.szte.skyscope.models.TravellerWrapper;
 import com.szte.skyscope.services.impl.InputValidationServiceImpl;
+import com.szte.skyscope.utils.Constants;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,8 +73,9 @@ class InputValidationServiceTest {
   @Test
   void validateFlightSearchDates_returnDateBeforeDeparture() {
     FlightSearch flightSearch = new FlightSearch();
-    flightSearch.setDepartureDate(LocalDate.now().plusDays(10).toString());
-    flightSearch.setReturnDate(LocalDate.now().plusDays(1).toString());
+    flightSearch.setDepartureDate(
+        LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(10).toString());
+    flightSearch.setReturnDate(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(1).toString());
     String response = validationService.validateInputFields(flightSearch);
     assertThat(response).contains("A visszaút napja nem lehet korábbi az indulás napjánál!");
   }
@@ -139,7 +142,10 @@ class InputValidationServiceTest {
   @Test
   void validateTravellers_expiredDocument() {
     Traveller traveller = TravellerFactory.createTraveller();
-    traveller.getDocuments().getFirst().setExpiryDate(LocalDate.now().plusDays(4).toString());
+    traveller
+        .getDocuments()
+        .getFirst()
+        .setExpiryDate(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(4).toString());
 
     TravellerWrapper wrapper = new TravellerWrapper();
     wrapper.setTravellers(java.util.List.of(traveller));
@@ -153,7 +159,10 @@ class InputValidationServiceTest {
     String response1 = validationService.validateTravellers(wrapper, flightOffer);
     assertThat(response1).contains("Nem érvényes dátum formátum!");
 
-    traveller.getDocuments().getFirst().setExpiryDate(LocalDate.now().minusYears(10).toString());
+    traveller
+        .getDocuments()
+        .getFirst()
+        .setExpiryDate(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).minusYears(10).toString());
     String response2 = validationService.validateTravellers(wrapper, flightOffer);
     assertThat(response2)
         .contains("Az úti okmány lejárati dátuma hamarabb van, mint a kiállítása!");
@@ -162,14 +171,20 @@ class InputValidationServiceTest {
   @Test
   void validateTravellers_travelDocumentExpireBeforeIssue() {
     Traveller traveller = TravellerFactory.createTraveller();
-    traveller.getDocuments().getFirst().setExpiryDate(LocalDate.now().plusDays(4).toString());
+    traveller
+        .getDocuments()
+        .getFirst()
+        .setExpiryDate(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(4).toString());
 
     TravellerWrapper wrapper = new TravellerWrapper();
     wrapper.setTravellers(java.util.List.of(traveller));
 
     FlightOfferDTO flightOffer = FlightOfferDTOFactory.createFlightOfferWithDepartureAndArrival();
 
-    traveller.getDocuments().getFirst().setExpiryDate(LocalDate.now().minusYears(10).toString());
+    traveller
+        .getDocuments()
+        .getFirst()
+        .setExpiryDate(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).minusYears(10).toString());
     String response = validationService.validateTravellers(wrapper, flightOffer);
     assertThat(response).contains("Az úti okmány lejárati dátuma hamarabb van, mint a kiállítása!");
 

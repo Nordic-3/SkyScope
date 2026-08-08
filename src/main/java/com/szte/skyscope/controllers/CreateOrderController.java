@@ -20,6 +20,8 @@ public class CreateOrderController {
   private final FlightService flightService;
   private final InputValidationService inputValidationService;
 
+  private static final String TRAVELLERS = "travellers";
+
   @GetMapping("/createOrder/sumup/{searchId}")
   public String sumup(@PathVariable String searchId, Model model) {
     FlightOfferDTO selectedOffer =
@@ -52,7 +54,7 @@ public class CreateOrderController {
       Principal principal) {
     searchStore.getSearchDatas(searchId).setOfferId(offerId);
     model.addAttribute("searchId", searchId);
-    if (!model.containsAttribute("travellers")) {
+    if (!model.containsAttribute(TRAVELLERS)) {
       TravellerWrapper travellers = new TravellerWrapper();
       createFlightOrderService.setTravellers(
           travellers,
@@ -60,7 +62,7 @@ public class CreateOrderController {
           createFlightOrderService.getSelectedOffer(
               searchStore.getSearchDatas(searchId).getSearchResult(),
               searchStore.getSearchDatas(searchId).getOfferId()));
-      model.addAttribute("travellers", travellers);
+      model.addAttribute(TRAVELLERS, travellers);
     }
     return "travellerDetails";
   }
@@ -81,7 +83,7 @@ public class CreateOrderController {
                 searchStore.getSearchDatas(searchId).getOfferId()));
     if (!errors.isEmpty()) {
       redirectAttributes.addFlashAttribute("error", errors);
-      redirectAttributes.addFlashAttribute("travellers", travellers);
+      redirectAttributes.addFlashAttribute(TRAVELLERS, travellers);
       return "redirect:" + request.getHeader("Referer");
     }
     searchStore.getSearchDatas(searchId).setTravelers(travellers.getTravellers());

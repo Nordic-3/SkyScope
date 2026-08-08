@@ -1,6 +1,6 @@
 package com.szte.skyscope.services;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.stripe.param.checkout.SessionCreateParams;
@@ -32,7 +32,6 @@ class PaymentServiceTest {
     searchData.setValidatedOffers(List.of(FinalPriceFactory.createFlightOffer("100.00")));
     searchData.setSearchResult(List.of(new FlightOfferDTO()));
     when(searchStore.getSearchDatas(searchId)).thenReturn(searchData);
-    when(applicationConfig.getStripeSecret()).thenReturn("test-secret-key");
     SessionCreateParams params = paymentService.createStripePaymentSession(searchId);
     assertThat(params).isNotNull();
   }

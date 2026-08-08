@@ -17,7 +17,7 @@ public enum TravellerTypes {
     return Arrays.stream(values())
         .filter(e -> e.name().equalsIgnoreCase(type))
         .findFirst()
-        .get()
+        .orElse(ADULT)
         .value;
   }
 }

@@ -90,7 +90,7 @@ public class CreateFlightOrderServiceImpl implements CreateFlightOrderService {
 
   @Override
   public String getTestApiToken() {
-    return cachedApiCalls.getTestAmadeusApiCred().getAccess_token();
+    return cachedApiCalls.getTestAmadeusApiCred().getAccessToken();
   }
 
   @Override

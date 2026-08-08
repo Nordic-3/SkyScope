@@ -47,7 +47,7 @@ class CreateFlightOrderServiceTest {
     assertThat(flightPrice).isNotNull();
     assertThat(flightPrice.getData()).isNotNull();
     assertThat(flightPrice.getData().getFlightOffers()).isNotNull();
-    assertThat(flightPrice.getData().getFlightOffers().size()).isEqualTo(1);
+    assertThat(flightPrice.getData().getFlightOffers()).hasSize(1);
     assertThat(flightPrice.getData().getFlightOffers().getFirst()).isSameAs(flightOffer);
   }
 
@@ -115,7 +115,7 @@ class CreateFlightOrderServiceTest {
   @Test
   void getTestApiToken() {
     AmadeusApiCred cred = new AmadeusApiCred();
-    cred.setAccess_token("abc123");
+    cred.setAccessToken("abc123");
     when(cachedApiCalls.getTestAmadeusApiCred()).thenReturn(cred);
     String token = createFlightOrderService.getTestApiToken();
     assertThat(token).isEqualTo("abc123");

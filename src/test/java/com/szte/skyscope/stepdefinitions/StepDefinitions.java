@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.szte.skyscope.dataStore.DataStore;
 import com.szte.skyscope.enums.FlightOffersSortOptions;
 import com.szte.skyscope.helper.WebElementHelper;
+import com.szte.skyscope.utils.Constants;
 import com.szte.skyscope.webDriver.FirefoxWebDriver;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.random.RandomGenerator;
 
@@ -195,8 +197,8 @@ public class StepDefinitions {
     fillSearchBar(
         origin,
         destination,
-        LocalDate.now().plusDays(15).toString(),
-        LocalDate.now().plusDays(25).toString());
+        LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(15).toString(),
+        LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(25).toString());
     webElementHelper.clickButton("button#searchFlightsButton");
   }
 
@@ -205,7 +207,8 @@ public class StepDefinitions {
     webElementHelper.fillInputField("input#originCity", origin);
     webElementHelper.fillInputField("input#destinationCity", destination);
     webElementHelper.checkCheckboxById("input#onlyOneWay");
-    webElementHelper.fillInputField("input#outGoingDate", LocalDate.now().plusDays(15).toString());
+    webElementHelper.fillInputField(
+        "input#outGoingDate", LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(15).toString());
     webElementHelper.clickButton("button#searchFlightsButton");
   }
 
@@ -221,8 +224,8 @@ public class StepDefinitions {
     fillSearchBar(
         origin,
         destination,
-        LocalDate.now().plusDays(15).toString(),
-        LocalDate.now().plusDays(25).toString());
+        LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(15).toString(),
+        LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(25).toString());
     webElementHelper.clickButton("button#advancedSearchButton");
     webElementHelper.fillInputField("input#numberOfChildren", "1");
     webElementHelper.fillInputField("input#numberOfInfants", "1");
@@ -332,14 +335,6 @@ public class StepDefinitions {
     assertTrue(webElementHelper.isTextVisibleInElement("button#payBtn", "Fizetés"));
   }
 
-  @Then("I should see the payment page")
-  public void shouldSeeThePaymentPage() {
-    webElementHelper.waitForTextInElement("div[class='PaymentHeader] > div'", "Pay with card");
-    assertTrue(
-        webElementHelper.isTextVisibleInElement(
-            "div[class='PaymentHeader] > div'", "Pay with card"));
-  }
-
   @Then("I should see error message for missing fields")
   public void shouldSeeErrorMessageForMissingFields() {
     assertTrue(webElementHelper.isElementDisplayed("div.alert-danger"));
@@ -388,14 +383,9 @@ public class StepDefinitions {
   }
 
   @Then("the registration is not successful")
-  public void theRegistrationIsNotSuccessful() {
-    webElementHelper.waitForElementToBeVisible("div.pf-m-error");
-    assertTrue(webElementHelper.isElementDisplayed("div.pf-m-error"));
-  }
-
   @Then("the login is not successful")
   @Then("the password update is not successful")
-  public void loginIsNotSuccessful() {
+  public void notSuccessfulStep() {
     webElementHelper.waitForElementToBeVisible("div.pf-m-error");
     assertTrue(webElementHelper.isElementDisplayed("div.pf-m-error"));
   }

@@ -30,7 +30,7 @@ public class FlightServiceImpl implements FlightService {
 
   @Override
   public String getToken() {
-    return cachedApiCalls.getAmadeusApiCred().getAccess_token();
+    return cachedApiCalls.getAmadeusApiCred().getAccessToken();
   }
 
   @Override
@@ -142,7 +142,7 @@ public class FlightServiceImpl implements FlightService {
 
   @Override
   public void setIsCurrentlyFlying(List<FlightOfferDTO> result, Map<String, Plane> planePositions) {
-    if (planePositions == null) {
+    if (planePositions.isEmpty()) {
       return;
     }
     getSegmentStream(result)

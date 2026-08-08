@@ -5,14 +5,18 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@UtilityClass
 public class FlightOfferFormatter {
 
-  public static List<FlightOfferDTO> formatFlightOfferFields(List<FlightOfferDTO> flightOffers) {
+  public List<FlightOfferDTO> formatFlightOfferFields(List<FlightOfferDTO> flightOffers) {
     List<FlightOfferDTO> formattedFlightOffers =
         flightOffers.stream().map(FlightOfferDTO::new).toList();
     formattedFlightOffers.forEach(
@@ -33,17 +37,21 @@ public class FlightOfferFormatter {
     return formattedFlightOffers;
   }
 
-  public static List<Duration> calculateLayoverTime(List<FlightOfferDTO.Segment> segments) {
+  public List<Duration> calculateLayoverTime(List<FlightOfferDTO.Segment> segments) {
     List<Duration> layoverTimes = new ArrayList<>();
     for (int i = 0; i < segments.size() - 1; i++) {
-      LocalDateTime arrival = LocalDateTime.parse(segments.get(i).getArrival().getAt());
-      LocalDateTime departure = LocalDateTime.parse(segments.get(i + 1).getDeparture().getAt());
+      ZonedDateTime arrival =
+          LocalDateTime.parse(segments.get(i).getArrival().getAt())
+              .atZone(ZoneId.of(Constants.ZONE_ID));
+      ZonedDateTime departure =
+          LocalDateTime.parse(segments.get(i + 1).getDeparture().getAt())
+              .atZone(ZoneId.of(Constants.ZONE_ID));
       layoverTimes.add(Duration.between(arrival, departure));
     }
     return layoverTimes;
   }
 
-  public static String formatDuration(String duration) {
+  public String formatDuration(String duration) {
     try {
       long hours = Duration.parse(duration).toHours();
       long minutes = Duration.parse(duration).minusHours(hours).toMinutes();
@@ -54,7 +62,7 @@ public class FlightOfferFormatter {
     }
   }
 
-  public static String formatPrice(String price) {
+  public String formatPrice(String price) {
     try {
       DecimalFormatSymbols decimalFormatSymbol = new DecimalFormatSymbols();
       decimalFormatSymbol.setGroupingSeparator(' ');
@@ -66,7 +74,7 @@ public class FlightOfferFormatter {
     return price;
   }
 
-  public static void formatAndSetSingleOfferDuration(FlightOfferDTO flightOffer) {
+  public void formatAndSetSingleOfferDuration(FlightOfferDTO flightOffer) {
     flightOffer
         .getItineraries()
         .forEach(
@@ -76,11 +84,11 @@ public class FlightOfferFormatter {
             });
   }
 
-  private static void formatAndSetPrice(FlightOfferDTO flightOffer) {
+  private void formatAndSetPrice(FlightOfferDTO flightOffer) {
     flightOffer.getPrice().setTotal(formatPrice(flightOffer.getPrice().getTotal()));
   }
 
-  private static void formatAndSetSegmentData(FlightOfferDTO.Segment segment) {
+  private void formatAndSetSegmentData(FlightOfferDTO.Segment segment) {
     segment
         .getDeparture()
         .setAirportName(
@@ -94,17 +102,17 @@ public class FlightOfferFormatter {
     formatAndSetSegmentDurations(segment);
   }
 
-  private static void formatAndSetSegmentDurations(FlightOfferDTO.Segment segment) {
+  private void formatAndSetSegmentDurations(FlightOfferDTO.Segment segment) {
     segment.setDuration(formatDuration(segment.getDuration()));
     segment.getDeparture().setAt(formatTime(segment.getDeparture().getAt()));
     segment.getArrival().setAt(formatTime(segment.getArrival().getAt()));
   }
 
-  private static String formatAirportName(String airportName, String terminal) {
+  private String formatAirportName(String airportName, String terminal) {
     return airportName + (!terminal.isEmpty() ? " " + terminal + " terminál" : "");
   }
 
-  private static String formatTime(String time) {
+  private String formatTime(String time) {
     try {
       return time.split("T")[0].replace("-", ". ") + ". " + time.split("T")[1];
     } catch (Exception exception) {

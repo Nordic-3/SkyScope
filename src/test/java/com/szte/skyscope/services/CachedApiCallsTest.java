@@ -3,6 +3,7 @@ package com.szte.skyscope.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.szte.skyscope.config.ApplicationConfig;
 import com.szte.skyscope.models.AmadeusApiCred;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,21 +25,20 @@ class CachedApiCallsTest {
 
   @Test
   void getAmadeusApiCred() {
-    Mockito.when(applicationConfig.getAmadeusClientId()).thenReturn("client-id");
-    Mockito.when(applicationConfig.getAmadeusClientSecret()).thenReturn("client-secret");
-    Mockito.when(applicationConfig.getAmadeusAuthUrl()).thenReturn("url");
+    when(applicationConfig.getAmadeusClientId()).thenReturn("client-id");
+    when(applicationConfig.getAmadeusClientSecret()).thenReturn("client-secret");
+    when(applicationConfig.getAmadeusAuthUrl()).thenReturn("url");
     AmadeusApiCred cred = new AmadeusApiCred();
-    cred.setAccess_token("fake-token");
-    Mockito.when(cachedApiCallsProvider.getApiCred(anyString(), anyString(), anyString()))
-        .thenReturn(cred);
+    cred.setAccessToken("fake-token");
+    when(cachedApiCallsProvider.getApiCred(anyString(), anyString(), anyString())).thenReturn(cred);
     AmadeusApiCred result = cachedApiCalls.getAmadeusApiCred();
-    assertThat(result.getAccess_token()).isEqualTo("fake-token");
+    assertThat(result.getAccessToken()).isEqualTo("fake-token");
     verify(cachedApiCallsProvider).getApiCred("client-id", "client-secret", "url");
   }
 
   @Test
   void getIataCode() {
-    Mockito.when(cachedApiCallsProvider.getIataCode("Budapest", "fake-token")).thenReturn("BUD");
+    when(cachedApiCallsProvider.getIataCode("Budapest", "fake-token")).thenReturn("BUD");
     String iata = cachedApiCalls.getIataCode("Budapest", "fake-token");
     assertThat(iata).isEqualTo("BUD");
     verify(cachedApiCallsProvider).getIataCode("Budapest", "fake-token");
@@ -47,7 +46,7 @@ class CachedApiCallsTest {
 
   @Test
   void getAirportName() {
-    Mockito.when(cachedApiCallsProvider.getAirportName("BUD", "fake-token"))
+    when(cachedApiCallsProvider.getAirportName("BUD", "fake-token"))
         .thenReturn("Budapest Liszt Ferenc International Airport");
     String airportName = cachedApiCalls.getAirportName("BUD", "fake-token");
     assertThat(airportName).isEqualTo("Budapest Liszt Ferenc International Airport");
@@ -56,15 +55,14 @@ class CachedApiCallsTest {
 
   @Test
   void getTestAmadeusApiCred() {
-    Mockito.when(applicationConfig.getAmadeusTestClientId()).thenReturn("client-id");
-    Mockito.when(applicationConfig.getAmadeusTestClientSecret()).thenReturn("client-secret");
-    Mockito.when(applicationConfig.getAmadeusTestAuthUrl()).thenReturn("url");
+    when(applicationConfig.getAmadeusTestClientId()).thenReturn("client-id");
+    when(applicationConfig.getAmadeusTestClientSecret()).thenReturn("client-secret");
+    when(applicationConfig.getAmadeusTestAuthUrl()).thenReturn("url");
     AmadeusApiCred cred = new AmadeusApiCred();
-    cred.setAccess_token("fake-token");
-    Mockito.when(cachedApiCallsProvider.getApiCred(anyString(), anyString(), anyString()))
-        .thenReturn(cred);
+    cred.setAccessToken("fake-token");
+    when(cachedApiCallsProvider.getApiCred(anyString(), anyString(), anyString())).thenReturn(cred);
     AmadeusApiCred result = cachedApiCalls.getTestAmadeusApiCred();
-    assertThat(result.getAccess_token()).isEqualTo("fake-token");
+    assertThat(result.getAccessToken()).isEqualTo("fake-token");
     verify(cachedApiCallsProvider).getApiCred("client-id", "client-secret", "url");
   }
 }

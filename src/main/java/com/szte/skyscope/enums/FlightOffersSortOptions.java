@@ -17,6 +17,9 @@ public enum FlightOffersSortOptions {
   }
 
   public static FlightOffersSortOptions getOptionFromValue(String value) {
-    return Arrays.stream(values()).filter(e -> e.value.equalsIgnoreCase(value)).findFirst().get();
+    return Arrays.stream(values())
+        .filter(e -> e.value.equalsIgnoreCase(value))
+        .findFirst()
+        .orElse(TRANSFERTIME_ASC);
   }
 }

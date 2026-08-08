@@ -18,29 +18,6 @@ public class Passport {
   private String nationality;
   @Setter private boolean holder = true;
 
-  public Passport(
-      String documentType,
-      String birthPlace,
-      String issuanceLocation,
-      String issuanceDate,
-      String number,
-      String expiryDate,
-      String issuanceCountry,
-      String validityCountry,
-      String nationality,
-      boolean holder) {
-    this.documentType = documentType;
-    this.birthPlace = birthPlace;
-    this.issuanceLocation = issuanceLocation;
-    this.issuanceDate = issuanceDate;
-    this.number = number;
-    this.expiryDate = expiryDate;
-    this.issuanceCountry = issuanceCountry.toUpperCase();
-    this.validityCountry = validityCountry.toUpperCase();
-    this.nationality = nationality.toUpperCase();
-    this.holder = holder;
-  }
-
   public void setIssuanceCountry(String issuanceCountry) {
     this.issuanceCountry = issuanceCountry.toUpperCase();
   }

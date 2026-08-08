@@ -1,7 +1,9 @@
 package com.szte.skyscope.factories;
 
 import com.szte.skyscope.dtos.FlightOfferDTO;
+import com.szte.skyscope.utils.Constants;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 public class FlightOfferDTOFactory {
@@ -58,10 +60,10 @@ public class FlightOfferDTOFactory {
     flightOffer.setItineraries(List.of(itinerary));
     flightOffer.getPrice().setTotal("150000.0");
     FlightOfferDTO.FlightSchedule departure = new FlightOfferDTO.FlightSchedule();
-    departure.setAt(LocalDate.now().plusDays(10) + "T10:00:00");
+    departure.setAt(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(10) + "T10:00:00");
     segment.setDeparture(departure);
     FlightOfferDTO.FlightSchedule arrival = new FlightOfferDTO.FlightSchedule();
-    arrival.setAt(LocalDate.now().plusDays(10) + "T15:00:00");
+    arrival.setAt(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(10) + "T15:00:00");
     segment.setArrival(arrival);
     itinerary.setSegments(java.util.List.of(segment));
     flightOffer.setItineraries(java.util.List.of(itinerary));
@@ -79,15 +81,15 @@ public class FlightOfferDTOFactory {
 
     FlightOfferDTO.FlightSchedule departure = new FlightOfferDTO.FlightSchedule();
     FlightOfferDTO.FlightSchedule arrival = new FlightOfferDTO.FlightSchedule();
-    departure.setAt(LocalDate.now().plusDays(1) + "T09:00:00");
-    arrival.setAt(LocalDate.now().plusDays(1) + "T11:00:00");
+    departure.setAt(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(1) + "T09:00:00");
+    arrival.setAt(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(1) + "T11:00:00");
     seg1.setDeparture(departure);
     seg1.setArrival(arrival);
 
     FlightOfferDTO.FlightSchedule departure1 = new FlightOfferDTO.FlightSchedule();
     FlightOfferDTO.FlightSchedule arrival1 = new FlightOfferDTO.FlightSchedule();
-    departure1.setAt(LocalDate.now().plusDays(1) + "T14:00:00");
-    arrival1.setAt(LocalDate.now().plusDays(1) + "T15:00:00");
+    departure1.setAt(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(1) + "T14:00:00");
+    arrival1.setAt(LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(1) + "T15:00:00");
     seg2.setDeparture(departure1);
     seg2.setArrival(arrival1);
 

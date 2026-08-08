@@ -5,19 +5,20 @@ import com.stripe.param.checkout.SessionCreateParams;
 import com.szte.skyscope.config.ApplicationConfig;
 import com.szte.skyscope.services.PaymentService;
 import com.szte.skyscope.services.SearchStore;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
   private final SearchStore searchStore;
-  private final ApplicationConfig applicationConfig;
+
+  public PaymentServiceImpl(SearchStore searchStore, ApplicationConfig applicationConfig) {
+    this.searchStore = searchStore;
+    Stripe.apiKey = applicationConfig.getStripeSecret();
+  }
 
   @Override
   public SessionCreateParams createStripePaymentSession(String searchId) {
-    Stripe.apiKey = applicationConfig.getStripeSecret();
     return SessionCreateParams.builder()
         .setMode(SessionCreateParams.Mode.PAYMENT)
         .setSuccessUrl("http://localhost:8080/createOrder/create/" + searchId + "?success")

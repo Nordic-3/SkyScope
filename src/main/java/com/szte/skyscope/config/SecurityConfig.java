@@ -18,7 +18,7 @@ public class SecurityConfig {
   private final ClientRegistrationRepository clientRegistrationRepository;
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
     OidcClientInitiatedLogoutSuccessHandler handler =
         new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
     handler.setPostLogoutRedirectUri("{baseUrl}");

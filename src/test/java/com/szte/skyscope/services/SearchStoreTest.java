@@ -1,13 +1,13 @@
 package com.szte.skyscope.services;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.szte.skyscope.models.SearchData;
 import com.szte.skyscope.services.impl.SearchStoreImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class SearchStoreTest {
+class SearchStoreTest {
   private SearchStoreImpl searchStore;
 
   @BeforeEach
@@ -23,8 +23,7 @@ public class SearchStoreTest {
     searchStore.saveSearchDatas(id, data);
     SearchData result = searchStore.getSearchDatas(id);
 
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(data);
+    assertThat(result).isNotNull().isEqualTo(data);
   }
 
   @Test

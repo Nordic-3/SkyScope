@@ -5,7 +5,10 @@ import com.szte.skyscope.models.CheapestDateOffer;
 import com.szte.skyscope.models.FlightSearch;
 import com.szte.skyscope.parsers.Parser;
 import com.szte.skyscope.services.CheapestFlightDataProvider;
+import com.szte.skyscope.utils.Constants;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +46,7 @@ public class ApiCheapestFlightData implements CheapestFlightDataProvider {
           "Error while calling Amadeus API for cheapest date search: {}",
           exception.getMessage(),
           exception);
-      return null;
+      return new ArrayList<>();
     }
   }
 
@@ -52,17 +55,17 @@ public class ApiCheapestFlightData implements CheapestFlightDataProvider {
     if (!flightSearch.isOneWay()) {
       return calculateRoundTripRange(flightSearch, departure);
     }
-    if (LocalDate.now().plusDays(15).isBefore(departure)) {
+    if (LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(15).isBefore(departure)) {
       return departure.minusDays(15) + "," + departure.plusDays(15);
     }
-    return LocalDate.now().plusDays(1) + "," + departure.plusDays(15);
+    return LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(1) + "," + departure.plusDays(15);
   }
 
   private String calculateRoundTripRange(FlightSearch flightSearch, LocalDate departure) {
     LocalDate returnDate = LocalDate.parse(flightSearch.getReturnDate());
-    if (LocalDate.now().plusDays(15).isBefore(departure)) {
+    if (LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(15).isBefore(departure)) {
       return departure.minusDays(15) + "," + returnDate.plusDays(15);
     }
-    return LocalDate.now().plusDays(1) + "," + returnDate.plusDays(15);
+    return LocalDate.now(ZoneId.of(Constants.ZONE_ID)).plusDays(1) + "," + returnDate.plusDays(15);
   }
 }

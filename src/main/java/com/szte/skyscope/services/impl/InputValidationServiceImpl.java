@@ -3,7 +3,9 @@ package com.szte.skyscope.services.impl;
 import com.szte.skyscope.dtos.FlightOfferDTO;
 import com.szte.skyscope.models.*;
 import com.szte.skyscope.services.InputValidationService;
+import com.szte.skyscope.utils.Constants;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
@@ -68,10 +70,8 @@ public class InputValidationServiceImpl implements InputValidationService {
     if (isNullOrEmpty(flightSearch.getNumberOfAdults())) {
       errorMessage.append(" felnőtt utasok száma");
     }
-    if (!flightSearch.isOneWay()) {
-      if (isNullOrEmpty(flightSearch.getReturnDate())) {
-        errorMessage.append(" visszaút dátuma");
-      }
+    if (!flightSearch.isOneWay() && isNullOrEmpty(flightSearch.getReturnDate())) {
+      errorMessage.append(" visszaút dátuma");
     }
     if (!errorMessage.isEmpty()) {
       errorMessage.append(EMPTY_INPUT_ERROR);
@@ -80,7 +80,7 @@ public class InputValidationServiceImpl implements InputValidationService {
   }
 
   private String checkValidDates(FlightSearch flightSearch) {
-    LocalDate departureDate = null;
+    LocalDate departureDate;
     LocalDate returnDate = null;
     try {
       departureDate = LocalDate.parse(flightSearch.getDepartureDate());
@@ -90,13 +90,11 @@ public class InputValidationServiceImpl implements InputValidationService {
     } catch (Exception exception) {
       return INVALID_DATE_FORMAT;
     }
-    if (departureDate.isBefore(LocalDate.now())) {
+    if (departureDate.isBefore(LocalDate.now(ZoneId.of(Constants.ZONE_ID)))) {
       return DEPARTURE_BEFORE_TODAY;
     }
-    if (!flightSearch.isOneWay()) {
-      if (returnDate.isBefore(departureDate)) {
-        return RETURN_BEFORE_DEPARTURE;
-      }
+    if (!flightSearch.isOneWay() && returnDate.isBefore(departureDate)) {
+      return RETURN_BEFORE_DEPARTURE;
     }
     return "";
   }

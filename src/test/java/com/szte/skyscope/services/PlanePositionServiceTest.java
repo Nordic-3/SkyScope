@@ -42,6 +42,6 @@ class PlanePositionServiceTest {
     when(planePositionProvider.getAllPLanePositions())
         .thenReturn(
             "{\"states\": [[\"7105b0\",\"TEST\",\"British Airways\",1760879418,1760879418,3.7066,51.2173,10965.18,false,240.77,301.28,0,null,11178.54,\"3572\",false,\"n\"],[\"7105b0\",\"Test1  \",\"United Airlines\",1760879418,1760879418,3.7066,51.2173,10965.18,false,240.77,301.28,0,null,11178.54,\"3572\",false,\"n\"]]}");
-    assertThat(planePositionService.getAllPlanePositions().size()).isEqualTo(2);
+    assertThat(planePositionService.getAllPlanePositions()).hasSize(2);
   }
 }

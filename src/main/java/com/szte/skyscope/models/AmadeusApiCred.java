@@ -1,6 +1,7 @@
 package com.szte.skyscope.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AmadeusApiCred {
-  private String access_token;
-  private String expires_in;
+  @JsonProperty("access_token")
+  private String accessToken;
+
+  @JsonProperty("expires_in")
+  private String expiresIn;
 }

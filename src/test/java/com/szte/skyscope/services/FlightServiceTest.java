@@ -1,6 +1,6 @@
 package com.szte.skyscope.services;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.szte.skyscope.dtos.FlightOfferDTO;
@@ -8,7 +8,7 @@ import com.szte.skyscope.factories.FlightOfferDTOFactory;
 import com.szte.skyscope.factories.FlightSearchFactory;
 import com.szte.skyscope.models.*;
 import com.szte.skyscope.services.impl.FlightServiceImpl;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -29,7 +29,7 @@ class FlightServiceTest {
   @Test
   void getToken() {
     AmadeusApiCred apiCred = new AmadeusApiCred();
-    apiCred.setAccess_token("access_token");
+    apiCred.setAccessToken("access_token");
     when(cachedApiCalls.getAmadeusApiCred()).thenReturn(apiCred);
     assertThat(flightService.getToken()).isEqualTo("access_token");
   }
@@ -80,7 +80,7 @@ class FlightServiceTest {
   void setAircraftType() {
     FlightOfferDTO offer = FlightOfferDTOFactory.createFlightOfferWithDepartureAndArrival();
     Map<String, String> aircraftDictionary = Map.of("B747", "BOEING 747");
-    flightService.setAircraftType(Arrays.asList(offer), aircraftDictionary);
+    flightService.setAircraftType(List.of(offer), aircraftDictionary);
     assertThat(offer.getItineraries().getFirst().getSegments().getFirst().getAircraft().getName())
         .isEqualTo("Boeing 747");
   }
@@ -89,7 +89,7 @@ class FlightServiceTest {
   void setCarrierNames() {
     FlightOfferDTO offer = FlightOfferDTOFactory.createFlightOfferWithDepartureAndArrival();
     Map<String, String> carrierDictionary = Map.of("UA", "United Airlines");
-    flightService.setCarrierNames(Arrays.asList(offer), carrierDictionary);
+    flightService.setCarrierNames(List.of(offer), carrierDictionary);
     assertThat(
             offer
                 .getItineraries()
@@ -106,7 +106,7 @@ class FlightServiceTest {
     when(cachedApiCalls.getAirportName("BUD", "access_token")).thenReturn("Budapest Airport");
     Map<String, String> result =
         flightService.getAirportNamesByItsIata(Map.of("BUD", new Location()), "access_token");
-    assertThat(result.get("BUD")).isEqualTo("Budapest Airport");
+    assertThat(result).containsEntry("BUD", "Budapest Airport");
   }
 
   @Test
@@ -114,7 +114,7 @@ class FlightServiceTest {
     FlightOfferDTO offer = FlightOfferDTOFactory.createFlightOfferWithDepartureAndArrival();
     offer.getItineraries().getFirst().getSegments().getFirst().getDeparture().setIataCode("BUD");
     Map<String, String> airportNamesByIata = Map.of("BUD", "Budapest Airport");
-    flightService.setAirportNames(Arrays.asList(offer), airportNamesByIata);
+    flightService.setAirportNames(List.of(offer), airportNamesByIata);
     assertThat(
             offer
                 .getItineraries()
@@ -136,7 +136,7 @@ class FlightServiceTest {
     searchData.setLocationDictionary(Map.of("BUD", new Location()));
     when(searchStore.getSearchDatas("searchId")).thenReturn(searchData);
     when(cachedApiCalls.getAirportName("BUD", "access_token")).thenReturn("Budapest Airport");
-    flightService.setFlightOffersAttributes(Arrays.asList(offer), "searchId", "access_token");
+    flightService.setFlightOffersAttributes(List.of(offer), "searchId", "access_token");
     assertThat(offer.getItineraries().getFirst().getSegments().getFirst().getAircraft().getName())
         .isEqualTo("Boeing 747");
     assertThat(
@@ -166,7 +166,7 @@ class FlightServiceTest {
         .thenReturn(Map.of("UA", "UAL"));
     Map<String, String> result =
         flightService.getIcaoCodes(Map.of("UA", "United Airlines"), "access_token");
-    assertThat(result.get("UA")).isEqualTo("UAL");
+    assertThat(result).containsEntry("UA", "UAL");
   }
 
   @Test
@@ -175,7 +175,7 @@ class FlightServiceTest {
     offer.getItineraries().getFirst().getSegments().getFirst().getOperating().setCarrierCode("UA");
     offer.getItineraries().getFirst().getSegments().getFirst().setNumber("123");
     Map<String, String> icaoCodes = Map.of("UA", "UAL");
-    flightService.setCallsigns(Arrays.asList(offer), icaoCodes);
+    flightService.setCallsigns(List.of(offer), icaoCodes);
     assertThat(offer.getItineraries().getFirst().getSegments().getFirst().getCallSign())
         .isEqualTo("UAL123");
   }
@@ -184,15 +184,15 @@ class FlightServiceTest {
   void setIsCurrentlyFlying() {
     FlightOfferDTO offer = FlightOfferDTOFactory.createOfferWithCallsign();
     Map<String, Plane> planePositions = Map.of("LH123", new Plane());
-    flightService.setIsCurrentlyFlying(Arrays.asList(offer), planePositions);
+    flightService.setIsCurrentlyFlying(List.of(offer), planePositions);
     assertThat(offer.getItineraries().getFirst().getSegments().getFirst().isCurrentlyFlying())
         .isTrue();
   }
 
   @Test
-  void setIsCurrentlyFlying_planePositionNull() {
+  void setIsCurrentlyFlying_planePositionIsEmpty() {
     FlightOfferDTO offer = FlightOfferDTOFactory.createOfferWithCallsign();
-    flightService.setIsCurrentlyFlying(Arrays.asList(offer), null);
+    flightService.setIsCurrentlyFlying(List.of(offer), new HashMap<>());
     assertThat(offer.getItineraries().getFirst().getSegments().getFirst().isCurrentlyFlying())
         .isFalse();
   }
@@ -201,7 +201,7 @@ class FlightServiceTest {
   void setIsCurrentlyFlying_notFlying() {
     FlightOfferDTO offer = FlightOfferDTOFactory.createOfferWithCallsign();
     Map<String, Plane> planePositions = Map.of("BA123", new Plane());
-    flightService.setIsCurrentlyFlying(Arrays.asList(offer), planePositions);
+    flightService.setIsCurrentlyFlying(List.of(offer), planePositions);
     assertThat(offer.getItineraries().getFirst().getSegments().getFirst().isCurrentlyFlying())
         .isFalse();
   }

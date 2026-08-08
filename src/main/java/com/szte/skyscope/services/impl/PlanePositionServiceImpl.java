@@ -17,7 +17,7 @@ public class PlanePositionServiceImpl implements PlanePositionService {
   public Plane getPlanePosition(String callsign) {
     Map<String, Plane> planes =
         Parser.parseJsonToMapOfPlanes(planePositionProvider.getAllPLanePositions());
-    return planes != null ? planes.get(callsign.strip().toUpperCase()) : new Plane();
+    return !planes.isEmpty() ? planes.get(callsign.strip().toUpperCase()) : new Plane();
   }
 
   @Override

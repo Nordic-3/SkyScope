@@ -1,6 +1,6 @@
 package com.szte.skyscope.services;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.szte.skyscope.services.impl.JsonReaderServiceImpl;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 
-public class JsonReaderServiceTest {
+class JsonReaderServiceTest {
 
   private final JsonReaderServiceImpl reader = new JsonReaderServiceImpl();
 

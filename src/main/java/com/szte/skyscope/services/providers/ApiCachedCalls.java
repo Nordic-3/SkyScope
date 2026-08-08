@@ -53,11 +53,15 @@ public class ApiCachedCalls implements CachedApiCallsProvider {
 
   @CacheEvict(value = "amadeusApiToken", allEntries = true)
   @Scheduled(fixedRateString = "${amadeus_token_expiry}")
-  public void emptyAmadeusApiToken() {}
+  public void emptyAmadeusApiToken() {
+    // delete token
+  }
 
   @CacheEvict(value = "amadeusTestApiToken", allEntries = true)
   @Scheduled(fixedRateString = "${amadeus_token_expiry}")
-  public void emptyTestToken() {}
+  public void emptyTestToken() {
+    // delete token
+  }
 
   private String getCityAirportSearchResponse(String keyword, String subType, String token) {
     return restClient

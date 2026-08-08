@@ -22,8 +22,7 @@ public class CheapestFlightDateServiveImpl implements CheapestFlightDateService 
       FlightSearch flightSearch, String token, String searchId, List<FlightOfferDTO> flightOffers) {
     List<CheapestDateOffer> cheapestDateOffers =
         cheapestFlightDataProvider.getCheapestDateOffers(flightSearch, token);
-    if (cheapestDateOffers == null
-        || cheapestDateOffers.isEmpty()
+    if (cheapestDateOffers.isEmpty()
         || !isCheaper(flightOffers, getCheapestOffer(cheapestDateOffers))) {
       return CompletableFuture.completedFuture(null);
     }
@@ -53,7 +52,7 @@ public class CheapestFlightDateServiveImpl implements CheapestFlightDateService 
   private CheapestDateOffer getCheapestOffer(List<CheapestDateOffer> cheapestDateOffers) {
     return cheapestDateOffers.stream()
         .min(Comparator.comparingInt(CheapestDateOffer::getPrice))
-        .get();
+        .orElse(new CheapestDateOffer());
   }
 
   private FlightSearch getcheaperFlightOfferSearchParameters(
