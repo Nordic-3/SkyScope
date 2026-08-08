@@ -122,7 +122,7 @@
         <dependency>
             <groupId>com.microsoft.playwright</groupId>
             <artifactId>playwright</artifactId>
-            <version>1.60.0</version>
+            <version>1.62.0</version>
         </dependency>
         <dependency>
             <groupId>com.stripe</groupId>
@@ -241,6 +241,23 @@
                                 <include>**/RunCucumberTest.java</include>
                             </includes>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>sonar-report</id>
+            <properties>
+                <sonar.projectKey>skyScope</sonar.projectKey>
+                <sonar.projectName>skyScope</sonar.projectName>
+                <sonar.host.url>http://localhost:9000</sonar.host.url>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                        <version>3.11.0.3922</version>
                     </plugin>
                 </plugins>
             </build>
