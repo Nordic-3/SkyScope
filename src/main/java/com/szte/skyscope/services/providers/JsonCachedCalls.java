@@ -1,0 +1,31 @@
+package com.szte.skyscope.services.providers;
+
+import com.szte.skyscope.models.AmadeusApiCred;
+import com.szte.skyscope.parsers.Parser;
+import com.szte.skyscope.services.CachedApiCallsProvider;
+import com.szte.skyscope.services.JsonReaderService;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public class JsonCachedCalls implements CachedApiCallsProvider {
+  private final JsonReaderService jsonReaderService;
+
+  @Override
+  public String getIataCode(String city, String token) {
+    return Parser.getIataFromJson(
+        jsonReaderService.readJsonFromResources("exampleDatas/iataCodes.json"), city);
+  }
+
+  @Override
+  public String getAirportName(String iata, String token) {
+    String json = jsonReaderService.readJsonFromResources("exampleDatas/airportNames.json");
+    return Parser.getCityNameFromAirportAndCityApi(json, iata)
+        + ", "
+        + Parser.getAirportNameFromJson(json, iata);
+  }
+
+  @Override
+  public AmadeusApiCred getApiCred(String clientId, String clientSecret, String authUrl) {
+    return new AmadeusApiCred();
+  }
+}
