@@ -15,11 +15,11 @@ jobs:
       KEYCLOAK_SECRET: ${{ secrets.KEYCLOAK_SECRET }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Map 'keycloak' to localhost in /etc/hosts
         run: echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
