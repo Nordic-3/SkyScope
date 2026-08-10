@@ -1,4 +1,4 @@
-name: Run automata tests
+name: automata test running
 
 on:
   push:
