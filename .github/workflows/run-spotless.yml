@@ -23,7 +23,9 @@ jobs:
           cache: maven
 
       - name: Run Spotless Apply
-        run: ./mvnw spotless:apply
+        run: |
+          chmod +x mvnw
+          ./mvnw spotless:apply
 
       - name: Auto-commit formatted code
         uses: stefanzweifel/git-auto-commit-action@v5
